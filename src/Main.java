@@ -12,6 +12,8 @@ public class Main
         repeatedString();
 
         hourglassSum();
+
+        arraysLeftRotation();
     }
 
     private static void printClassName(String className)
@@ -31,12 +33,9 @@ public class Main
     {
         printClassName(JumpingOnClouds.class.getName());
 
-        Integer[] array1 = {0, 0, 1, 0, 0, 1, 0};
-        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(array1))));
-        Integer[] array2 = {0, 1, 0, 0, 0, 1, 0};
-        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(array2))));
-        Integer[] array3 = {0, 0, 0, 0, 1, 0};
-        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(array3))));
+        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 0, 1, 0, 0, 1, 0))));
+        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 1, 0))));
+        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1, 0))));
     }
 
     private static void repeatedString()
@@ -62,6 +61,7 @@ public class Main
                 {0, 0, 1, 2, 4, 0}
         };
         System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray1)));
+
         Integer[][] twoDimArray2 = {
                 {1, 1, 1, 0, 0, 0},
                 {0, 1, 0, 0, 0, 0},
@@ -71,6 +71,7 @@ public class Main
                 {0, 0, 1, 2, 4, 0}
         };
         System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray2)));
+
         Integer[][] twoDimArray3 = {
                 {-1, -1, 0, -9, -2, -2},
                 {-2, -1, -6, -8, -2, -5},
@@ -80,6 +81,7 @@ public class Main
                 {-1, -3, -1, -2, -4, -5}
         };
         System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray3)));
+
         Integer[][] twoDimArray4 = {
                 {0, -4, -6, 0, -7, -6},
                 {-1, -2, -6, -8, -3, -1},
@@ -89,5 +91,15 @@ public class Main
                 {-3, -6, 0, -8, -6, -7}
         };
         System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray4)));
+    }
+
+    private static void arraysLeftRotation()
+    {
+        printClassName(ArraysLeftRotation.class.getName());
+
+        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(1, 2, 3, 4, 5), 2));
+        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(1, 2, 3, 4, 5), 4));
+        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(41, 73, 89, 7, 10, 1, 59, 58, 84, 77, 77, 97, 58, 1, 86, 58, 26, 10, 86, 51), 10));
+        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(33, 47, 70, 37, 8, 53, 13, 93, 71, 72, 51, 100, 60, 87, 97), 13));
     }
 }
