@@ -14,6 +14,8 @@ public class Main
         hourglassSum();
 
         arraysLeftRotation();
+
+        checkMagazine();
     }
 
     private static void printClassName(String className)
@@ -101,5 +103,23 @@ public class Main
         System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(1, 2, 3, 4, 5), 4));
         System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(41, 73, 89, 7, 10, 1, 59, 58, 84, 77, 77, 97, 58, 1, 86, 58, 26, 10, 86, 51), 10));
         System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(33, 47, 70, 37, 8, 53, 13, 93, 71, 72, 51, 100, 60, 87, 97), 13));
+    }
+
+    private static void checkMagazine()
+    {
+        printClassName(CheckMagazine.class.getName());
+
+        CheckMagazine.checkMagazine(
+                CheckMagazine.getWords("attack at dawn"),
+                CheckMagazine.getWords("Attack at dawn")); // No
+        CheckMagazine.checkMagazine(
+                CheckMagazine.getWords("give me one grand today night"),
+                CheckMagazine.getWords("give one grand today")); // Yes
+        CheckMagazine.checkMagazine(
+                CheckMagazine.getWords("two times three is not four"),
+                CheckMagazine.getWords("two times two is four")); // No
+        CheckMagazine.checkMagazine(
+                CheckMagazine.getWords("ive got a lovely bunch of coconuts"),
+                CheckMagazine.getWords("ive got some coconuts")); // No
     }
 }
