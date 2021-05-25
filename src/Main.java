@@ -16,6 +16,8 @@ public class Main
         arraysLeftRotation();
 
         checkMagazine();
+
+        twoStrings();
     }
 
     private static void printClassName(String className)
@@ -121,5 +123,15 @@ public class Main
         CheckMagazine.checkMagazine(
                 CheckMagazine.getWords("ive got a lovely bunch of coconuts"),
                 CheckMagazine.getWords("ive got some coconuts")); // No
+    }
+
+    private static void twoStrings()
+    {
+        printClassName(TwoStrings.class.getName());
+
+        System.out.println(TwoStrings.twoStrings("and", "art")); // YES
+        System.out.println(TwoStrings.twoStrings("be", "cat")); // NO
+        System.out.println(TwoStrings.twoStrings("hello", "world")); // YES
+        System.out.println(TwoStrings.twoStrings("hi", "world")); // NO
     }
 }
