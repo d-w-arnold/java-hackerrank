@@ -20,6 +20,8 @@ public class Main
         twoStrings();
 
         bubbleSort();
+
+        markAndToys();
     }
 
     private static void printClassName(String className)
@@ -159,5 +161,13 @@ public class Main
           First Element: 1
           Last Element: 3
          */
+    }
+
+    private static void markAndToys()
+    {
+        printClassName(MarkAndToys.class.getName());
+
+        System.out.println(MarkAndToys.maximumToys(Arrays.asList(1, 2, 3, 4), 7)); // 3
+        System.out.println(MarkAndToys.maximumToys(Arrays.asList(1, 12, 5, 111, 200, 1000, 10), 50)); // 4
     }
 }
