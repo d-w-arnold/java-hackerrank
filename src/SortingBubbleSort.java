@@ -7,6 +7,11 @@ import java.util.List;
  */
 public class SortingBubbleSort
 {
+    /**
+     * Sorting Bubble Sort problem: https://www.hackerrank.com/challenges/ctci-bubble-sort/problem
+     *
+     * @param a An array of integers to sort.
+     */
     public static void countSwaps(List<Integer> a)
     {
         List<Integer> list = new ArrayList<>(a);

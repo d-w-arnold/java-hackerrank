@@ -9,6 +9,12 @@ import java.util.Map;
  */
 public class CheckMagazine
 {
+    /**
+     * Hash Tables: Ransom Note problem: https://www.hackerrank.com/challenges/ctci-ransom-note/problem
+     *
+     * @param magazine The words in the magazine.
+     * @param note     The words in the ransom note.
+     */
     public static void checkMagazine(List<String> magazine, List<String> note)
     {
         String yesMsg = "Yes";
