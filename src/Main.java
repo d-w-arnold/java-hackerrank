@@ -18,6 +18,8 @@ public class Main
         checkMagazine();
 
         twoStrings();
+
+        bubbleSort();
     }
 
     private static void printClassName(String className)
@@ -133,5 +135,29 @@ public class Main
         System.out.println(TwoStrings.twoStrings("be", "cat")); // NO
         System.out.println(TwoStrings.twoStrings("hello", "world")); // YES
         System.out.println(TwoStrings.twoStrings("hi", "world")); // NO
+    }
+
+    private static void bubbleSort()
+    {
+        printClassName(SortingBubbleSort.class.getName());
+
+        SortingBubbleSort.countSwaps(Arrays.asList(6, 4, 1));
+        /*
+          Array is sorted in 3 swaps.
+          First Element: 1
+          Last Element: 6
+         */
+        SortingBubbleSort.countSwaps(Arrays.asList(1, 2, 3));
+        /*
+          Array is sorted in 0 swaps.
+          First Element: 1
+          Last Element: 3
+         */
+        SortingBubbleSort.countSwaps(Arrays.asList(3, 2, 1));
+        /*
+          Array is sorted in 3 swaps.
+          First Element: 1
+          Last Element: 3
+         */
     }
 }
