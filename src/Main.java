@@ -6,22 +6,15 @@ public class Main
     public static void main(String[] args)
     {
         extraLongFactorials();
-
         jumpingOnClouds();
-
         repeatedString();
-
         hourglassSum();
-
         arraysLeftRotation();
-
         checkMagazine();
-
         twoStrings();
-
         bubbleSort();
-
         markAndToys();
+        makingAnagrams();
     }
 
     private static void printClassName(String className)
@@ -169,5 +162,13 @@ public class Main
 
         System.out.println(MarkAndToys.maximumToys(Arrays.asList(1, 2, 3, 4), 7)); // 3
         System.out.println(MarkAndToys.maximumToys(Arrays.asList(1, 12, 5, 111, 200, 1000, 10), 50)); // 4
+    }
+
+    private static void makingAnagrams()
+    {
+        printClassName(MakingAnagrams.class.getName());
+
+        System.out.println(MakingAnagrams.makeAnagram("cde", "dcf")); // 2
+        System.out.println(MakingAnagrams.makeAnagram("cde", "abc")); // 4
     }
 }
