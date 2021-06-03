@@ -1,3 +1,5 @@
+package InterviewPreparationKit.StringManipulation;
+
 import java.util.HashMap;
 import java.util.Map;
 
