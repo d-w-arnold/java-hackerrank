@@ -7,9 +7,9 @@ import java.math.BigInteger;
 public class ExtraLongFactorials
 {
     /**
-     * Get n factorial (n!)
+     * Extra Long Factorials problem: https://www.hackerrank.com/challenges/extra-long-factorials/problem
      *
-     * @param n Input between 0-100
+     * @param n An integer (0 <= n <= 100).
      */
     public static void extraLongFactorials(int n)
     {
