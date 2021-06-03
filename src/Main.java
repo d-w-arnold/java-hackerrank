@@ -15,6 +15,7 @@ public class Main
         bubbleSort();
         markAndToys();
         makingAnagrams();
+        alternatingCharacters();
     }
 
     private static void printClassName(String className)
@@ -170,5 +171,17 @@ public class Main
 
         System.out.println(MakingAnagrams.makeAnagram("cde", "dcf")); // 2
         System.out.println(MakingAnagrams.makeAnagram("cde", "abc")); // 4
+    }
+
+    private static void alternatingCharacters()
+    {
+        printClassName(AlternatingCharacters.class.getName());
+
+        System.out.println(AlternatingCharacters.alternatingCharacters("AABAAB")); // 2
+        System.out.println(AlternatingCharacters.alternatingCharacters("AAAA")); // 3
+        System.out.println(AlternatingCharacters.alternatingCharacters("BBBBB")); // 4
+        System.out.println(AlternatingCharacters.alternatingCharacters("ABABABAB")); // 0
+        System.out.println(AlternatingCharacters.alternatingCharacters("BABABA")); // 0
+        System.out.println(AlternatingCharacters.alternatingCharacters("AAABBB")); // 4
     }
 }
