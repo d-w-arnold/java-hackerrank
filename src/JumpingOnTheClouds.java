@@ -14,7 +14,6 @@ public class JumpingOnTheClouds
      */
     public static int jumpingOnClouds(List<Integer> c)
     {
-        System.out.println(c);
         int goodCloud = 0;
         int badCloud = 1;
         int[] validMoves = {1, 2};
