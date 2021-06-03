@@ -4,10 +4,10 @@ import java.util.List;
  * @author David W. Arnold
  * @version 24/05/2021
  */
-public class JumpingOnClouds
+public class JumpingOnTheClouds
 {
     /**
-     * Cloud hoping game problem: https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
+     * Jumping on the Clouds problem: https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
      *
      * @param c The list of binary numbers denoting good and bad clouds.
      * @return The smallest number of hops.

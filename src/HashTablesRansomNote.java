@@ -7,7 +7,7 @@ import java.util.Map;
  * @author David W. Arnold
  * @version 24/05/2021
  */
-public class CheckMagazine
+public class HashTablesRansomNote
 {
     /**
      * Hash Tables: Ransom Note problem: https://www.hackerrank.com/challenges/ctci-ransom-note/problem

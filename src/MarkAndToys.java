@@ -13,7 +13,7 @@ public class MarkAndToys
      *
      * @param prices The toy prices.
      * @param k      Mark's budget.
-     * @return The maximum number of toys
+     * @return The maximum number of toys.
      */
     public static int maximumToys(List<Integer> prices, int k)
     {

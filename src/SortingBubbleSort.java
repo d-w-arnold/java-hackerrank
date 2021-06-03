@@ -8,7 +8,7 @@ import java.util.List;
 public class SortingBubbleSort
 {
     /**
-     * Sorting Bubble Sort problem: https://www.hackerrank.com/challenges/ctci-bubble-sort/problem
+     * Sorting: Bubble Sort problem: https://www.hackerrank.com/challenges/ctci-bubble-sort/problem
      *
      * @param a An array of integers to sort.
      */

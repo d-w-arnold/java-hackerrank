@@ -7,7 +7,7 @@ import java.util.Objects;
  * @author David W. Arnold
  * @version 24/05/2021
  */
-public class HourGlassSum
+public class TwoDimArrayDS
 {
     /**
      * Hour Glass Sum problem: https://www.hackerrank.com/challenges/2d-array/problem

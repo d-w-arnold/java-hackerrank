@@ -6,15 +6,15 @@ public class Main
     public static void main(String[] args)
     {
         extraLongFactorials();
-        jumpingOnClouds();
+        jumpingOnTheClouds();
         repeatedString();
-        hourglassSum();
+        twoDimArrayDS();
         arraysLeftRotation();
-        checkMagazine();
+        hashTablesRansomNote();
         twoStrings();
-        bubbleSort();
+        sortingBubbleSort();
         markAndToys();
-        makingAnagrams();
+        stringsMakingAnagrams();
         alternatingCharacters();
     }
 
@@ -31,13 +31,13 @@ public class Main
         ExtraLongFactorials.extraLongFactorials(100);
     }
 
-    private static void jumpingOnClouds()
+    private static void jumpingOnTheClouds()
     {
-        printClassName(JumpingOnClouds.class.getName());
+        printClassName(JumpingOnTheClouds.class.getName());
 
-        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 0, 1, 0, 0, 1, 0))));
-        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 1, 0))));
-        System.out.println(JumpingOnClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1, 0))));
+        System.out.println(JumpingOnTheClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 0, 1, 0, 0, 1, 0))));
+        System.out.println(JumpingOnTheClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 1, 0))));
+        System.out.println(JumpingOnTheClouds.jumpingOnClouds(new ArrayList<>(Arrays.asList(0, 0, 0, 0, 1, 0))));
     }
 
     private static void repeatedString()
@@ -50,9 +50,9 @@ public class Main
         System.out.println(RepeatedString.repeatedString("kmretasscityylpdhuwjirnqimlkcgxubxmsxpypgzxtenweirknjtasxtvxemtwxuarabssvqdnktqadhyktagjxoanknhgilnm", 736778906400L));
     }
 
-    private static void hourglassSum()
+    private static void twoDimArrayDS()
     {
-        printClassName(HourGlassSum.class.getName());
+        printClassName(TwoDimArrayDS.class.getName());
 
         Integer[][] twoDimArray1 = {
                 {-9, -9, -9, 1, 1, 1},
@@ -62,7 +62,7 @@ public class Main
                 {0, 0, 0, -2, 0, 0},
                 {0, 0, 1, 2, 4, 0}
         };
-        System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray1)));
+        System.out.println(TwoDimArrayDS.hourglassSum(TwoDimArrayDS.covertTwoDimArrayToArrayList(twoDimArray1)));
 
         Integer[][] twoDimArray2 = {
                 {1, 1, 1, 0, 0, 0},
@@ -72,7 +72,7 @@ public class Main
                 {0, 0, 0, 2, 0, 0},
                 {0, 0, 1, 2, 4, 0}
         };
-        System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray2)));
+        System.out.println(TwoDimArrayDS.hourglassSum(TwoDimArrayDS.covertTwoDimArrayToArrayList(twoDimArray2)));
 
         Integer[][] twoDimArray3 = {
                 {-1, -1, 0, -9, -2, -2},
@@ -82,7 +82,7 @@ public class Main
                 {-7, -3, -3, -2, -9, -9},
                 {-1, -3, -1, -2, -4, -5}
         };
-        System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray3)));
+        System.out.println(TwoDimArrayDS.hourglassSum(TwoDimArrayDS.covertTwoDimArrayToArrayList(twoDimArray3)));
 
         Integer[][] twoDimArray4 = {
                 {0, -4, -6, 0, -7, -6},
@@ -92,35 +92,35 @@ public class Main
                 {-3, -5, -3, -6, -6, -6},
                 {-3, -6, 0, -8, -6, -7}
         };
-        System.out.println(HourGlassSum.hourglassSum(HourGlassSum.covertTwoDimArrayToArrayList(twoDimArray4)));
+        System.out.println(TwoDimArrayDS.hourglassSum(TwoDimArrayDS.covertTwoDimArrayToArrayList(twoDimArray4)));
     }
 
     private static void arraysLeftRotation()
     {
         printClassName(ArraysLeftRotation.class.getName());
 
-        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(1, 2, 3, 4, 5), 2));
-        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(1, 2, 3, 4, 5), 4));
-        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(41, 73, 89, 7, 10, 1, 59, 58, 84, 77, 77, 97, 58, 1, 86, 58, 26, 10, 86, 51), 10));
-        System.out.println(ArraysLeftRotation.arraysLeftRotation(Arrays.asList(33, 47, 70, 37, 8, 53, 13, 93, 71, 72, 51, 100, 60, 87, 97), 13));
+        System.out.println(ArraysLeftRotation.rotLeft(Arrays.asList(1, 2, 3, 4, 5), 2));
+        System.out.println(ArraysLeftRotation.rotLeft(Arrays.asList(1, 2, 3, 4, 5), 4));
+        System.out.println(ArraysLeftRotation.rotLeft(Arrays.asList(41, 73, 89, 7, 10, 1, 59, 58, 84, 77, 77, 97, 58, 1, 86, 58, 26, 10, 86, 51), 10));
+        System.out.println(ArraysLeftRotation.rotLeft(Arrays.asList(33, 47, 70, 37, 8, 53, 13, 93, 71, 72, 51, 100, 60, 87, 97), 13));
     }
 
-    private static void checkMagazine()
+    private static void hashTablesRansomNote()
     {
-        printClassName(CheckMagazine.class.getName());
+        printClassName(HashTablesRansomNote.class.getName());
 
-        CheckMagazine.checkMagazine(
-                CheckMagazine.getWords("attack at dawn"),
-                CheckMagazine.getWords("Attack at dawn")); // No
-        CheckMagazine.checkMagazine(
-                CheckMagazine.getWords("give me one grand today night"),
-                CheckMagazine.getWords("give one grand today")); // Yes
-        CheckMagazine.checkMagazine(
-                CheckMagazine.getWords("two times three is not four"),
-                CheckMagazine.getWords("two times two is four")); // No
-        CheckMagazine.checkMagazine(
-                CheckMagazine.getWords("ive got a lovely bunch of coconuts"),
-                CheckMagazine.getWords("ive got some coconuts")); // No
+        HashTablesRansomNote.checkMagazine(
+                HashTablesRansomNote.getWords("attack at dawn"),
+                HashTablesRansomNote.getWords("Attack at dawn")); // No
+        HashTablesRansomNote.checkMagazine(
+                HashTablesRansomNote.getWords("give me one grand today night"),
+                HashTablesRansomNote.getWords("give one grand today")); // Yes
+        HashTablesRansomNote.checkMagazine(
+                HashTablesRansomNote.getWords("two times three is not four"),
+                HashTablesRansomNote.getWords("two times two is four")); // No
+        HashTablesRansomNote.checkMagazine(
+                HashTablesRansomNote.getWords("ive got a lovely bunch of coconuts"),
+                HashTablesRansomNote.getWords("ive got some coconuts")); // No
     }
 
     private static void twoStrings()
@@ -133,7 +133,7 @@ public class Main
         System.out.println(TwoStrings.twoStrings("hi", "world")); // NO
     }
 
-    private static void bubbleSort()
+    private static void sortingBubbleSort()
     {
         printClassName(SortingBubbleSort.class.getName());
 
@@ -165,12 +165,12 @@ public class Main
         System.out.println(MarkAndToys.maximumToys(Arrays.asList(1, 12, 5, 111, 200, 1000, 10), 50)); // 4
     }
 
-    private static void makingAnagrams()
+    private static void stringsMakingAnagrams()
     {
-        printClassName(MakingAnagrams.class.getName());
+        printClassName(StringsMakingAnagrams.class.getName());
 
-        System.out.println(MakingAnagrams.makeAnagram("cde", "dcf")); // 2
-        System.out.println(MakingAnagrams.makeAnagram("cde", "abc")); // 4
+        System.out.println(StringsMakingAnagrams.makeAnagram("cde", "dcf")); // 2
+        System.out.println(StringsMakingAnagrams.makeAnagram("cde", "abc")); // 4
     }
 
     private static void alternatingCharacters()

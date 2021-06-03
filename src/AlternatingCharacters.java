@@ -9,10 +9,10 @@ import java.util.List;
 public class AlternatingCharacters
 {
     /**
-     * Alternating Character problem: https://www.hackerrank.com/challenges/alternating-characters/problem
+     * Alternating Characters problem: https://www.hackerrank.com/challenges/alternating-characters/problem
      *
-     * @param s A String
-     * @return The minimum number of deletions required
+     * @param s A String.
+     * @return The minimum number of deletions required.
      */
     public static int alternatingCharacters(String s)
     {

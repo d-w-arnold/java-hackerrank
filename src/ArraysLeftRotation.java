@@ -14,7 +14,7 @@ public class ArraysLeftRotation
      * @param d The number of rotations.
      * @return The rotated array.
      */
-    public static List<Integer> arraysLeftRotation(List<Integer> a, int d)
+    public static List<Integer> rotLeft(List<Integer> a, int d)
     {
         int rotations;
         if (a.size() - d == 0) {

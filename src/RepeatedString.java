@@ -5,7 +5,7 @@
 public class RepeatedString
 {
     /**
-     * Repeated string problem: https://www.hackerrank.com/challenges/repeated-string/problem
+     * Repeated String problem: https://www.hackerrank.com/challenges/repeated-string/problem
      *
      * @param s The string to be repeated.
      * @param n The number of characters to consider.

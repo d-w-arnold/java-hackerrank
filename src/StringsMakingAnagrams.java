@@ -5,7 +5,7 @@ import java.util.Map;
  * @author David W. Arnold
  * @version 03/06/2021
  */
-public class MakingAnagrams
+public class StringsMakingAnagrams
 {
     /**
      * Strings: Making Anagrams problem: https://www.hackerrank.com/challenges/ctci-making-anagrams/problem
