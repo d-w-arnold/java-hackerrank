@@ -1,9 +1,6 @@
 package ProblemSolving.Implementation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -32,12 +29,12 @@ public class FormingAMagicSquare
             if (s.get(1).get(1) != median) {
                 s.get(1).set(1, 5);
             }
-            // Check for out of place odd and even cells
+            // Check for out of place odd and even cells.
             Map<Integer, Integer> numOccurrences = populateNumOccurrences(s);
             List<Integer> missingNumbers = populateMissingNums(numOccurrences);
-            List<Integer[]> outOfPlaceCells = populateOutOfPlaceCells(s, oddEvenDistribution);
+            List<Integer[]> outOfPlaceCellsOddEven = populateOutOfPlaceCellsOddEven(s, oddEvenDistribution);
             do {
-                for (Integer[] outOfPlaceCell : outOfPlaceCells) {
+                for (Integer[] outOfPlaceCell : outOfPlaceCellsOddEven) {
                     int i = outOfPlaceCell[0];
                     int j = outOfPlaceCell[1];
                     int cellVal = s.get(i).get(j);
@@ -48,51 +45,28 @@ public class FormingAMagicSquare
                         missingNumbers = populateMissingNums(numOccurrences);
                     }
                 }
-                outOfPlaceCells = populateOutOfPlaceCells(s, oddEvenDistribution);
-            } while (outOfPlaceCells.size() != 0);
+                outOfPlaceCellsOddEven = populateOutOfPlaceCellsOddEven(s, oddEvenDistribution);
+            } while (outOfPlaceCellsOddEven.size() != 0);
+            // Check for out of place cells which can be swapped.
+            List<Integer> rowTotals = getRowTotals(s);
+            List<Integer> colTotals = getColTotals(s);
+            List<Integer> diaTotals = getDiaTotals(s); // [topLeftToBottomRight, topRightToBottomLeft]
+            List<Integer[]> outOfPlaceCellsSwap = populateOutOfPlaceCellsSwap(s, rowTotals, colTotals, diaTotals, magicConstant);
             System.out.println();
-            // Check against totals equalling magicConstant and occurrences of numbers
-            List<Integer> rowTotals = populateRows(s);
-            List<Integer> colTotals = populateCols(s);
-            List<Integer> diaTotals = populateDias(s); // [topLeftToBottomRight, topRightToBottomLeft]
             do {
-                for (int i = 0; i < rowTotals.size(); i++) {
-                    for (int j = 0; j < colTotals.size(); j++) {
-                        int rowVal = rowTotals.get(i);
-                        int colVal = colTotals.get(j);
-                        if (rowVal == colVal) {
-                            boolean topLeftToBottomRightDia = isDiag(i, j, 0);
-                            boolean topRightToBottomLeftDia = isDiag(i, j, 1);
-                            boolean toContinue = false;
-                            int k;
-                            int diaVal;
-                            if (topLeftToBottomRightDia || topRightToBottomLeftDia) {
-                                // Compare row, col and dia.
-                                k = topLeftToBottomRightDia ? 0 : 1;
-                                diaVal = diaTotals.get(k);
-                                if (colVal == diaVal && diaVal != magicConstant) {
-                                    toContinue = true;
-                                }
-                            } else {
-                                // Compare just row and col.
-                                if (colVal != magicConstant) {
-                                    toContinue = true;
-                                }
-                            }
-                            if (toContinue) {
-                                int oldCellVal = s.get(i).get(j);
-                                int newCellVal = s.get(i).get(j) + (magicConstant - colVal);
-                                s.get(i).set(j, newCellVal);
-                                updateNumOccurrences(numOccurrences, oldCellVal, newCellVal);
-                                rowTotals = populateRows(s);
-                                colTotals = populateCols(s);
-                                diaTotals = populateDias(s);
-                            }
+                for (int i = 0; i < outOfPlaceCellsSwap.size(); i++) {
+                    for (int j = 0; j < outOfPlaceCellsSwap.size(); j++) {
+                        if (i == j) {
+                            continue;
                         }
+                        System.out.println();
                     }
                 }
-            } while (!isMagicSquare(rowTotals, colTotals, diaTotals, magicConstant) && s.size() < 9);
-            return findMatrixDiff(originalS, s);
+                outOfPlaceCellsSwap = populateOutOfPlaceCellsSwap(s, rowTotals, colTotals, diaTotals, magicConstant);
+            } while (outOfPlaceCellsSwap.size() != 0);
+            int ans = findMatrixDiff(originalS, s);
+            System.out.println();
+            return ans;
         }
         return -1;
     }
@@ -124,13 +98,44 @@ public class FormingAMagicSquare
     }
 
 
-    private static List<Integer[]> populateOutOfPlaceCells(List<List<Integer>> s, int[][] oddEvenDistribution)
+    private static List<Integer[]> populateOutOfPlaceCellsOddEven(List<List<Integer>> s, int[][] oddEvenDistribution)
     {
         List<Integer[]> list = new ArrayList<>();
         for (int i = 0; i < s.size(); i++) {
             for (int j = 0; j < s.get(i).size(); j++) {
                 if (s.get(i).get(j) % 2 != oddEvenDistribution[i][j]) {
                     list.add(new Integer[]{i, j});
+                }
+            }
+        }
+        return list;
+    }
+
+    private static List<Integer[]> populateOutOfPlaceCellsSwap(List<List<Integer>> s, List<Integer> rowTotals, List<Integer> colTotals, List<Integer> diaTotals, int magicConstant)
+    {
+        List<Integer[]> list = new ArrayList<>();
+        for (int i = 0; i < s.size(); i++) {
+            for (int j = 0; j < s.get(i).size(); j++) {
+                int rowVal = rowTotals.get(i);
+                int colVal = colTotals.get(j);
+                if (rowVal == colVal) {
+                    boolean topLeftToBottomRightDia = isDiag(i, j, 0);
+                    boolean topRightToBottomLeftDia = isDiag(i, j, 1);
+                    int k;
+                    int diaVal;
+                    if (topLeftToBottomRightDia || topRightToBottomLeftDia) {
+                        // Compare row, col and dia to the magicConstant.
+                        k = topLeftToBottomRightDia ? 0 : 1;
+                        diaVal = diaTotals.get(k);
+                        if (colVal == diaVal && diaVal != magicConstant) {
+                            list.add(new Integer[]{i, j});
+                        }
+                    } else {
+                        // Compare just row and col to the magicConstant.
+                        if (colVal != magicConstant) {
+                            list.add(new Integer[]{i, j});
+                        }
+                    }
                 }
             }
         }
@@ -163,48 +168,60 @@ public class FormingAMagicSquare
         return list;
     }
 
-    private static List<Integer> populateRows(List<List<Integer>> s)
+    private static int getRowTotal(List<List<Integer>> s, int rowIndex)
+    {
+        int rowTotal = 0;
+        for (int i : s.get(rowIndex)) {
+            rowTotal += i;
+        }
+        return rowTotal;
+    }
+
+    private static List<Integer> getRowTotals(List<List<Integer>> s)
     {
         List<Integer> totals = new ArrayList<>();
+        for (int i = 0; i < s.size(); i++) {
+            totals.add(getRowTotal(s, i));
+        }
+        return totals;
+    }
+
+    private static int getColTotal(List<List<Integer>> s, int colIndex)
+    {
+        int colTotal = 0;
         for (List<Integer> row : s) {
-            int tmpTotal = 0;
-            for (int i : row) {
-                tmpTotal += i;
-            }
-            totals.add(tmpTotal);
+            colTotal += row.get(colIndex);
+        }
+        return colTotal;
+    }
+
+    private static List<Integer> getColTotals(List<List<Integer>> s)
+    {
+        List<Integer> totals = new ArrayList<>();
+        for (int i = 0; i < s.get(0).size(); i++) {
+            totals.add(getColTotal(s, i));
         }
         return totals;
     }
 
-    private static List<Integer> populateCols(List<List<Integer>> s)
+    private static int getDiaTotal(List<List<Integer>> s, int diaIndex)
     {
-        List<Integer> totals = new ArrayList<>();
-        for (int i = 0; i < s.size(); i++) {
-            for (int j = 0; j < s.get(i).size(); j++) {
-                if (i == 0) {
-                    totals.add(s.get(i).get(j));
-                } else {
-                    totals.set(j, totals.get(j) + s.get(i).get(j));
-                }
+        int diaTotal = 0;
+        if (diaIndex == 0) {
+            for (int i = 0; i < s.size(); i++) {
+                diaTotal += s.get(i).get(i);
+            }
+        } else {
+            for (int i = 0; i < s.size(); i++) {
+                diaTotal += s.get(i).get((s.get(i).size() - 1) - i);
             }
         }
-        return totals;
+        return diaTotal;
     }
 
-    private static List<Integer> populateDias(List<List<Integer>> s)
+    private static List<Integer> getDiaTotals(List<List<Integer>> s)
     {
-        List<Integer> totals = new ArrayList<>();
-        for (int i = 0; i < s.size(); i++) {
-            List<Integer> row = s.get(i);
-            if (i == 0) {
-                totals.add(row.get(i));
-                totals.add(row.get((row.size() - 1) - i));
-            } else {
-                totals.set(0, totals.get(0) + row.get(i));
-                totals.set(1, totals.get(1) + row.get((row.size() - 1) - i));
-            }
-        }
-        return totals;
+        return Arrays.asList(getDiaTotal(s, 0), getDiaTotal(s, 1));
     }
 
     private static int getNearestValidMissingVal(List<Integer> missingNumbers, int num, int isOddEven)
@@ -212,7 +229,7 @@ public class FormingAMagicSquare
         int closestNum = -1;
         int smallestDiff = 0;
         for (int missingNumber : missingNumbers) {
-            // Check if missingNumber would be valid (i.e. odd or even cell)
+            // Check if missingNumber would be valid (i.e. odd or even cell).
             if ((isOddEven == 0 && missingNumber % 2 == 0) || (isOddEven == 1 && missingNumber % 2 == 1)) {
                 if (closestNum == -1 || Math.abs(num - missingNumber) < smallestDiff) {
                     closestNum = missingNumber;
