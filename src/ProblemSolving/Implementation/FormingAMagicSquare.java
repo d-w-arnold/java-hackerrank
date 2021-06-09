@@ -1,7 +1,5 @@
 package ProblemSolving.Implementation;
 
-import Utils.Pair;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +20,7 @@ public class FormingAMagicSquare
     public static int formingMagicSquare(List<List<Integer>> s)
     {
         if (s.size() == 3 && s.get(0).size() == 3) {
+            final int[][] originalS = toTwoDimArray(s);
             final int median = 5;
             final int magicConstant = 15;
             final int[][] oddEvenDistribution = { // odd = 1, even = 0
@@ -29,29 +28,29 @@ public class FormingAMagicSquare
                     {1, 1, 1},
                     {0, 1, 0}
             };
-            int minimalTotalCost = 0;
             // Middle cell has to be median between 1-9 (e.g. 5).
             if (s.get(1).get(1) != median) {
-                minimalTotalCost += Math.abs(s.get(1).get(1) - median);
                 s.get(1).set(1, 5);
             }
             // Check for out of place odd and even cells
             Map<Integer, Integer> numOccurrences = populateNumOccurrences(s);
             List<Integer> missingNumbers = populateMissingNums(numOccurrences);
-            List<Pair<Integer, Integer>> outOfPlaceCells = populateOutOfPlaceCells(s, oddEvenDistribution);
+            List<Integer[]> outOfPlaceCells = populateOutOfPlaceCells(s, oddEvenDistribution);
             do {
-                for (Pair<Integer, Integer> outOfPlaceCell : outOfPlaceCells) {
-                    int i = outOfPlaceCell.getLeft();
-                    int j = outOfPlaceCell.getRight();
+                for (Integer[] outOfPlaceCell : outOfPlaceCells) {
+                    int i = outOfPlaceCell[0];
+                    int j = outOfPlaceCell[1];
                     int cellVal = s.get(i).get(j);
-                    int nearestMissingVal = getNearestMissingVal(missingNumbers, cellVal);
-                    s.get(i).set(j, nearestMissingVal);
-                    minimalTotalCost += Math.abs(nearestMissingVal - cellVal);
-                    updateNumOccurrences(numOccurrences, cellVal, nearestMissingVal);
-                    missingNumbers = populateMissingNums(numOccurrences);
+                    int nearestMissingVal = getNearestValidMissingVal(missingNumbers, cellVal, oddEvenDistribution[i][j]);
+                    if (nearestMissingVal != cellVal) {
+                        s.get(i).set(j, nearestMissingVal);
+                        updateNumOccurrences(numOccurrences, cellVal, nearestMissingVal);
+                        missingNumbers = populateMissingNums(numOccurrences);
+                    }
                 }
                 outOfPlaceCells = populateOutOfPlaceCells(s, oddEvenDistribution);
             } while (outOfPlaceCells.size() != 0);
+            System.out.println();
             // Check against totals equalling magicConstant and occurrences of numbers
             List<Integer> rowTotals = populateRows(s);
             List<Integer> colTotals = populateCols(s);
@@ -64,58 +63,74 @@ public class FormingAMagicSquare
                         if (rowVal == colVal) {
                             boolean topLeftToBottomRightDia = isDiag(i, j, 0);
                             boolean topRightToBottomLeftDia = isDiag(i, j, 1);
+                            boolean toContinue = false;
+                            int k;
+                            int diaVal;
                             if (topLeftToBottomRightDia || topRightToBottomLeftDia) {
                                 // Compare row, col and dia.
-                                int k = topLeftToBottomRightDia ? 0 : 1;
-                                int diaVal = diaTotals.get(k);
+                                k = topLeftToBottomRightDia ? 0 : 1;
+                                diaVal = diaTotals.get(k);
                                 if (colVal == diaVal && diaVal != magicConstant) {
-                                    int tmp = magicConstant - diaVal;
-                                    int oldCellVal = s.get(i).get(j);
-                                    int newCellVal = s.get(i).get(j) + tmp;
-                                    if (numOccurrences.get(oldCellVal) > 1 && missingNumbers.contains(newCellVal)) {
-                                        s.get(i).set(j, newCellVal);
-                                        minimalTotalCost += Math.abs(newCellVal - oldCellVal);
-                                        updateNumOccurrences(numOccurrences, oldCellVal, newCellVal);
-                                        missingNumbers = populateMissingNums(numOccurrences);
-                                        rowTotals = populateRows(s);
-                                        colTotals = populateCols(s);
-                                        diaTotals = populateDias(s);
-                                    }
+                                    toContinue = true;
                                 }
                             } else {
                                 // Compare just row and col.
                                 if (colVal != magicConstant) {
-                                    int tmp = magicConstant - colVal;
-                                    int oldCellVal = s.get(i).get(j);
-                                    int newCellVal = s.get(i).get(j) + tmp;
-                                    if (numOccurrences.get(oldCellVal) > 1 && missingNumbers.contains(newCellVal)) {
-                                        s.get(i).set(j, newCellVal);
-                                        minimalTotalCost += Math.abs(newCellVal - oldCellVal);
-                                        updateNumOccurrences(numOccurrences, oldCellVal, newCellVal);
-                                        missingNumbers = populateMissingNums(numOccurrences);
-                                        rowTotals = populateRows(s);
-                                        colTotals = populateCols(s);
-                                        diaTotals = populateDias(s);
-                                    }
+                                    toContinue = true;
                                 }
+                            }
+                            if (toContinue) {
+                                int oldCellVal = s.get(i).get(j);
+                                int newCellVal = s.get(i).get(j) + (magicConstant - colVal);
+                                s.get(i).set(j, newCellVal);
+                                updateNumOccurrences(numOccurrences, oldCellVal, newCellVal);
+                                rowTotals = populateRows(s);
+                                colTotals = populateCols(s);
+                                diaTotals = populateDias(s);
                             }
                         }
                     }
                 }
             } while (!isMagicSquare(rowTotals, colTotals, diaTotals, magicConstant) && s.size() < 9);
-            return minimalTotalCost;
+            return findMatrixDiff(originalS, s);
         }
         return -1;
     }
 
-
-    private static List<Pair<Integer, Integer>> populateOutOfPlaceCells(List<List<Integer>> s, int[][] oddEvenDistribution)
+    public static int[][] toTwoDimArray(List<List<Integer>> s)
     {
-        List<Pair<Integer, Integer>> list = new ArrayList<>();
+        int[][] newArray = new int[s.size()][s.get(0).size()];
+        for (int i = 0; i < s.size(); i++) {
+            for (int j = 0; j < s.get(i).size(); j++) {
+                newArray[i][j] = s.get(i).get(j);
+            }
+        }
+        return newArray;
+    }
+
+    private static int findMatrixDiff(int[][] originalS, List<List<Integer>> s)
+    {
+        int count = 0;
+        for (int i = 0; i < originalS.length; i++) {
+            for (int j = 0; j < originalS[i].length; j++) {
+                int oldVal = originalS[i][j];
+                int newVal = s.get(i).get(j);
+                if (oldVal != newVal) {
+                    count += Math.abs(oldVal - newVal);
+                }
+            }
+        }
+        return count;
+    }
+
+
+    private static List<Integer[]> populateOutOfPlaceCells(List<List<Integer>> s, int[][] oddEvenDistribution)
+    {
+        List<Integer[]> list = new ArrayList<>();
         for (int i = 0; i < s.size(); i++) {
             for (int j = 0; j < s.get(i).size(); j++) {
                 if (s.get(i).get(j) % 2 != oddEvenDistribution[i][j]) {
-                    list.add(new Pair<>(i, j));
+                    list.add(new Integer[]{i, j});
                 }
             }
         }
@@ -192,17 +207,20 @@ public class FormingAMagicSquare
         return totals;
     }
 
-    private static int getNearestMissingVal(List<Integer> missingNumbers, int num)
+    private static int getNearestValidMissingVal(List<Integer> missingNumbers, int num, int isOddEven)
     {
         int closestNum = -1;
         int smallestDiff = 0;
-        for (var i : missingNumbers) {
-            if (closestNum == -1 || Math.abs(num - i) < smallestDiff) {
-                closestNum = i;
-                smallestDiff = Math.abs(num - i);
+        for (int missingNumber : missingNumbers) {
+            // Check if missingNumber would be valid (i.e. odd or even cell)
+            if ((isOddEven == 0 && missingNumber % 2 == 0) || (isOddEven == 1 && missingNumber % 2 == 1)) {
+                if (closestNum == -1 || Math.abs(num - missingNumber) < smallestDiff) {
+                    closestNum = missingNumber;
+                    smallestDiff = Math.abs(num - missingNumber);
+                }
             }
         }
-        return closestNum;
+        return closestNum != -1 ? closestNum : num;
     }
 
     private static void updateNumOccurrences(Map<Integer, Integer> map, int oldCellVal, int newCellVal)
