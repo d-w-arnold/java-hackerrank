@@ -64,4 +64,24 @@ class FormingAMagicSquareTest
                 Arrays.asList(8, 1, 5)
         )));
     }
+
+    @Test
+    void formingMagicSquare_5()
+    {
+        assertEquals(14, FormingAMagicSquare.formingMagicSquare(Arrays.asList(
+                Arrays.asList(4, 5, 8),
+                Arrays.asList(2, 4, 1),
+                Arrays.asList(1, 9, 7)
+        )));
+    }
+
+    @Test
+    void formingMagicSquare_6()
+    {
+        assertEquals(21, FormingAMagicSquare.formingMagicSquare(Arrays.asList(
+                Arrays.asList(2, 9, 8),
+                Arrays.asList(4, 2, 7),
+                Arrays.asList(5, 6, 7)
+        )));
+    }
 }
