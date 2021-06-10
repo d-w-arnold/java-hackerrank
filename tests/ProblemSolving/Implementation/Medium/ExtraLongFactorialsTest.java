@@ -1,4 +1,4 @@
-package ProblemSolving.Implementation;
+package ProblemSolving.Implementation.Medium;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

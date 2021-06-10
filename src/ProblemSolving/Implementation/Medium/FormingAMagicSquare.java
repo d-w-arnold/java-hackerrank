@@ -1,4 +1,4 @@
-package ProblemSolving.Implementation;
+package ProblemSolving.Implementation.Medium;
 
 import java.util.ArrayList;
 import java.util.List;
