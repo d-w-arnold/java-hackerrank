@@ -20,10 +20,9 @@ public class FormingAMagicSquare
     public static int formingMagicSquare(List<List<Integer>> s)
     {
         if (s.size() == 3 && s.get(0).size() == 3) {
-            int median = 5;
             int ans = Integer.MAX_VALUE;
             List<List<Integer>> magicSquares = new ArrayList<>();
-            findMagicSquares(magicSquares, median);
+            findMagicSquares(magicSquares);
             for (List<Integer> magicSquare : magicSquares) {
                 ans = Math.min(ans, findMatrixDiff(s, listToTwoDimMatrix(magicSquare)));
             }
@@ -32,30 +31,28 @@ public class FormingAMagicSquare
         return -1;
     }
 
-    private static void findMagicSquares(List<List<Integer>> magicSquares, int median)
+    private static void findMagicSquares(List<List<Integer>> magicSquares)
     {
         List<Integer> elements = IntStream.rangeClosed(1, 9).boxed().collect(Collectors.toList());
-        final int n = elements.size();
-        int[] indexes = new int[n];
-        for (int i = 0; i < n; i++) {
-            indexes[i] = 0;
-        }
-        if (elements.get(median - 1) == median && isMagicSquare(elements)) {
-            magicSquares.add(new ArrayList<>(elements));
-        }
-        int i = 0;
-        while (i < n) {
-            if (indexes[i] < i) {
-                swap(elements, i % 2 == 0 ? 0 : indexes[i], i);
-                if (elements.get(median - 1) == median && isMagicSquare(elements)) {
-                    magicSquares.add(new ArrayList<>(elements));
-                }
-                indexes[i]++;
-                i = 0;
-            } else {
-                indexes[i] = 0;
-                i++;
+        getMagicSquares(elements.size(), elements, magicSquares, elements.get(9 / 2));
+    }
+
+    public static void getMagicSquares(int n, List<Integer> elements, List<List<Integer>> magicSquares, int median)
+    {
+        if (n == 1) {
+            if (elements.get(median - 1) == median && isMagicSquare(elements)) {
+                magicSquares.add(new ArrayList<>(elements));
             }
+        } else {
+            for (int i = 0; i < n - 1; i++) {
+                getMagicSquares(n - 1, elements, magicSquares, median);
+                if (n % 2 == 0) {
+                    swap(elements, i, n - 1);
+                } else {
+                    swap(elements, 0, n - 1);
+                }
+            }
+            getMagicSquares(n - 1, elements, magicSquares, median);
         }
     }
 
