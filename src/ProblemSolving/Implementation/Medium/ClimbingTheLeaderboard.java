@@ -1,6 +1,9 @@
 package ProblemSolving.Implementation.Medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author David W. Arnold
@@ -17,26 +20,30 @@ public class ClimbingTheLeaderboard
      */
     public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player)
     {
-        List<Integer> playerRankResults = new ArrayList<>();
         List<Integer> newRanked = new ArrayList<>(ranked);
+        List<Integer> playerRankResults = new ArrayList<>();
         Set<Integer> setRanks;
         for (int playerScore : player) {
             setRanks = new HashSet<>();
             boolean foundRankPosition = false;
-            for (int rank : newRanked) {
+            int index = 0;
+            for (int i = 0; i < newRanked.size(); i++) {
+                int rank = newRanked.get(i);
                 if (rank > playerScore) {
                     setRanks.add(rank);
                 } else {
                     playerRankResults.add(setRanks.size() + 1);
                     foundRankPosition = true;
+                    index = i;
                     break;
                 }
             }
             if (!foundRankPosition) {
                 playerRankResults.add(setRanks.size() + 1);
+                newRanked.add(playerScore);
+            } else {
+                newRanked.add(index, playerScore);
             }
-            newRanked.add(playerScore);
-            newRanked.sort(Collections.reverseOrder());
         }
         return playerRankResults;
     }
