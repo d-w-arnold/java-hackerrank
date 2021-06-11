@@ -1,9 +1,6 @@
 package ProblemSolving.Implementation.Medium;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -21,21 +18,27 @@ public class ClimbingTheLeaderboard
     public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player)
     {
         List<Integer> playerRankResults = new ArrayList<>();
-        Set<Integer> setRanks;
-        for (int playerScore : player) {
-            setRanks = new HashSet<>();
-            boolean foundRankPosition = false;
-            for (int rank : ranked) {
-                if (rank > playerScore) {
-                    setRanks.add(rank);
-                } else {
-                    playerRankResults.add(setRanks.size() + 1);
-                    foundRankPosition = true;
-                    break;
+        Set<Integer> rankedSet = new HashSet<>();
+        int j = 0;
+        for (int i = player.size() - 1; i >= 0; ) {
+            boolean lastPlace = true;
+            int playerScore = player.get(i);
+            for (; j < ranked.size(); j++) {
+                int rankedScore = ranked.get(j);
+                rankedSet.add(rankedScore);
+                if (playerScore >= rankedScore) {
+                    lastPlace = false;
+                    playerRankResults.add(rankedSet.size());
+                    i--;
+                    playerScore = player.get(i);
                 }
             }
-            if (!foundRankPosition) playerRankResults.add(setRanks.size() + 1);
+            if (lastPlace) {
+                playerRankResults.add(rankedSet.size() + 1);
+                i--;
+            }
         }
+        playerRankResults.sort(Collections.reverseOrder());
         return playerRankResults;
     }
 }
