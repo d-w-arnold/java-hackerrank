@@ -20,30 +20,21 @@ public class ClimbingTheLeaderboard
      */
     public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player)
     {
-        List<Integer> newRanked = new ArrayList<>(ranked);
         List<Integer> playerRankResults = new ArrayList<>();
         Set<Integer> setRanks;
         for (int playerScore : player) {
             setRanks = new HashSet<>();
             boolean foundRankPosition = false;
-            int index = 0;
-            for (int i = 0; i < newRanked.size(); i++) {
-                int rank = newRanked.get(i);
+            for (int rank : ranked) {
                 if (rank > playerScore) {
                     setRanks.add(rank);
                 } else {
                     playerRankResults.add(setRanks.size() + 1);
                     foundRankPosition = true;
-                    index = i;
                     break;
                 }
             }
-            if (!foundRankPosition) {
-                playerRankResults.add(setRanks.size() + 1);
-                newRanked.add(playerScore);
-            } else {
-                newRanked.add(index, playerScore);
-            }
+            if (!foundRankPosition) playerRankResults.add(setRanks.size() + 1);
         }
         return playerRankResults;
     }
