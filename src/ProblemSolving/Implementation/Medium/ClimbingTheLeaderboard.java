@@ -17,28 +17,16 @@ public class ClimbingTheLeaderboard
      */
     public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player)
     {
-        List<Integer> playerRankResults = new ArrayList<>();
-        Set<Integer> rankedSet = new HashSet<>();
-        int j = 0;
-        for (int i = player.size() - 1; i >= 0; ) {
-            boolean lastPlace = true;
-            int playerScore = player.get(i);
-            for (; j < ranked.size(); j++) {
-                int rankedScore = ranked.get(j);
-                rankedSet.add(rankedScore);
-                if (playerScore >= rankedScore) {
-                    lastPlace = false;
-                    playerRankResults.add(rankedSet.size());
-                    i--;
-                    playerScore = player.get(i);
-                }
-            }
-            if (lastPlace) {
-                playerRankResults.add(rankedSet.size() + 1);
-                i--;
-            }
+        List<Integer> results = new ArrayList<>();
+        List<Integer> finalScores = new ArrayList<>(ranked);
+        for (int playerScore : player) {
+            finalScores.add(playerScore);
+            finalScores.sort(Collections.reverseOrder());
+            Set<Integer> set = new LinkedHashSet<>(finalScores);
+            finalScores.clear();
+            finalScores.addAll(set);
+            results.add(finalScores.indexOf(playerScore) + 1);
         }
-        playerRankResults.sort(Collections.reverseOrder());
-        return playerRankResults;
+        return results;
     }
 }
