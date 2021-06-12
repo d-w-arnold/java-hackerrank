@@ -19,28 +19,28 @@ public class ClimbingTheLeaderboard
      */
     public static List<Integer> climbingLeaderboard(List<Integer> ranked, List<Integer> player)
     {
+        List<Integer> rankedScores = new ArrayList<>(new LinkedHashSet<>(ranked));
         List<Integer> results = new ArrayList<>();
-        List<Integer> finalScores = new ArrayList<>(new LinkedHashSet<>(ranked));
+        int i = rankedScores.size() - 1;
         for (int playerScore : player) {
             boolean firstPlace = true;
-            for (int i = finalScores.size() - 1; i >= 0; i--) {
-                if (finalScores.get(i) > playerScore) {
+            for (; i >= 0; i--) {
+                if (rankedScores.get(i) > playerScore) {
                     // Not first place.
                     firstPlace = false;
-                    if (i == finalScores.size() - 1) {
+                    if (i == rankedScores.size() - 1) {
                         // Last place.
-                        finalScores.add(playerScore);
+                        results.add(rankedScores.size() + 1);
                     } else {
                         // Not last place.
-                        finalScores.add(i + 1, playerScore);
+                        results.add(i + 2);
                     }
                     break;
                 }
             }
             if (firstPlace) {
-                finalScores.add(0, playerScore);
+                results.add(1);
             }
-            results.add(finalScores.indexOf(playerScore) + 1);
         }
         return results;
     }
