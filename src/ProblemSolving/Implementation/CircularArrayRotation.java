@@ -20,7 +20,7 @@ public class CircularArrayRotation
     public static List<Integer> circularArrayRotation(List<Integer> a, int k, List<Integer> queries)
     {
         k %= a.size();
-        rotate(a, k);
+        a = rotate(a, k);
         List<Integer> ans = new ArrayList<>();
         for (int q : queries) {
             ans.add(a.get(q));
@@ -28,19 +28,11 @@ public class CircularArrayRotation
         return ans;
     }
 
-    private static void rotate(List<Integer> a, int k)
+    private static List<Integer> rotate(List<Integer> a, int k)
     {
-        for (int i = 0; i < k; i++) {
-            rotateByOne(a);
-        }
-    }
-
-    private static void rotateByOne(List<Integer> a)
-    {
-        final List<Integer> originalA = new ArrayList<>(a);
-        for (int i = 0; i < a.size() - 1; i++) {
-            a.set(i + 1, originalA.get(i));
-        }
-        a.set(0, originalA.get(a.size() - 1));
+        List<Integer> newA = new ArrayList<>();
+        newA.addAll(a.subList(a.size() - k, a.size()));
+        newA.addAll(a.subList(0, a.size() - k));
+        return newA;
     }
 }
