@@ -15,6 +15,13 @@ public class JumpingOnTheCloudsRevisited
      */
     public static int jumpingOnClouds(int[] c, int k)
     {
-        return -2;
+        int e = 100;
+        int index = 0;
+        do {
+            index = (index + k) % c.length;
+            e--;
+            if (c[index] == 1) e -= 2;
+        } while (index != 0);
+        return e;
     }
 }
