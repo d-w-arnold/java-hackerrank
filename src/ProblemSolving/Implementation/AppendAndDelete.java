@@ -16,16 +16,26 @@ public class AppendAndDelete
      */
     public static String appendAndDelete(String s, String t, int k)
     {
-        return "NULL";
+        final int commonLength = getCommonLength(s, t);
+        int tmp = (s.length() + t.length()) - (2 * commonLength);
+        if (tmp > k) {
+            return "No";
+        } else if (tmp % 2 == k % 2) {
+            return "Yes";
+        } else if ((s.length() + t.length() - k) < 0) {
+            return "Yes";
+        } else {
+            return "No";
+        }
     }
 
-    private static String appendCharToEnd(String s, char c)
+    private static int getCommonLength(String s, String t)
     {
-        return s + c;
-    }
-
-    private static String deleteLastChar(String s)
-    {
-        return s.substring(0, s.length() - 1);
+        int commonLength = 0;
+        for (int i = 0; i < java.lang.Math.min(s.length(), t.length()); i++) {
+            if (s.charAt(i) != t.charAt(i)) break;
+            commonLength++;
+        }
+        return commonLength;
     }
 }
