@@ -1,7 +1,9 @@
 package ProblemSolving.Implementation;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author David W. Arnold
@@ -17,6 +19,14 @@ public class SequenceEquation
      */
     public static List<Integer> permutationEquation(List<Integer> p)
     {
-        return new ArrayList<>();
+        Map<Integer, Integer> pos = new LinkedHashMap<>();
+        for (int i = 0; i < p.size(); i++) {
+            pos.put(p.get(i), i + 1);
+        }
+        List<Integer> order = new ArrayList<>();
+        for (int i = 0; i < p.size(); i++) {
+            order.add(pos.get(pos.get(i + 1)));
+        }
+        return order;
     }
 }
