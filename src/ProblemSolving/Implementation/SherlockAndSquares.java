@@ -15,6 +15,17 @@ public class SherlockAndSquares
      */
     public static int squares(int a, int b)
     {
-        return -2;
+        int total = (getSqrtBase(b) - (getSqrtBase(a) + 1)) + 1;
+        return isSquare(a) ? total + 1 : total;
+    }
+
+    private static boolean isSquare(int i)
+    {
+        return Math.sqrt(i) % 1 == 0;
+    }
+
+    private static int getSqrtBase(int a)
+    {
+        return (int) Math.sqrt(a);
     }
 }
