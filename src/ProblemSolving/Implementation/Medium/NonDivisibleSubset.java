@@ -19,13 +19,13 @@ public class NonDivisibleSubset
     public static int nonDivisibleSubset(int k, List<Integer> s)
     {
         int maxSubsetLen = 0;
-        for (List<Integer> subset : getSubsetsNonSingletons(s)) {
-            if (subsetPairsNotDivisible(subset, k)) maxSubsetLen = Math.max(maxSubsetLen, subset.size());
+        for (List<Integer> subset : getSubsets(s, k)) {
+            maxSubsetLen = Math.max(maxSubsetLen, subset.size());
         }
         return maxSubsetLen;
     }
 
-    private static List<List<Integer>> getSubsetsNonSingletons(List<Integer> s)
+    private static List<List<Integer>> getSubsets(List<Integer> s, int k)
     {
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> tmp;
@@ -35,7 +35,7 @@ public class NonDivisibleSubset
                 if ((i & (1 << j)) > 0) { //The j-th element is used
                     tmp.add(s.get(j));
                 }
-            if (tmp.size() > 1) subsets.add(tmp);
+            if (tmp.size() > 1 && subsetPairsNotDivisible(tmp, k)) subsets.add(tmp);
         }
         return subsets;
     }
