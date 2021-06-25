@@ -1,7 +1,6 @@
 package ProblemSolving.Implementation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -17,6 +16,27 @@ public class CutTheSticks
      */
     public static List<Integer> cutTheSticks(List<Integer> arr)
     {
-        return new ArrayList<>();
+        List<Integer> sortedArr = new ArrayList<>(arr);
+        Collections.sort(sortedArr);
+        LinkedHashMap<Integer, Integer> occurrences = getOccurrences(sortedArr);
+        List<Integer> sticksCut = new ArrayList<>(Collections.singletonList(sortedArr.size()));
+        int index = 0;
+        int tmp = sortedArr.size();
+        for (Map.Entry<Integer, Integer> entry : occurrences.entrySet()) {
+            if (index == occurrences.size() - 1) break;
+            tmp -= entry.getValue();
+            sticksCut.add(tmp);
+            index++;
+        }
+        return sticksCut;
+    }
+
+    private static LinkedHashMap<Integer, Integer> getOccurrences(List<Integer> list)
+    {
+        LinkedHashMap<Integer, Integer> occurrences = new LinkedHashMap<>();
+        for (int l : list) {
+            occurrences.put(l, occurrences.containsKey(l) ? occurrences.get(l) + 1 : 1);
+        }
+        return occurrences;
     }
 }
