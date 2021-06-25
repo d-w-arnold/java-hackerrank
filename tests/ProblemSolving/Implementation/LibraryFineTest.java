@@ -34,4 +34,10 @@ class LibraryFineTest
     {
         assertEquals(45, LibraryFine.libraryFine(9, 6, 2015, 6, 6, 2015));
     }
+
+    @Test
+    void libraryFine_3()
+    {
+        assertEquals(0, LibraryFine.libraryFine(2, 7, 1014, 1, 1, 1015));
+    }
 }

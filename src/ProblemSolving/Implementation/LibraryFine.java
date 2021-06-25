@@ -19,6 +19,14 @@ public class LibraryFine
      */
     public static int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2)
     {
-        return -2;
+        if (y1 < y2 || y1 == y2 && m1 < m2 || y1 == y2 && m1 == m2 && d1 <= d2) { // On or before due date
+            return 0;
+        } else if (d1 > d2 && m1 == m2 && y1 == y2) { // Late by day or more
+            return 15 * (d1 - d2);
+        } else if (m1 > m2 && y1 == y2) { // Late by month or more
+            return 500 * (m1 - m2);
+        } else { // Late by year or more
+            return 10000;
+        }
     }
 }
