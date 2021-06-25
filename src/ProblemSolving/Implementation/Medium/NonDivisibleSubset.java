@@ -1,5 +1,6 @@
 package ProblemSolving.Implementation.Medium;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,35 @@ public class NonDivisibleSubset
      */
     public static int nonDivisibleSubset(int k, List<Integer> s)
     {
-        return -2;
+        int maxSubsetLen = 0;
+        for (List<Integer> subset : getSubsetsNonSingletons(s)) {
+            if (subsetPairsNotDivisible(subset, k)) maxSubsetLen = Math.max(maxSubsetLen, subset.size());
+        }
+        return maxSubsetLen;
+    }
+
+    private static List<List<Integer>> getSubsetsNonSingletons(List<Integer> s)
+    {
+        List<List<Integer>> subsets = new ArrayList<>();
+        List<Integer> tmp;
+        for (int i = 1; i < (1 << s.size()); i++) {
+            tmp = new ArrayList<>();
+            for (int j = 0; j < s.size(); j++)
+                if ((i & (1 << j)) > 0) { //The j-th element is used
+                    tmp.add(s.get(j));
+                }
+            if (tmp.size() > 1) subsets.add(tmp);
+        }
+        return subsets;
+    }
+
+    private static boolean subsetPairsNotDivisible(List<Integer> s, int k)
+    {
+        for (int i = 0; i < s.size(); i++) {
+            for (int j = 0; j < s.size(); j++) {
+                if (i != j && (s.get(i) + s.get(j)) % k == 0) return false;
+            }
+        }
+        return true;
     }
 }
