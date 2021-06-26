@@ -1,7 +1,6 @@
 package ProblemSolving.Implementation.Medium;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -18,35 +17,17 @@ public class NonDivisibleSubset
      */
     public static int nonDivisibleSubset(int k, List<Integer> s)
     {
-        int maxSubsetLen = 0;
-        for (List<Integer> subset : getSubsets(s, k)) {
-            maxSubsetLen = Math.max(maxSubsetLen, subset.size());
-        }
-        return maxSubsetLen;
-    }
-
-    private static List<List<Integer>> getSubsets(List<Integer> s, int k)
-    {
-        List<List<Integer>> subsets = new ArrayList<>();
-        List<Integer> tmp;
-        for (int i = 1; i < (1 << s.size()); i++) {
-            tmp = new ArrayList<>();
-            for (int j = 0; j < s.size(); j++)
-                if ((i & (1 << j)) > 0) { //The j-th element is used
-                    tmp.add(s.get(j));
-                }
-            if (tmp.size() > 1 && subsetPairsNotDivisible(tmp, k)) subsets.add(tmp);
-        }
-        return subsets;
-    }
-
-    private static boolean subsetPairsNotDivisible(List<Integer> s, int k)
-    {
-        for (int i = 0; i < s.size(); i++) {
-            for (int j = 0; j < s.size(); j++) {
-                if (i != j && (s.get(i) + s.get(j)) % k == 0) return false;
+        Map<Integer, List<Integer>> d = new HashMap<>();
+        for (Integer integer : s) {
+            int remainder = integer % k;
+            if (d.containsKey(remainder)) {
+                d.get(remainder).add(integer);
+            } else {
+                d.put(remainder, new ArrayList<>(Collections.singletonList(integer)));
             }
         }
-        return true;
+        int count = 0;
+        if (d.get(0).size() > 0) count = 1;
+        return count;
     }
 }
