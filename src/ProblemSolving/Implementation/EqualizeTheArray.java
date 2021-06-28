@@ -1,6 +1,8 @@
 package ProblemSolving.Implementation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author David W. Arnold
@@ -16,6 +18,18 @@ public class EqualizeTheArray
      */
     public static int equalizeArray(List<Integer> arr)
     {
-        return -2;
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int i : arr) {
+            if (freqMap.containsKey(i)) {
+                freqMap.put(i, freqMap.get(i) + 1);
+            } else {
+                freqMap.put(i, 1);
+            }
+        }
+        int maximum = -1;
+        for (int value : freqMap.values()) {
+            maximum = Math.max(value, maximum);
+        }
+        return arr.size() - maximum;
     }
 }
