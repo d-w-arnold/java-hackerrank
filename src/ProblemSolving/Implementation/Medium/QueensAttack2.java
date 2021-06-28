@@ -1,9 +1,6 @@
 package ProblemSolving.Implementation.Medium;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -34,48 +31,63 @@ public class QueensAttack2
         if (k != 0) {
             Set<List<Integer>> obstructedCells = new HashSet<>();
             for (List<Integer> obstacle : obstacles) {
-                int r_obs = obstacle.get(0);
-                int c_obs = obstacle.get(1);
-                if (!obstructedCells.contains(new ArrayList<>(obstacle)) && isObstructing(r_q, c_q, r_obs, c_obs)) {
-                    updateObstructedCells(obstructedCells, r_q, c_q, r_obs, c_obs);
+                if (!obstructedCells.contains(new ArrayList<>(obstacle)) && isObstructing(r_q, c_q, obstacle.get(0), obstacle.get(1))) {
+                    updateObstructedCells(obstructedCells, n, r_q, c_q, obstacle.get(0), obstacle.get(1));
                 }
             }
-            return -2;
+            return total - obstructedCells.size();
         } else {
             return total;
         }
     }
 
-    private static void updateObstructedCells(Set<List<Integer>> obstructedCells, int r_q, int c_q, int r_obs, int c_obs)
+    private static void updateObstructedCells(Set<List<Integer>> obstructedCells, int n, int r_q, int c_q, int r_obs, int c_obs)
     {
         int r_diff = r_obs - r_q;
         int c_diff = c_obs - c_q;
         if (r_diff == 0) { // Same row
             if (c_diff < 0) { // Left of queen
-
+                c_diff = -1;
             } else { // Right of queen
-
+                c_diff = 1;
             }
+            updateObstructedCellsHelper(obstructedCells, n, r_obs, c_obs, r_diff, c_diff);
         } else if (c_diff == 0) { // Same col
             if (r_diff > 0) { // Above queen
-
+                r_diff = 1;
             } else { // Below queen
-
+                r_diff = -1;
             }
+            updateObstructedCellsHelper(obstructedCells, n, r_obs, c_obs, r_diff, c_diff);
         } else { // Must be on diag
             if ((r_diff > 0 && c_diff < 0) || (r_diff < 0 && c_diff > 0)) { // Bottom left to top right diag
                 if (r_diff > 0) { // Above left of queen
-
+                    r_diff = 1;
+                    c_diff = -1;
                 } else { // Below right of queen
-
+                    r_diff = -1;
+                    c_diff = 1;
                 }
+                updateObstructedCellsHelper(obstructedCells, n, r_obs, c_obs, r_diff, c_diff);
             } else { // Top left to bottom right diag
                 if (r_diff > 0) { // Above right of queen
-
+                    r_diff = 1;
+                    c_diff = 1;
                 } else { // Below left of queen
-
+                    r_diff = -1;
+                    c_diff = -1;
                 }
+                updateObstructedCellsHelper(obstructedCells, n, r_obs, c_obs, r_diff, c_diff);
             }
+        }
+    }
+
+    private static void updateObstructedCellsHelper(Set<List<Integer>> obstructedCells, int n, int r_obs, int c_obs, int r_diff, int c_diff)
+    {
+        while (0 < r_obs && r_obs <= n && 0 < c_obs && c_obs <= n) {
+            obstructedCells.add(new ArrayList<>(Arrays.asList(r_obs, c_obs)));
+            r_obs += r_diff;
+            c_obs += c_diff;
         }
     }
 
