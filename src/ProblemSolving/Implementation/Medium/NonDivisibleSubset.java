@@ -18,16 +18,27 @@ public class NonDivisibleSubset
     public static int nonDivisibleSubset(int k, List<Integer> s)
     {
         Map<Integer, List<Integer>> d = new HashMap<>();
+        for (int i = 0; i < k; i++) {
+            d.put(i, new ArrayList<>());
+        }
         for (Integer integer : s) {
-            int remainder = integer % k;
-            if (d.containsKey(remainder)) {
-                d.get(remainder).add(integer);
-            } else {
-                d.put(remainder, new ArrayList<>(Collections.singletonList(integer)));
-            }
+            d.get(integer % k).add(integer);
         }
         int count = 0;
         if (d.get(0).size() > 0) count = 1;
+        Set<Integer[]> S = new LinkedHashSet<>();
+        for (int x = 1; x < (k / 2) + 1; x++) {
+            S.add(new Integer[]{x, k - x});
+        }
+        for (Integer[] entry : S) {
+            int i = entry[0];
+            int j = entry[1];
+            if (i != j) {
+                count += Math.max(d.get(i).size(), d.get(j).size());
+            } else {
+                if (d.get(i).size() > 0) count++;
+            }
+        }
         return count;
     }
 }
