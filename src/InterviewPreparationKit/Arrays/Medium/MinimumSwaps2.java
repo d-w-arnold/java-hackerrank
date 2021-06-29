@@ -14,6 +14,19 @@ public class MinimumSwaps2
      */
     public static int minimumSwaps(int[] arr)
     {
-        return -2;
+        int i = 0;
+        int count = 0;
+        int tmp;
+        while (i < arr.length) {
+            if (arr[i] != i + 1) {
+                tmp = arr[i];
+                arr[i] = arr[tmp - 1];
+                arr[tmp - 1] = tmp;
+                count++;
+            } else {
+                i++;
+            }
+        }
+        return count;
     }
 }
