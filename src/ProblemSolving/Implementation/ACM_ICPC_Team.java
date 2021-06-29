@@ -1,6 +1,7 @@
 package ProblemSolving.Implementation;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author David W. Arnold
@@ -16,33 +17,23 @@ public class ACM_ICPC_Team
      */
     public static List<Integer> acmTeam(List<String> topic)
     {
-        List<Integer[]> pairs = new ArrayList<>();
-        Map<Integer[], List<Integer>> memSubjects = new LinkedHashMap<>();
-        for (int i = 1; i <= topic.size(); i++) {
-            for (int j = i + 1; j <= topic.size(); j++) {
-                Integer[] pair = new Integer[]{i, j};
-                pairs.add(pair);
-                memSubjects.put(pair, new ArrayList<>());
-            }
-        }
-        for (int i = 0; i < topic.get(0).length(); i++) {
-            for (Integer[] pair : pairs) {
-                if (topic.get(pair[0] - 1).charAt(i) == '1' || topic.get(pair[1] - 1).charAt(i) == '1') {
-                    memSubjects.get(pair).add(i + 1);
+        int max_covered = 0;
+        int teams = 0;
+        int matched_topics;
+        for (int i = 0; i < topic.size(); i++) {
+            for (int k = i + 1; k < topic.size(); k++) {
+                matched_topics = 0;
+                for (int j = 0; j < topic.get(0).length(); j++) {
+                    if (topic.get(i).charAt(j) - '0' > 0 || topic.get(k).charAt(j) - '0' > 0) matched_topics++;
+                }
+                if (matched_topics == max_covered)
+                    teams++;
+                else if (matched_topics > max_covered) {
+                    max_covered = matched_topics;
+                    teams = 1;
                 }
             }
         }
-        int maxNumOfTopicsKnown = 0;
-        int numOfTeams = 0;
-        for (Map.Entry<Integer[], List<Integer>> entry : memSubjects.entrySet()) {
-            int numOfTopics = entry.getValue().size();
-            if (numOfTopics > maxNumOfTopicsKnown) {
-                maxNumOfTopicsKnown = numOfTopics;
-                numOfTeams = 1;
-            } else if (numOfTopics == maxNumOfTopicsKnown) {
-                numOfTeams++;
-            }
-        }
-        return Arrays.asList(maxNumOfTopicsKnown, numOfTeams);
+        return Arrays.asList(max_covered, teams);
     }
 }
