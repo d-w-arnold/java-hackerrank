@@ -44,4 +44,11 @@ class NewYearChaosTest
         NewYearChaos.minimumBribes(Arrays.asList(4, 1, 2, 3));
         assertEquals("Too chaotic", OUTPUT_STREAM_CAPTOR.toString().trim());
     }
+
+    @Test
+    void minimumBribes_3()
+    {
+        NewYearChaos.minimumBribes(Arrays.asList(1, 2, 5, 3, 7, 8, 6, 4));
+        assertEquals("7", OUTPUT_STREAM_CAPTOR.toString().trim());
+    }
 }
