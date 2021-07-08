@@ -18,6 +18,14 @@ public class TaumAndBday
      */
     public static long taumBday(int b, int w, int bc, int wc, int z)
     {
-        return -2;
+        if (z < Math.abs(bc - wc)) { // 'z' can be used to purchase either black or white cheaper than they're cost
+            if (bc > wc) { // 'z' can be used to purchase cheaper black, but buying white then converting to black
+                return (long) b * wc + (long) b * z + (long) w * wc;
+            } else { // 'z' can be used to purchase cheaper white, but buying black then converting to white
+                return (long) b * bc + (long) w * z + (long) w * bc;
+            }
+        } else {
+            return (long) b * bc + (long) w * wc;
+        }
     }
 }

@@ -38,7 +38,7 @@ class TaumAndBdayTest
     @Test
     void taumBday_3()
     {
-        assertEquals(37, TaumAndBday.taumBday(5, 5, 2, 3, 4));
+        assertEquals(37, TaumAndBday.taumBday(5, 9, 2, 3, 4));
     }
 
     @Test
