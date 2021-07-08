@@ -1,5 +1,7 @@
 package ProblemSolving.Implementation.Medium;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,6 +18,19 @@ public class OrganizingContainersOfBalls
      */
     public static String organizingContainers(List<List<Integer>> container)
     {
-        return "NULL";
+        List<Integer> containerTotals = new ArrayList<>();
+        List<Integer> indexTotals = new ArrayList<>(Collections.nCopies(container.get(0).size(), 0));
+        for (List<Integer> c : container) {
+            int tmpTotal = 0;
+            for (int j = 0; j < c.size(); j++) {
+                int tmp = c.get(j);
+                tmpTotal += tmp;
+                indexTotals.set(j, indexTotals.get(j) + tmp);
+            }
+            containerTotals.add(tmpTotal);
+        }
+        Collections.sort(containerTotals);
+        Collections.sort(indexTotals);
+        return containerTotals.equals(indexTotals) ? "Possible" : "Impossible";
     }
 }
