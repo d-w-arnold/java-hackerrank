@@ -19,37 +19,44 @@ public class FrequencyQueries
      */
     public static List<Integer> freqQuery(List<List<Integer>> queries)
     {
+        Map<Integer, Integer> freqMap = new HashMap<>();
         List<Integer> array = new ArrayList<>();
         List<Integer> output = new ArrayList<>();
         for (List<Integer> query : queries) {
             switch (query.get(0)) {
                 case 1:
-                    array.add(query.get(1));
+                    opOne(query.get(1), freqMap, array);
                     break;
                 case 2:
-                    opTwo(query.get(1), array);
+                    opTwo(query.get(1), freqMap, array);
                     break;
                 case 3:
-                    opThree(query.get(1), array, output);
+                    opThree(query.get(1), freqMap, output);
                     break;
             }
         }
         return output;
     }
 
-    private static void opTwo(int n, List<Integer> array)
+    private static void opOne(int n, Map<Integer, Integer> freqMap, List<Integer> array)
+    {
+        array.add(n);
+        freqMap.put(n, freqMap.containsKey(n) ? freqMap.get(n) + 1 : 1);
+    }
+
+    private static void opTwo(int n, Map<Integer, Integer> freqMap, List<Integer> array)
     {
         for (int i = 0; i < array.size(); i++) {
             if (array.get(i) == n) {
                 array.remove(i);
+                freqMap.put(n, freqMap.get(n) - 1);
                 return;
             }
         }
     }
 
-    private static void opThree(int n, List<Integer> array, List<Integer> output)
+    private static void opThree(int n, Map<Integer, Integer> freqMap, List<Integer> output)
     {
-        Map<Integer, Integer> freqMap = getFreqMap(array);
         for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
             if (entry.getValue() == n) {
                 output.add(1);
@@ -57,18 +64,5 @@ public class FrequencyQueries
             }
         }
         output.add(0);
-    }
-
-    private static Map<Integer, Integer> getFreqMap(List<Integer> list)
-    {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i : list) {
-            if (map.containsKey(i)) {
-                map.put(i, map.get(i) + 1);
-            } else {
-                map.put(i, 1);
-            }
-        }
-        return map;
     }
 }
