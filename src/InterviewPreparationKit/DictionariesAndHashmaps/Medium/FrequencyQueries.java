@@ -39,16 +39,13 @@ public class FrequencyQueries
     private static void opOne(int n, Map<Integer, Integer> numFreq, Map<Integer, Set<Integer>> freqNum, List<Integer> array)
     {
         array.add(n);
-        if (numFreq.containsKey(n)) {
-            int oldCount = numFreq.get(n);
-            int newCount = oldCount + 1;
-            numFreq.put(n, newCount);
-            freqNum.get(oldCount).remove(n);
-            if (!freqNum.containsKey(newCount)) freqNum.put(newCount, new HashSet<>());
-            freqNum.get(newCount).add(n);
+        int newVal = numFreq.containsKey(n) ? numFreq.get(n) + 1 : 1;
+        numFreq.put(n, newVal);
+        if (newVal > 1) freqNum.get(newVal - 1).remove(n);
+        if (freqNum.containsKey(newVal)) {
+            freqNum.get(newVal).add(n);
         } else {
-            numFreq.put(n, 1);
-            freqNum.put(1, new HashSet<>(Collections.singletonList(n)));
+            freqNum.put(newVal, new HashSet<>(Collections.singletonList(n)));
         }
     }
 
@@ -57,11 +54,14 @@ public class FrequencyQueries
         for (int i = 0; i < array.size(); i++) {
             if (array.get(i) == n) {
                 array.remove(i);
-                int oldCount = numFreq.get(n);
-                int newCount = oldCount - 1;
-                numFreq.put(n, newCount);
-                freqNum.get(oldCount).remove(n);
-                if (newCount > 0) freqNum.get(newCount).add(n);
+                int newVal = numFreq.get(n) - 1;
+                numFreq.put(n, newVal);
+                freqNum.get(newVal + 1).remove(n);
+                if (freqNum.containsKey(newVal)) {
+                    freqNum.get(newVal).add(n);
+                } else {
+                    freqNum.put(newVal, new HashSet<>(Collections.singletonList(n)));
+                }
                 return;
             }
         }
