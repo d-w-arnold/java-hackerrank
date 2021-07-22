@@ -41,12 +41,8 @@ public class FrequencyQueries
         array.add(n);
         int newVal = numFreq.containsKey(n) ? numFreq.get(n) + 1 : 1;
         numFreq.put(n, newVal);
+        addToFreqNum(n, newVal, freqNum);
         if (newVal > 1) freqNum.get(newVal - 1).remove(n);
-        if (freqNum.containsKey(newVal)) {
-            freqNum.get(newVal).add(n);
-        } else {
-            freqNum.put(newVal, new HashSet<>(Collections.singletonList(n)));
-        }
     }
 
     private static void opTwo(int n, Map<Integer, Integer> numFreq, Map<Integer, Set<Integer>> freqNum, List<Integer> array)
@@ -56,12 +52,8 @@ public class FrequencyQueries
                 array.remove(i);
                 int newVal = numFreq.get(n) - 1;
                 numFreq.put(n, newVal);
+                addToFreqNum(n, newVal, freqNum);
                 freqNum.get(newVal + 1).remove(n);
-                if (freqNum.containsKey(newVal)) {
-                    freqNum.get(newVal).add(n);
-                } else {
-                    freqNum.put(newVal, new HashSet<>(Collections.singletonList(n)));
-                }
                 return;
             }
         }
@@ -70,5 +62,14 @@ public class FrequencyQueries
     private static void opThree(int n, Map<Integer, Set<Integer>> freqNum, List<Integer> output)
     {
         output.add(freqNum.containsKey(n) && freqNum.get(n).size() > 0 ? 1 : 0);
+    }
+
+    private static void addToFreqNum(int n, int newVal, Map<Integer, Set<Integer>> freqNum)
+    {
+        if (freqNum.containsKey(newVal)) {
+            freqNum.get(newVal).add(n);
+        } else {
+            freqNum.put(newVal, new HashSet<>(Collections.singletonList(n)));
+        }
     }
 }
