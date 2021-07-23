@@ -24,7 +24,22 @@ class Checker implements Comparator<Player>
     @Override
     public int compare(Player a, Player b)
     {
-        return 0;
+        if (a.score < b.score) {
+            return 1;
+        } else if (a.score > b.score) {
+            return -1;
+        } else { // a.score == b.score
+            for (int i = 0; i < (Math.min(a.name.length(), b.name.length())); i++) {
+                char aChar = a.name.charAt(i);
+                char bChar = b.name.charAt(i);
+                if (aChar < bChar) {
+                    return -1;
+                } else if (aChar > bChar) {
+                    return 1;
+                }
+            }
+            return Integer.compare(a.name.length(), b.name.length());
+        }
     }
 }
 

@@ -41,6 +41,59 @@ class SortingComparatorTest
                 new Player("aleksa", 150)
         };
         SortingComparator.sortingComparator(player);
-        assertEquals("aleksa 150\namy 100\ndavid 100\naakansha 75\nheraldo 50\n", OUTPUT_STREAM_CAPTOR.toString());
+        assertEquals("aleksa 150\n" +
+                "amy 100\n" +
+                "david 100\n" +
+                "aakansha 75\n" +
+                "heraldo 50\n", OUTPUT_STREAM_CAPTOR.toString());
+    }
+
+    @Test
+    void sortingComparator_2()
+    {
+        Player[] player = {
+
+                new Player("b", 3),
+                new Player("a", 1),
+                new Player("bb", 3),
+                new Player("b", 8),
+                new Player("bba", 0),
+                new Player("bb", 2),
+                new Player("bca", 6),
+                new Player("ccc", 4),
+                new Player("b", 3),
+                new Player("ab", 8),
+                new Player("bb", 3),
+                new Player("bb", 7),
+                new Player("ccb", 8),
+                new Player("bbb", 2),
+                new Player("aab", 8),
+                new Player("b", 6),
+                new Player("ab", 8),
+                new Player("cb", 9),
+                new Player("cbb", 8),
+                new Player("ba", 9)
+        };
+        SortingComparator.sortingComparator(player);
+        assertEquals("ba 9\n" +
+                "cb 9\n" +
+                "aab 8\n" +
+                "ab 8\n" +
+                "ab 8\n" +
+                "b 8\n" +
+                "cbb 8\n" +
+                "ccb 8\n" +
+                "bb 7\n" +
+                "b 6\n" +
+                "bca 6\n" +
+                "ccc 4\n" +
+                "b 3\n" +
+                "b 3\n" +
+                "bb 3\n" +
+                "bb 3\n" +
+                "bb 2\n" +
+                "bbb 2\n" +
+                "a 1\n" +
+                "bba 0\n", OUTPUT_STREAM_CAPTOR.toString());
     }
 }
