@@ -1,5 +1,7 @@
 package InterviewPreparationKit.Sorting.Medium;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,6 +19,27 @@ public class FraudulentActivityNotifications
      */
     public static int activityNotifications(List<Integer> expenditure, int d)
     {
-        return -2;
+        int totalNotifications = 0;
+        List<Integer> trailingExpenditures = new ArrayList<>();
+        for (int i = 0; i < d; i++) {
+            trailingExpenditures.add(expenditure.get(i));
+        }
+        for (int i = d; i < expenditure.size(); i++) {
+            if (i > d) {
+                trailingExpenditures.remove(0);
+                trailingExpenditures.add(expenditure.get(i - 1));
+            }
+            if (expenditure.get(i) >= 2 * getMedian(trailingExpenditures)) totalNotifications++;
+        }
+        return totalNotifications;
+    }
+
+    private static double getMedian(List<Integer> list)
+    {
+        List<Integer> tmpList = new ArrayList<>(list);
+        Collections.sort(tmpList);
+        return tmpList.size() % 2 == 1 ?
+                tmpList.get(tmpList.size() / 2) :
+                (double) (tmpList.get(tmpList.size() / 2) + tmpList.get(tmpList.size() / 2 - 1)) / 2;
     }
 }
