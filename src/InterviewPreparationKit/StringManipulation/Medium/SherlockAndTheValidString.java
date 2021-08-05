@@ -38,6 +38,7 @@ public class SherlockAndTheValidString
         }
         if (freqMapOcc.size() == 1) return "YES";
         if (freqMapOcc.size() == 2) {
+            if (freqMapOcc.containsKey(1) && freqMapOcc.get(1) == 1) return "YES";
             Set<Integer> keySet = freqMapOcc.keySet();
             for (int key : keySet) {
                 if (freqMapOcc.get(key) == 1) return keySet.contains(key - 1) ? "YES" : "NO";
