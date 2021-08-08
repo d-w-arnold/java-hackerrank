@@ -1,7 +1,7 @@
 package InterviewPreparationKit.StringManipulation.Medium;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * @author David W. Arnold
@@ -18,33 +18,52 @@ public class SpecialStringAgain
      */
     public static long substrCount(int n, String s)
     {
-        int total = 0;
-        Set<String> specialStrings = new HashSet<>();
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = i + 1; j <= s.length(); j++) {
-                String subStr = s.substring(i, j);
-                if (specialStrings.contains(subStr)) {
-                    total++;
-                } else if (isSpecialStr(subStr)) {
-                    specialStrings.add(subStr);
-                    total++;
-                }
+        s += " ";
+        ArrayList<Point> l = new ArrayList<>();
+        long count = 1;
+        char c = s.charAt(0);
+        for (int i = 1; i <= n; i++) {
+            if (c == s.charAt(i))
+                count++;
+            else {
+                l.add(new Point(c, count));
+                count = 1;
+                c = s.charAt(i);
             }
         }
-        return total;
+        count = 0;
+        if (l.size() >= 3) {
+            Iterator<Point> itr = l.iterator();
+            Point prev, curr, next;
+            curr = itr.next();
+            next = itr.next();
+            count = (curr.COUNT * (curr.COUNT + 1)) / 2;
+            for (int i = 1; i < l.size() - 1; i++) {
+                prev = curr;
+                curr = next;
+                next = itr.next();
+                count += (curr.COUNT * (curr.COUNT + 1)) / 2;
+                if (prev.KEY == next.KEY && curr.COUNT == 1)
+                    count += Math.min(prev.COUNT, next.COUNT);
+            }
+            count += (next.COUNT * (next.COUNT + 1)) / 2;
+        } else {
+            for (Point curr : l) {
+                count += (curr.COUNT * (curr.COUNT + 1)) / 2;
+            }
+        }
+        return count;
     }
 
-    private static boolean isSpecialStr(String s)
+    private static class Point
     {
-        if (s.length() == 1) return true;
-        boolean skipMiddle = s.length() % 2 == 1;
-        int middle = s.length() / 2;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) != s.charAt(0)) {
-                if (skipMiddle && i == middle) continue;
-                return false;
-            }
+        private final char KEY;
+        private final long COUNT;
+
+        public Point(char x, long y)
+        {
+            KEY = x;
+            COUNT = y;
         }
-        return true;
     }
 }
