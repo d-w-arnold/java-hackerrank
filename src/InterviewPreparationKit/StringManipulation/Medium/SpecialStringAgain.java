@@ -36,13 +36,12 @@ public class SpecialStringAgain
 
     private static boolean isSpecialStr(String s)
     {
-        char c = 0;
+        if (s.length() == 1) return true;
         boolean skipMiddle = s.length() % 2 == 1;
+        int middle = s.length() / 2;
         for (int i = 0; i < s.length(); i++) {
-            if (skipMiddle && i == (s.length() / 2)) continue;
-            if (i == 0) {
-                c = s.charAt(i);
-            } else if (c != s.charAt(i)) {
+            if (s.charAt(i) != s.charAt(0)) {
+                if (skipMiddle && i == middle) continue;
                 return false;
             }
         }
