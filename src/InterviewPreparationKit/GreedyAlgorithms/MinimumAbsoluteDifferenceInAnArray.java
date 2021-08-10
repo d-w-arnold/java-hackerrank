@@ -16,6 +16,13 @@ public class MinimumAbsoluteDifferenceInAnArray
      */
     public static int minimumAbsoluteDifference(List<Integer> arr)
     {
-        return -2;
+        int minAbsDiff = -1;
+        for (int i = 0; i < arr.size(); i++) {
+            for (int j = i + 1; j < arr.size(); j++) {
+                int absDiff = Math.abs(arr.get(i) - arr.get(j));
+                if (minAbsDiff == -1 || absDiff < minAbsDiff) minAbsDiff = absDiff;
+            }
+        }
+        return minAbsDiff;
     }
 }
