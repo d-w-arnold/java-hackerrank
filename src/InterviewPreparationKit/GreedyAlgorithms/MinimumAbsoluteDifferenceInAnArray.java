@@ -1,5 +1,6 @@
 package InterviewPreparationKit.GreedyAlgorithms;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,12 +17,10 @@ public class MinimumAbsoluteDifferenceInAnArray
      */
     public static int minimumAbsoluteDifference(List<Integer> arr)
     {
-        int minAbsDiff = -1;
-        for (int i = 0; i < arr.size(); i++) {
-            for (int j = i + 1; j < arr.size(); j++) {
-                int absDiff = Math.abs(arr.get(i) - arr.get(j));
-                if (minAbsDiff == -1 || absDiff < minAbsDiff) minAbsDiff = absDiff;
-            }
+        Collections.sort(arr);
+        int minAbsDiff = Math.abs(arr.get(0) - arr.get(1));
+        for (int i = 1; i < arr.size() - 1; i++) {
+            minAbsDiff = Math.min(minAbsDiff, Math.abs(arr.get(i) - arr.get(i + 1)));
         }
         return minAbsDiff;
     }
