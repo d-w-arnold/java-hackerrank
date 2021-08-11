@@ -1,5 +1,9 @@
 package InterviewPreparationKit.GreedyAlgorithms.Medium;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author David W. Arnold
  * @version 11/08/2021
@@ -15,13 +19,18 @@ public class GreedyFlorist
      */
     public static int getMinimumCost(int k, int[] c)
     {
+        List<Integer> newC = new ArrayList<>();
+        for (int i : c) {
+            newC.add(i);
+        }
+        Collections.sort(newC);
         int total = 0;
         int numberOfPurchases = 0;
         int numberOfGroupPurchases = -1;
-        for (int i = c.length - 1; i >= 0; i--) {
+        for (int i = newC.size() - 1; i >= 0; i--) {
             if (numberOfPurchases % k == 0) numberOfGroupPurchases++;
             numberOfPurchases++;
-            total += (numberOfGroupPurchases + 1) * c[i];
+            total += (numberOfGroupPurchases + 1) * newC.get(i);
         }
         return total;
     }
