@@ -19,6 +19,10 @@ public class MaxMin
     public static int maxMin(int k, List<Integer> arr)
     {
         Collections.sort(arr);
-        return arr.get(k - 1) - arr.get(0);
+        int miniUnfairness = arr.get(k - 1) - arr.get(0);
+        for (int i = k; i < arr.size(); i++) {
+            miniUnfairness = Math.min(miniUnfairness, arr.get(i) - arr.get(i + 1 - k));
+        }
+        return miniUnfairness;
     }
 }
