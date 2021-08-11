@@ -15,6 +15,14 @@ public class GreedyFlorist
      */
     public static int getMinimumCost(int k, int[] c)
     {
-        return -2;
+        int total = 0;
+        int numberOfPurchases = 0;
+        int numberOfGroupPurchases = -1;
+        for (int i = c.length - 1; i >= 0; i--) {
+            if (numberOfPurchases % k == 0) numberOfGroupPurchases++;
+            numberOfPurchases++;
+            total += (numberOfGroupPurchases + 1) * c[i];
+        }
+        return total;
     }
 }
