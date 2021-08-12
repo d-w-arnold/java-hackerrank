@@ -1,5 +1,8 @@
 package InterviewPreparationKit.Search.Medium;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author David W. Arnold
  * @version 13/08/2021
@@ -16,6 +19,14 @@ public class TripleSum
      */
     public static long triplets(int[] a, int[] b, int[] c)
     {
-        return -2;
+        Set<String> set = new HashSet<>();
+        for (int p : a) {
+            for (int q : b) {
+                for (int r : c) {
+                    if (p <= q && q >= r) set.add(p + "-" + q + "-" + r);
+                }
+            }
+        }
+        return set.size();
     }
 }
