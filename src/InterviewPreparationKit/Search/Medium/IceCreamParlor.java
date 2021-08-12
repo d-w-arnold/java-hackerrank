@@ -1,6 +1,6 @@
 package InterviewPreparationKit.Search.Medium;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -16,6 +16,18 @@ public class IceCreamParlor
      */
     public static void whatFlavors(List<Integer> cost, int money)
     {
-        System.out.println("NULL");
+        Map<Integer, List<Integer>> freqMap = new HashMap<>();
+        for (int i = 0; i < cost.size(); i++) {
+            int c = cost.get(i);
+            int n = money - c;
+            if (freqMap.containsKey(n)) {
+                System.out.println(freqMap.get(n).get(0) + " " + (i + 1));
+                break;
+            } else if (freqMap.containsKey(c)) {
+                freqMap.get(c).add(i + 1);
+            } else {
+                freqMap.put(c, new ArrayList<>(Collections.singletonList(i + 1)));
+            }
+        }
     }
 }
