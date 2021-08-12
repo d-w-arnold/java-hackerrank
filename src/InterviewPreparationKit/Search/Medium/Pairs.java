@@ -1,6 +1,8 @@
 package InterviewPreparationKit.Search.Medium;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author David W. Arnold
@@ -17,12 +19,11 @@ public class Pairs
      */
     public static int pairs(int k, List<Integer> arr)
     {
-        int total = 0;
-        for (int i = 0; i < arr.size(); i++) {
-            for (int j = i + 1; j < arr.size(); j++) {
-                if (Math.abs(arr.get(i) - arr.get(j)) == k) total++;
-            }
+        int count = 0;
+        Set<Integer> set = new HashSet<>(arr);
+        for (int number : arr) {
+            if (set.contains(number + k)) count++;
         }
-        return total;
+        return count;
     }
 }
