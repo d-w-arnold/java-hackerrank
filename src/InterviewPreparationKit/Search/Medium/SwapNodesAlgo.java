@@ -1,8 +1,6 @@
 package InterviewPreparationKit.Search.Medium;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,9 +77,9 @@ public class SwapNodesAlgo
             return newIndexes;
         }
 
-        private List<Integer> getSwapDepths(int k, int treeDepth)
+        private Set<Integer> getSwapDepths(int k, int treeDepth)
         {
-            List<Integer> list = new ArrayList<>();
+            Set<Integer> list = new HashSet<>();
             if (k > 1) {
                 int i = k;
                 while (i <= treeDepth) {
@@ -101,11 +99,10 @@ public class SwapNodesAlgo
             return getTreeDepthHelper(this.root);
         }
 
-        private void swapHelper(Node node, int depth, List<Integer> swapDepths)
+        private void swapHelper(Node node, int depth, Set<Integer> swapDepths)
         {
             if (swapDepths.size() > 0) {
-                if (depth == swapDepths.get(0)) {
-                    swapDepths.remove(0);
+                if (swapDepths.contains(depth)) {
                     Node tmp = node.left;
                     node.left = node.right;
                     node.right = tmp;
