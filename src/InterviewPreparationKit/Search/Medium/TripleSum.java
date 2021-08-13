@@ -1,7 +1,7 @@
 package InterviewPreparationKit.Search.Medium;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author David W. Arnold
@@ -19,14 +19,23 @@ public class TripleSum
      */
     public static long triplets(int[] a, int[] b, int[] c)
     {
-        Set<String> set = new HashSet<>();
-        for (int p : a) {
-            for (int q : b) {
-                for (int r : c) {
-                    if (p <= q && q >= r) set.add(p + "-" + q + "-" + r);
-                }
+        List<Integer> newA = new ArrayList<>(new HashSet<>(Arrays.stream(a).boxed().collect(Collectors.toList())));
+        List<Integer> newB = new ArrayList<>(new HashSet<>(Arrays.stream(b).boxed().collect(Collectors.toList())));
+        List<Integer> newC = new ArrayList<>(new HashSet<>(Arrays.stream(c).boxed().collect(Collectors.toList())));
+        Collections.sort(newA);
+        Collections.sort(newB);
+        Collections.sort(newC);
+        int ai = 0, bi = 0, ci = 0, ans = 0;
+        while (bi < newB.size()) {
+            while (ai < newA.size() && newA.get(ai) <= newB.get(bi)) {
+                ai += 1;
             }
+            while (ci < newC.size() && newC.get(ci) <= newB.get(bi)) {
+                ci += 1;
+            }
+            ans += ai * ci;
+            bi += 1;
         }
-        return set.size();
+        return ans;
     }
 }
