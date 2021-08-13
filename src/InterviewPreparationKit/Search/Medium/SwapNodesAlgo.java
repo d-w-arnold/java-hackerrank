@@ -1,6 +1,9 @@
 package InterviewPreparationKit.Search.Medium;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -22,14 +25,9 @@ public class SwapNodesAlgo
         BinaryTree tree = new BinaryTree(indexes);
         for (int k : queries) {
             tree.swap(k);
-            ans.add(getListFromInOrderString(tree.inOrderString));
+            ans.add(tree.getListFromInOrderString());
         }
         return ans;
-    }
-
-    private static List<Integer> getListFromInOrderString(String str)
-    {
-        return Arrays.stream(str.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 
     private static class BinaryTree
@@ -39,23 +37,7 @@ public class SwapNodesAlgo
 
         public BinaryTree(List<List<Integer>> indexes)
         {
-            this.root = insert(getArrayFromIndexes(indexes), null, 0);
-            genInOrderString();
-        }
-
-        public Node insert(int[] arr, Node root, int i)
-        {
-            if (i < arr.length && arr[i] != -1) {
-                root = new Node(arr[i]);
-                root.left = insert(arr, root.left, 2 * i + 1);
-                root.right = insert(arr, root.right, 2 * i + 2);
-            }
-            return root;
-        }
-
-        public void swap(int k)
-        {
-            swapHelper(this.root, 1, getSwapDepths(k, getTreeDepth()));
+            this.root = constructBinaryTree(indexes);
             genInOrderString();
         }
 
@@ -65,68 +47,62 @@ public class SwapNodesAlgo
             genInOrderStringHelper(this.root);
         }
 
-        private int[] getArrayFromIndexes(List<List<Integer>> indexes)
+        public void swap(int k)
         {
-            int[] newIndexes = new int[(indexes.size() * indexes.get(0).size()) + 1];
-            newIndexes[0] = 1;
-            int index = 1;
-            for (List<Integer> list : indexes) {
-                newIndexes[index++] = list.get(0);
-                newIndexes[index++] = list.get(1);
-            }
-            return newIndexes;
-        }
-
-        private Set<Integer> getSwapDepths(int k, int treeDepth)
-        {
-            Set<Integer> list = new HashSet<>();
-            if (k > 1) {
-                int i = k;
-                while (i <= treeDepth) {
-                    list.add(i);
-                    i *= k;
+            List<Node> currentDepth = new ArrayList<>();
+            List<Node> nextDepth = new ArrayList<>();
+            int depth = 1;
+            Node tmp;
+            currentDepth.add(this.root);
+            while (!currentDepth.isEmpty()) {
+                tmp = currentDepth.get(currentDepth.size() - 1);
+                currentDepth.remove(currentDepth.size() - 1);
+                if (tmp.left != null) nextDepth.add(tmp.left);
+                if (tmp.right != null) nextDepth.add(tmp.right);
+                if (depth % k == 0) {
+                    Node n = tmp.left;
+                    tmp.left = tmp.right;
+                    tmp.right = n;
                 }
-            } else if (k == 1) {
-                for (int i = 1; i <= treeDepth; i++) {
-                    list.add(i);
+                if (currentDepth.isEmpty()) {
+                    List<Node> t = currentDepth;
+                    currentDepth = nextDepth;
+                    nextDepth = t;
+                    depth++;
                 }
             }
-            return list;
+            genInOrderString();
         }
 
-        private int getTreeDepth()
+        public List<Integer> getListFromInOrderString()
         {
-            return getTreeDepthHelper(this.root);
+            return Arrays.stream(inOrderString.split(",")).map(Integer::parseInt).collect(Collectors.toList());
         }
 
-        private void swapHelper(Node node, int depth, Set<Integer> swapDepths)
+        private Node constructBinaryTree(List<List<Integer>> indexes)
         {
-            if (swapDepths.size() > 0) {
-                if (swapDepths.contains(depth)) {
-                    Node tmp = node.left;
-                    node.left = node.right;
-                    node.right = tmp;
-                }
-                if (node.left != null) swapHelper(node.left, depth + 1, swapDepths);
-                if (node.right != null) swapHelper(node.right, depth + 1, swapDepths);
+            Node root = new Node(1);
+            List<Node> q = new LinkedList<>();
+            q.add(root);
+            for (List<Integer> pair : indexes) {
+                Node left, right;
+                left = pair.get(0) != -1 ? new Node(pair.get(0)) : null;
+                right = pair.get(1) != -1 ? new Node(pair.get(1)) : null;
+                Node tmp = q.remove(0);
+                tmp.left = left;
+                tmp.right = right;
+                if (left != null) q.add(left);
+                if (right != null) q.add(right);
             }
+            return root;
         }
 
         private void genInOrderStringHelper(Node root)
         {
-            if (root != null) {
-                genInOrderStringHelper(root.left);
-                this.inOrderString += root.data + ",";
-                genInOrderStringHelper(root.right);
-            }
-        }
-
-        private int getTreeDepthHelper(Node node)
-        {
-            if (node == null) return 0;
-            int lDepth = getTreeDepthHelper(node.left);
-            int rDepth = getTreeDepthHelper(node.right);
-            return lDepth > rDepth ? (lDepth + 1) : (rDepth + 1);
+            if (root == null) return;
+            genInOrderStringHelper(root.left);
+            this.inOrderString += root.data + ",";
+            genInOrderStringHelper(root.right);
         }
 
         private static class Node
