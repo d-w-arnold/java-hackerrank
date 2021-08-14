@@ -1,7 +1,9 @@
 package InterviewPreparationKit.Search.Medium;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author David W. Arnold
@@ -19,9 +21,21 @@ public class TripleSum
      */
     public static long triplets(int[] a, int[] b, int[] c)
     {
-        List<Integer> newA = new ArrayList<>(new HashSet<>(Arrays.stream(a).boxed().collect(Collectors.toList())));
-        List<Integer> newB = new ArrayList<>(new HashSet<>(Arrays.stream(b).boxed().collect(Collectors.toList())));
-        List<Integer> newC = new ArrayList<>(new HashSet<>(Arrays.stream(c).boxed().collect(Collectors.toList())));
+        List<Integer> aList = new ArrayList<>();
+        for (int i : a) {
+            aList.add(i);
+        }
+        List<Integer> bList = new ArrayList<>();
+        for (int i : b) {
+            bList.add(i);
+        }
+        List<Integer> cList = new ArrayList<>();
+        for (int i : c) {
+            cList.add(i);
+        }
+        List<Integer> newA = new ArrayList<>(new HashSet<>(aList));
+        List<Integer> newB = new ArrayList<>(new HashSet<>(bList));
+        List<Integer> newC = new ArrayList<>(new HashSet<>(cList));
         Collections.sort(newA);
         Collections.sort(newB);
         Collections.sort(newC);
