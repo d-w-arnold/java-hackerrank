@@ -1,9 +1,6 @@
 package InterviewPreparationKit.Search.Medium;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author David W. Arnold
@@ -21,35 +18,22 @@ public class TripleSum
      */
     public static long triplets(int[] a, int[] b, int[] c)
     {
-        List<Integer> aList = new ArrayList<>();
-        for (int i : a) {
-            aList.add(i);
-        }
-        List<Integer> bList = new ArrayList<>();
-        for (int i : b) {
-            bList.add(i);
-        }
-        List<Integer> cList = new ArrayList<>();
-        for (int i : c) {
-            cList.add(i);
-        }
-        List<Integer> newA = new ArrayList<>(new HashSet<>(aList));
-        List<Integer> newB = new ArrayList<>(new HashSet<>(bList));
-        List<Integer> newC = new ArrayList<>(new HashSet<>(cList));
-        Collections.sort(newA);
-        Collections.sort(newB);
-        Collections.sort(newC);
-        int ai = 0, bi = 0, ci = 0, ans = 0;
-        while (bi < newB.size()) {
-            while (ai < newA.size() && newA.get(ai) <= newB.get(bi)) {
-                ai += 1;
+        int[] newA = Arrays.stream(a).distinct().sorted().toArray();
+        int[] newB = Arrays.stream(b).distinct().sorted().toArray();
+        int[] newC = Arrays.stream(c).distinct().sorted().toArray();
+        long left = 0, right = 0, sum = 0;
+        int l = 0, r = 0;
+        for (int j : newB) {
+            while (l < newA.length && newA[l] <= j) {
+                left++;
+                l++;
             }
-            while (ci < newC.size() && newC.get(ci) <= newB.get(bi)) {
-                ci += 1;
+            while (r < newC.length && newC[r] <= j) {
+                right++;
+                r++;
             }
-            ans += ai * ci;
-            bi += 1;
+            sum += left * right;
         }
-        return ans;
+        return sum;
     }
 }
