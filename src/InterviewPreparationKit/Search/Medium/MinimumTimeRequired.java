@@ -10,7 +10,6 @@ public class MinimumTimeRequired
 {
     /**
      * Minimum Time Required problem: https://www.hackerrank.com/challenges/minimum-time-required/problem
-     * TODO: Fix failing Test case 6 on Hackerrank
      *
      * @param machines An array of integers representing days to produce one item per machine.
      * @param goal     An integer, the number of items required to complete the order.
@@ -24,26 +23,23 @@ public class MinimumTimeRequired
         }
         List<Long> machinesList = new ArrayList<>(freqMap.keySet());
         Collections.sort(machinesList);
-        long lowerBound = goal / machines.length * machinesList.get(0);
-        long upperBound = goal / machines.length * machinesList.get(machinesList.size() - 1);
-        while (lowerBound < upperBound) {
-            long days = (lowerBound + upperBound) / 2;
-            long total = getNumItems(machinesList, freqMap, days);
-            if (total >= goal) {
-                upperBound = days;
+        long min = 0;
+        long max = (machinesList.get(machinesList.size() - 1)) * goal;
+        long result = -1;
+        while (min < max) {
+            long midVal = (min + max) / 2;
+            long total = 0;
+            for (long l : machinesList) {
+                total += (midVal / l) * freqMap.get(l);
+            }
+            if (total < goal) {
+                min = midVal + 1;
+                result = midVal + 1;
             } else {
-                lowerBound = days + 1;
+                max = midVal;
+                result = midVal;
             }
         }
-        return lowerBound;
-    }
-
-    private static long getNumItems(List<Long> machines, Map<Long, Long> freqMap, long days)
-    {
-        long total = 0;
-        for (long l : machines) {
-            total += (days / l) * freqMap.get(l);
-        }
-        return total;
+        return result;
     }
 }
