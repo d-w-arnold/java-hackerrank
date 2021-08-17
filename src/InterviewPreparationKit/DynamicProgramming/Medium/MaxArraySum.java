@@ -14,6 +14,17 @@ public class MaxArraySum
      */
     public static int maxSubsetSum(int[] arr)
     {
-        return -2;
+        boolean allNeg = arr[0] < 0;
+        int incl = arr[0];
+        int excl = 0;
+        int tmp;
+        for (int i = 1; i < arr.length; i++) {
+            int current = arr[i];
+            if (current > 0) allNeg = false;
+            tmp = excl + current;
+            excl = Math.max(incl, excl);
+            incl = tmp;
+        }
+        return allNeg ? 0 : Math.max(incl, excl);
     }
 }

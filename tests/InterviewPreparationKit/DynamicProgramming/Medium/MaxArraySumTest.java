@@ -46,4 +46,16 @@ class MaxArraySumTest
     {
         assertEquals(15, MaxArraySum.maxSubsetSum(new int[]{3, 5, -7, 8, 10}));
     }
+
+    @Test
+    void maxSubsetSum_5()
+    {
+        assertEquals(80, MaxArraySum.maxSubsetSum(new int[]{5, 5, 10, 40, 50, 35}));
+    }
+
+    @Test
+    void maxSubsetSum_6()
+    {
+        assertEquals(0, MaxArraySum.maxSubsetSum(new int[]{-2, -3, -1}));
+    }
 }
