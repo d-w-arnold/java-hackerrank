@@ -1,5 +1,7 @@
 package InterviewPreparationKit.Search.Medium;
 
+import java.util.*;
+
 /**
  * @author David W. Arnold
  * @version 17/08/2021
@@ -15,6 +17,24 @@ public class MinimumTimeRequired
      */
     public static long minTime(long[] machines, long goal)
     {
-        return -2;
+        Map<Long, Long> map = new HashMap<>();
+        for (long l : machines) {
+            map.put(l, map.containsKey(l) ? map.get(l) + 1 : 1);
+        }
+        List<Long> list = new ArrayList<>(map.keySet());
+        Collections.sort(list);
+        int total = 0;
+        int day = 0;
+        while (total < goal) {
+            day++;
+            for (long l : list) {
+                if (day % l == 0) {
+                    total += map.get(l);
+                } else if (l > day) {
+                    break;
+                }
+            }
+        }
+        return day;
     }
 }
