@@ -40,4 +40,16 @@ class AbbreviationTest
     {
         assertEquals("YES", Abbreviation.abbreviation("daBcd", "ABC"));
     }
+
+    @Test
+    void abbreviation_4()
+    {
+        assertEquals("NO", Abbreviation.abbreviation("KXzQ", "K"));
+    }
+
+    @Test
+    void abbreviation_5()
+    {
+        assertEquals("NO", Abbreviation.abbreviation("beFgH", "EFG"));
+    }
 }
