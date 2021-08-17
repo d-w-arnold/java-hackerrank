@@ -10,6 +10,7 @@ public class MinimumTimeRequired
 {
     /**
      * Minimum Time Required problem: https://www.hackerrank.com/challenges/minimum-time-required/problem
+     * TODO: Fix failing Test case 6 on Hackerrank
      *
      * @param machines An array of integers representing days to produce one item per machine.
      * @param goal     An integer, the number of items required to complete the order.
@@ -17,24 +18,32 @@ public class MinimumTimeRequired
      */
     public static long minTime(long[] machines, long goal)
     {
-        Map<Long, Long> map = new HashMap<>();
+        Map<Long, Long> freqMap = new HashMap<>();
         for (long l : machines) {
-            map.put(l, map.containsKey(l) ? map.get(l) + 1 : 1);
+            freqMap.put(l, freqMap.containsKey(l) ? freqMap.get(l) + 1 : 1);
         }
-        List<Long> list = new ArrayList<>(map.keySet());
-        Collections.sort(list);
-        int total = 0;
-        int day = 0;
-        while (total < goal) {
-            day++;
-            for (long l : list) {
-                if (day % l == 0) {
-                    total += map.get(l);
-                } else if (l > day) {
-                    break;
-                }
+        List<Long> machinesList = new ArrayList<>(freqMap.keySet());
+        Collections.sort(machinesList);
+        long lowerBound = goal / machines.length * machinesList.get(0);
+        long upperBound = goal / machines.length * machinesList.get(machinesList.size() - 1);
+        while (lowerBound < upperBound) {
+            long days = (lowerBound + upperBound) / 2;
+            long total = getNumItems(machinesList, freqMap, days);
+            if (total >= goal) {
+                upperBound = days;
+            } else {
+                lowerBound = days + 1;
             }
         }
-        return day;
+        return lowerBound;
+    }
+
+    private static long getNumItems(List<Long> machines, Map<Long, Long> freqMap, long days)
+    {
+        long total = 0;
+        for (long l : machines) {
+            total += (days / l) * freqMap.get(l);
+        }
+        return total;
     }
 }
