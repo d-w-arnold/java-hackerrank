@@ -1,10 +1,5 @@
 package InterviewPreparationKit.DynamicProgramming.Medium;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author David W. Arnold
  * @version 17/08/2021
@@ -20,31 +15,24 @@ public class Abbreviation
      */
     public static String abbreviation(String a, String b)
     {
-        Map<Character, Integer> freqMap = new HashMap<>();
-        List<Character> capChars = new ArrayList<>();
-        for (char c : a.toCharArray()) {
-            if (Character.isLowerCase(c)) {
-                char capC = Character.toUpperCase(c);
-                freqMap.put(capC, freqMap.containsKey(capC) ? freqMap.get(capC) + 1 : 1);
-            } else {
-                capChars.add(c);
-            }
-            freqMap.put(c, freqMap.containsKey(c) ? freqMap.get(c) + 1 : 1);
+        boolean[][] isValid = new boolean[a.length() + 1][b.length() + 1];
+        isValid[0][0] = true;
+        for (int i = 1; i <= a.length(); i++) {
+            isValid[i][0] = !Character.isUpperCase(a.charAt(i - 1));
         }
-        for (char c : b.toCharArray()) {
-            if (freqMap.containsKey(c)) {
-                if (freqMap.get(c) > 1) {
-                    freqMap.put(c, freqMap.get(c) - 1);
+        for (int i = 1; i <= a.length(); i++) {
+            for (int j = 1; j <= b.length(); j++) {
+                if (a.charAt(i - 1) == b.charAt(j - 1)) {
+                    isValid[i][j] = isValid[i - 1][j - 1];
+                } else if (Character.toUpperCase(a.charAt(i - 1)) == b.charAt(j - 1)) {
+                    isValid[i][j] = isValid[i - 1][j - 1] || isValid[i - 1][j];
+                } else if (Character.isUpperCase(a.charAt(i - 1))) {
+                    isValid[i][j] = false;
                 } else {
-                    freqMap.remove(c);
+                    isValid[i][j] = isValid[i - 1][j];
                 }
-            } else {
-                return "NO";
             }
         }
-        for (char c : capChars) {
-            if (freqMap.containsKey(c)) return "NO";
-        }
-        return "YES";
+        return isValid[a.length()][b.length()] ? "YES" : "NO";
     }
 }
