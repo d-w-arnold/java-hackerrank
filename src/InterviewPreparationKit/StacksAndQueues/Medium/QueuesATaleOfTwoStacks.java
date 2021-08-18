@@ -8,16 +8,18 @@ import java.util.ArrayList;
  */
 public class QueuesATaleOfTwoStacks<T>
 {
-    private ArrayList<T> leftStack;
-    private ArrayList<T> rightStack;
+    private final ArrayList<T> LEFT_STACK;
+    private final ArrayList<T> RIGHT_STACK;
+    private int lastMethodType;
 
     /**
      * Queues: A Tale of Two Stacks problem: https://www.hackerrank.com/challenges/ctci-queue-using-two-stacks/problem
      */
     public QueuesATaleOfTwoStacks()
     {
-        this.leftStack = new ArrayList<>();
-        this.rightStack = new ArrayList<>();
+        this.LEFT_STACK = new ArrayList<>();
+        this.RIGHT_STACK = new ArrayList<>();
+        this.lastMethodType = -1;
     }
 
     /**
@@ -27,7 +29,9 @@ public class QueuesATaleOfTwoStacks<T>
      */
     public void enqueue(T item)
     {
-
+        if (lastMethodType == 2 || lastMethodType == 3) unShuffleStacks();
+        LEFT_STACK.add(item);
+        lastMethodType = 1;
     }
 
     /**
@@ -35,7 +39,9 @@ public class QueuesATaleOfTwoStacks<T>
      */
     public void dequeue()
     {
-
+        if (lastMethodType == 1) shuffleStacks();
+        RIGHT_STACK.remove(RIGHT_STACK.size() - 1);
+        lastMethodType = 2;
     }
 
     /**
@@ -43,7 +49,32 @@ public class QueuesATaleOfTwoStacks<T>
      */
     public T peek()
     {
-        T item = null;
-        return null;
+        if (lastMethodType == 1) shuffleStacks();
+        lastMethodType = 3;
+        return RIGHT_STACK.get(RIGHT_STACK.size() - 1);
+    }
+
+    /**
+     * Reverses order: LEFT_STACK -> RIGHT_STACK.
+     * Sets up for either a dequeue() or peek() method.
+     */
+    private void shuffleStacks()
+    {
+        for (int i = LEFT_STACK.size() - 1; i >= 0; i--) {
+            T item = LEFT_STACK.remove(i);
+            RIGHT_STACK.add(item);
+        }
+    }
+
+    /**
+     * Reverses order: LEFT_STACK <- RIGHT_STACK.
+     * Sets up for an enqueue() method.
+     */
+    private void unShuffleStacks()
+    {
+        for (int i = RIGHT_STACK.size() - 1; i >= 0; i--) {
+            T item = RIGHT_STACK.remove(i);
+            LEFT_STACK.add(item);
+        }
     }
 }
