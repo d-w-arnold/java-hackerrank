@@ -1,10 +1,5 @@
 package InterviewPreparationKit.StacksAndQueues.Medium;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author David W. Arnold
  * @version 18/08/2021
@@ -19,19 +14,13 @@ public class BalancedBrackets
      */
     public static String isBalanced(String s)
     {
-        Map<Character, Character> mappings = new HashMap<>();
-        mappings.put('(', ')');
-        mappings.put('{', '}');
-        mappings.put('[', ']');
-        List<Character> stack = new ArrayList<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '{' || c == '[') {
-                stack.add(c);
-            } else if (c == ')' || c == '}' || c == ']') {
-                if (stack.isEmpty() || mappings.get(stack.get(stack.size() - 1)) != c) return "NO";
-                stack.remove(stack.size() - 1);
-            }
+        int n = -1;
+        while (s.length() != n) {
+            n = s.length();
+            s = s.replace("()", "");
+            s = s.replace("[]", "");
+            s = s.replace("{}", "");
         }
-        return "YES";
+        return s.length() == 0 ? "YES" : "NO";
     }
 }
