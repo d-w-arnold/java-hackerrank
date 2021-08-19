@@ -16,6 +16,22 @@ public class LargestRectangle
      */
     public static long largestRectangle(List<Integer> h)
     {
-        return -2;
+        int k;
+        int largestRect = -1;
+        int height;
+        for (int i = 0; i < h.size(); i++) {
+            k = 1;
+            height = h.get(i);
+            for (int j = i - 1; j >= 0; j--) {
+                if (h.get(j) < height) break;
+                k++;
+            }
+            for (int j = i + 1; j < h.size(); j++) {
+                if (h.get(j) < height) break;
+                k++;
+            }
+            largestRect = Math.max(largestRect, height * k);
+        }
+        return largestRect;
     }
 }
