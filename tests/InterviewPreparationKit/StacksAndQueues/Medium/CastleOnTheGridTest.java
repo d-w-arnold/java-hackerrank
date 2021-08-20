@@ -29,7 +29,11 @@ class CastleOnTheGridTest
     void minimumMoves_1()
     {
         assertEquals(2, CastleOnTheGrid.minimumMoves(
-                Arrays.asList("...", ".X.", "..."),
+                Arrays.asList(
+                        "...",
+                        ".X.",
+                        "..."
+                ),
                 0, 0, 1, 2
         ));
     }
@@ -38,8 +42,32 @@ class CastleOnTheGridTest
     void minimumMoves_2()
     {
         assertEquals(3, CastleOnTheGrid.minimumMoves(
-                Arrays.asList(".X.", ".X.", "..."),
+                Arrays.asList(
+                        ".X.",
+                        ".X.",
+                        "..."
+                ),
                 0, 0, 0, 2
+        ));
+    }
+
+    @Test
+    void minimumMoves_3()
+    {
+        assertEquals(3, CastleOnTheGrid.minimumMoves(
+                Arrays.asList(
+                        ".X..XX...X",
+                        "X.........",
+                        ".X.......X",
+                        "..........",
+                        "........X.",
+                        ".X...XXX..",
+                        ".....X..XX",
+                        ".....X.X..",
+                        "..........",
+                        ".....X..XX"
+                ),
+                9, 1, 9, 6
         ));
     }
 }

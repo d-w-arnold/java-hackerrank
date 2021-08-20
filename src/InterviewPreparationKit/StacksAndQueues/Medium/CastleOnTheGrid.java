@@ -1,6 +1,7 @@
 package InterviewPreparationKit.StacksAndQueues.Medium;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,70 +22,75 @@ public class CastleOnTheGrid
      */
     public static int minimumMoves(List<String> grid, int startX, int startY, int goalX, int goalY)
     {
-        if (grid.get(startX).charAt(startY) == 'X') return -1;
         int minimumMoves = -1;
-        List<Integer[]> queue = getPossibleMoves(grid, new Integer[]{0, (int) 'S', startX, startY}, goalX, goalY);
+        char s = 'S';
+        char f = 'F';
+        char bc = 'X';
+        if (grid.get(startX).charAt(startY) == bc || grid.get(goalX).charAt(goalY) == bc) return -1;
+        List<Integer[]> queue = getPossibleMoves(grid, new Integer[]{0, (int) s, startX, startY}, goalX, goalY, bc, f);
         while (!queue.isEmpty()) {
             Integer[] entry = queue.remove(0);
-            if (entry[1] == (int) 'F') { // 'F' denotes finished (currentX == goalX) and (currentY == goalY).
+            if (entry[1] == (int) f)
                 minimumMoves = minimumMoves != -1 ? Math.min(entry[0], minimumMoves) : entry[0];
-            } else {
-                queue.addAll(getPossibleMoves(grid, entry, goalX, goalY));
-            }
+            else queue.addAll(getPossibleMoves(grid, entry, goalX, goalY, bc, f));
         }
         return minimumMoves;
     }
 
-    private static List<Integer[]> getPossibleMoves(List<String> grid, Integer[] queueEntry, int goalX, int goalY)
+    private static List<Integer[]> getPossibleMoves(List<String> grid, Integer[] queueEntry, int goalX, int goalY, char blockedCell, char finished)
     {
-        int pastMoves = queueEntry[0]; // How many moves previously made by this queueEntry.
+        char l = 'L'; // Left move
+        char r = 'R'; // Right move
+        char u = 'U'; // Up move
+        char d = 'D'; // Down move
         int pastMove = queueEntry[1]; // The char value of the last move made Up/Down/Left/Right.
-        int currentX = queueEntry[2];
-        int currentY = queueEntry[3];
+        int currX = queueEntry[2];
+        int currY = queueEntry[3];
         List<Integer[]> possibleMoves = new ArrayList<>();
-        if (pastMove == (int) 'S' || pastMove == (int) 'U' || pastMove == (int) 'D') { // Start/Up/Down
-            if (currentY - 1 >= 0 && grid.get(currentX).charAt(currentY - 1) != 'X')
-                possibleMoves.add(simulateMove(grid, pastMoves, 'L', currentX, currentY - 1, goalX, goalY));
-            if (currentY + 1 < grid.get(currentX).length() && grid.get(currentX).charAt(currentY + 1) != 'X')
-                possibleMoves.add(simulateMove(grid, pastMoves, 'R', currentX, currentY + 1, goalX, goalY));
+        if (pastMove != (int) r && currY - 1 >= 0
+                && isNotBlockedCell(grid, l, currX, currY, blockedCell, l, r, u, d)) {
+            Integer[] tmpQueueEntry = Arrays.copyOf(queueEntry, queueEntry.length);
+            tmpQueueEntry[3] -= 1;
+            possibleMoves.add(simulateMove(l, tmpQueueEntry, goalX, goalY, finished));
         }
-        if (pastMove == (int) 'S' || pastMove == (int) 'L' || pastMove == (int) 'R') { // Start/Left/Right
-            if (currentX - 1 >= 0 && grid.get(currentX - 1).charAt(currentY) != 'X')
-                possibleMoves.add(simulateMove(grid, pastMoves, 'U', currentX - 1, currentY, goalX, goalY));
-            if (currentX + 1 < grid.size() && grid.get(currentX + 1).charAt(currentY) != 'X')
-                possibleMoves.add(simulateMove(grid, pastMoves, 'D', currentX + 1, currentY, goalX, goalY));
+        if (pastMove != (int) l && currY + 1 < grid.get(currX).length()
+                && isNotBlockedCell(grid, r, currX, currY, blockedCell, l, r, u, d)) {
+            Integer[] tmpQueueEntry = Arrays.copyOf(queueEntry, queueEntry.length);
+            tmpQueueEntry[3] += 1;
+            possibleMoves.add(simulateMove(r, tmpQueueEntry, goalX, goalY, finished));
+        }
+        if (pastMove != (int) d && currX - 1 >= 0
+                && isNotBlockedCell(grid, u, currX, currY, blockedCell, l, r, u, d)) {
+            Integer[] tmpQueueEntry = Arrays.copyOf(queueEntry, queueEntry.length);
+            tmpQueueEntry[2] -= 1;
+            possibleMoves.add(simulateMove(u, tmpQueueEntry, goalX, goalY, finished));
+        }
+        if (pastMove != (int) u && currX + 1 < grid.size()
+                && isNotBlockedCell(grid, d, currX, currY, blockedCell, l, r, u, d)) {
+            Integer[] tmpQueueEntry = Arrays.copyOf(queueEntry, queueEntry.length);
+            tmpQueueEntry[2] += 1;
+            possibleMoves.add(simulateMove(d, tmpQueueEntry, goalX, goalY, finished));
         }
         return possibleMoves;
     }
 
-    private static Integer[] simulateMove(List<String> grid, int pastMoves, char direction, int currentX, int currentY, int goalX, int goalY)
+    private static boolean isNotBlockedCell(List<String> grid, char direction, int currX, int currY, char blockedCell, char l, char r, char u, char d)
     {
-        int i;
-        if (direction == 'R') {
-            for (i = currentY; i < grid.get(currentX).length(); i++) {
-                if (currentX == goalX && i == goalY) return new Integer[]{pastMoves + 1, (int) 'F', currentX, i};
-                if (grid.get(currentX).charAt(i) == 'X') break;
-            }
-            return new Integer[]{pastMoves + 1, (int) direction, currentX, i - 1};
-        } else if (direction == 'D') {
-            for (i = currentX; i < grid.size(); i++) {
-                if (i == goalX && currentY == goalY) return new Integer[]{pastMoves + 1, (int) 'F', i, currentY};
-                if (grid.get(i).charAt(currentY) == 'X') break;
-            }
-            return new Integer[]{pastMoves + 1, (int) direction, i - 1, currentY};
-        } else if (direction == 'L') {
-            for (i = currentY; i >= 0; i--) {
-                if (currentX == goalX && i == goalY) return new Integer[]{pastMoves + 1, (int) 'F', currentX, i};
-                if (grid.get(currentX).charAt(i) == 'X') break;
-            }
-            return new Integer[]{pastMoves + 1, (int) direction, currentX, i + 1};
-        } else if (direction == 'U') {
-            for (i = currentX; i >= 0; i--) {
-                if (i == goalX && currentY == goalY) return new Integer[]{pastMoves + 1, (int) 'F', i, currentY};
-                if (grid.get(i).charAt(currentY) == 'X') break;
-            }
-            return new Integer[]{pastMoves + 1, (int) direction, i + 1, currentY};
-        }
-        return null;
+        if (direction == l) return grid.get(currX).charAt(currY - 1) != blockedCell;
+        else if (direction == r) return grid.get(currX).charAt(currY + 1) != blockedCell;
+        else if (direction == u) return grid.get(currX - 1).charAt(currY) != blockedCell;
+        else if (direction == d) return grid.get(currX + 1).charAt(currY) != blockedCell;
+        else return false;
+    }
+
+    private static Integer[] simulateMove(char direction, Integer[] queueEntry, int goalX, int goalY, char f)
+    {
+        int currX = queueEntry[2];
+        int currY = queueEntry[3];
+        int newPastMoves = queueEntry[0];
+        int newDirection = direction;
+        if (queueEntry[1] != (int) direction) newPastMoves++;
+        if (currX == goalX && currY == goalY) newDirection = 'F';
+        return new Integer[]{newPastMoves, newDirection, currX, currY};
     }
 }
