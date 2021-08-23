@@ -70,4 +70,44 @@ class CastleOnTheGridTest
                 9, 1, 9, 6
         ));
     }
+
+    @Test
+    void minimumMoves_4()
+    {
+        assertEquals(1, CastleOnTheGrid.minimumMoves(
+                Arrays.asList(
+                        ".X..XX...X",
+                        "X.........",
+                        ".X.......X",
+                        "..........",
+                        "........X.",
+                        ".X...XXX..",
+                        ".....X..XX",
+                        ".....X.X..",
+                        "..........",
+                        ".....X..XX"
+                ),
+                8, 6, 9, 6
+        ));
+    }
+
+    @Test
+    void minimumMoves_5()
+    {
+        assertEquals(2, CastleOnTheGrid.minimumMoves(
+                Arrays.asList(
+                        ".X..XX...X",
+                        "X.........",
+                        ".X.......X",
+                        "..........",
+                        "........X.",
+                        ".X...XXX..",
+                        ".....X..XX",
+                        ".....X.X..",
+                        "..........",
+                        ".....X..XX"
+                ),
+                8, 1, 9, 6
+        ));
+    }
 }
