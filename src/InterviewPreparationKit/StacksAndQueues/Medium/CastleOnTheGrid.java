@@ -22,128 +22,141 @@ public class CastleOnTheGrid
     {
         int minimumMoves = -1;
         if (grid.get(startX).charAt(startY) == 'X' || grid.get(goalX).charAt(goalY) == 'X') return minimumMoves;
-        final Map<Character, Character> oppMoves = new HashMap<>();
-        oppMoves.put('L', 'R');
-        oppMoves.put('R', 'L');
-        oppMoves.put('U', 'D');
-        oppMoves.put('D', 'U');
-        final Set<String> blockedCells = getBlockedCells(grid);
-        List<Integer[]> queue = simulateMoves(grid, oppMoves, blockedCells, new Integer[]{0, (int) 'F', goalX, goalY}, startX, startY);
+        char[][] gridArray = getGridArray(grid);
+        final Map<Dir, Dir> oppMoves = new HashMap<>();
+        oppMoves.put(Dir.L, Dir.R);
+        oppMoves.put(Dir.R, Dir.L);
+        oppMoves.put(Dir.U, Dir.D);
+        oppMoves.put(Dir.D, Dir.U);
+        // Set<GridXY> visited = new HashSet<>(); TODO: Add tracking of visited squares, and skip head of queue if numMoves is >= already visited numMoves.
+        List<GridXY> queue = simulateMoves(gridArray, oppMoves, new GridXY(startX, startY), goalX, goalY);
         while (!queue.isEmpty()) {
-            Integer[] entry = queue.remove(0);
-            if (minimumMoves == -1 || entry[0] < minimumMoves) {
-                if (startX == entry[2] && startY == entry[3]) {
-                    minimumMoves = entry[0];
-                } else queue.addAll(simulateMoves(grid, oppMoves, blockedCells, entry, goalX, goalY));
-            }
+            GridXY qi = queue.remove(0);
+            if (minimumMoves == -1 || qi.numMoves < minimumMoves)
+                if (goalX == qi.x && goalY == qi.y) minimumMoves = qi.numMoves;
+                else queue.addAll(simulateMoves(gridArray, oppMoves, qi, goalX, goalY));
         }
         return minimumMoves;
     }
 
-    private static Set<String> getBlockedCells(List<String> grid)
+    private static char[][] getGridArray(List<String> grid)
     {
-        Set<String> blockedCells = new HashSet<>();
+        char[][] array = new char[grid.size()][grid.get(0).length()];
         for (int i = 0; i < grid.size(); i++) {
             String row = grid.get(i);
             for (int j = 0; j < row.length(); j++) {
-                if (row.charAt(j) == 'X') blockedCells.add(i + "-" + j);
+                array[i][j] = row.charAt(j);
             }
         }
-        return blockedCells;
+        return array;
     }
 
-    private static List<Integer[]> simulateMoves(List<String> grid, Map<Character, Character> oppMoves, Set<String> blockedCells, Integer[] queueEntry, int startX, int startY)
+    private static List<GridXY> simulateMoves(char[][] grid, Map<Dir, Dir> oppMoves, GridXY qi, int goalX, int goalY)
     {
-        List<Integer[]> possibleMoves = new ArrayList<>();
-        int currX = queueEntry[2];
-        int currY = queueEntry[3];
-        List<Character> movesOrder = new ArrayList<>();
-        for (char c : getMovesOrder(grid, oppMoves, currX, currY, startX - currX, startY - currY)) {
-            if (validMove(grid, oppMoves, blockedCells, c, queueEntry[1], currX, currY)) movesOrder.add(c);
+        List<GridXY> possibleMoves = new ArrayList<>();
+        List<Dir> movesOrder = new ArrayList<>();
+        for (Dir d : getMovesOrder(grid, oppMoves, qi, goalX - qi.x, goalY - qi.y)) {
+            if (validMove(grid, oppMoves, d, qi)) movesOrder.add(d);
         }
-        Integer[] tmpQueueEntry;
-        for (char c : movesOrder) {
-            tmpQueueEntry = Arrays.copyOf(queueEntry, queueEntry.length);
-            if (c == 'L') {
-                tmpQueueEntry[3] -= 1;
-                possibleMoves.add(simulateMove('L', tmpQueueEntry));
-            } else if (c == 'R') {
-                tmpQueueEntry[3] += 1;
-                possibleMoves.add(simulateMove('R', tmpQueueEntry));
-            } else if (c == 'U') {
-                tmpQueueEntry[2] -= 1;
-                possibleMoves.add(simulateMove('U', tmpQueueEntry));
-            } else if (c == 'D') {
-                tmpQueueEntry[2] += 1;
-                possibleMoves.add(simulateMove('D', tmpQueueEntry));
-            }
+        for (Dir d : movesOrder) {
+            if (d == Dir.L)
+                possibleMoves.add(new GridXY(qi.lastMove == Dir.L ? qi.numMoves : qi.numMoves + 1, Dir.L, qi.x, qi.y - 1));
+            else if (d == Dir.R)
+                possibleMoves.add(new GridXY(qi.lastMove == Dir.R ? qi.numMoves : qi.numMoves + 1, Dir.R, qi.x, qi.y + 1));
+            else if (d == Dir.U)
+                possibleMoves.add(new GridXY(qi.lastMove == Dir.U ? qi.numMoves : qi.numMoves + 1, Dir.U, qi.x - 1, qi.y));
+            else if (d == Dir.D)
+                possibleMoves.add(new GridXY(qi.lastMove == Dir.D ? qi.numMoves : qi.numMoves + 1, Dir.D, qi.x + 1, qi.y));
         }
         return possibleMoves;
     }
 
-    private static List<Character> getMovesOrder(List<String> grid, Map<Character, Character> oppMoves, int currX, int currY, int diffX, int diffY)
+    private static List<Dir> getMovesOrder(char[][] grid, Map<Dir, Dir> oppMoves, GridXY qi, int diffX, int diffY)
     {
-        List<Character> moves = new ArrayList<>();
+        List<Dir> moves = new ArrayList<>();
         if (diffX != 0 && diffY != 0) {
             if (diffX < 0 && diffY < 0) {
-                moves.add('U');
-                moves.add('L');
-            } else if (diffX < 0 && diffY > 0) {
-                moves.add('U');
-                moves.add('R');
-            } else if (diffX > 0 && diffY < 0) {
-                moves.add('D');
-                moves.add('L');
-            } else if (diffX > 0 && diffY > 0) {
-                moves.add('D');
-                moves.add('R');
+                moves.add(Dir.U);
+                moves.add(Dir.L);
+            } else if (diffX < 0) {
+                moves.add(Dir.U);
+                moves.add(Dir.R);
+            } else if (diffY < 0) {
+                moves.add(Dir.D);
+                moves.add(Dir.L);
+            } else {
+                moves.add(Dir.D);
+                moves.add(Dir.R);
             }
             if (Math.abs(diffX) < Math.abs(diffY)) Collections.reverse(moves);
             for (int i = new ArrayList<>(moves).size() - 1; i >= 0; i--) {
                 moves.add(oppMoves.get(moves.get(i)));
             }
         } else if (diffX != 0) {
-            moves.add(diffX < 0 ? 'U' : 'D');
-            moves.add(currY > ((grid.get(0).length() - 1) / 2) ? 'L' : 'R');
-            moves.add(currY > ((grid.get(0).length() - 1) / 2) ? 'R' : 'L');
-            moves.add(diffX < 0 ? 'D' : 'U');
+            moves.add(diffX < 0 ? Dir.U : Dir.D);
+            moves.add(qi.y > ((grid[0].length - 1) / 2) ? Dir.L : Dir.R);
+            moves.add(qi.y > ((grid[0].length - 1) / 2) ? Dir.R : Dir.L);
+            moves.add(diffX < 0 ? Dir.D : Dir.U);
         } else if (diffY != 0) {
-            moves.add(diffY < 0 ? 'L' : 'R');
-            moves.add(currX > ((grid.size() - 1) / 2) ? 'U' : 'D');
-            moves.add(currX > ((grid.size() - 1) / 2) ? 'D' : 'U');
-            moves.add(diffY < 0 ? 'R' : 'L');
+            moves.add(diffY < 0 ? Dir.L : Dir.R);
+            moves.add(qi.x > ((grid.length - 1) / 2) ? Dir.U : Dir.D);
+            moves.add(qi.x > ((grid.length - 1) / 2) ? Dir.D : Dir.U);
+            moves.add(diffY < 0 ? Dir.R : Dir.L);
         }
         return moves;
     }
 
-    private static boolean validMove(List<String> grid, Map<Character, Character> oppMoves, Set<String> blockedCells, char direction, int pastMove, int currX, int currY)
+    private static boolean validMove(char[][] grid, Map<Dir, Dir> oppMoves, Dir direction, GridXY qi)
     {
-        return pastMove != oppMoves.get(direction) && isInbounds(grid, direction, currX, currY) &&
-                !blockedCells.contains(getAdj(direction, currX, currY));
+        // TODO: Add check to see if a cell is visited
+        if (qi.lastMove == oppMoves.get(direction)) return false;
+        if (direction == Dir.L) return qi.y - 1 >= 0 && grid[qi.x][qi.y - 1] != 'X';
+        else if (direction == Dir.R) return qi.y + 1 < grid[qi.x].length && grid[qi.x][qi.y + 1] != 'X';
+        else if (direction == Dir.U) return qi.x - 1 >= 0 && grid[qi.x - 1][qi.y] != 'X';
+        else if (direction == Dir.D) return qi.x + 1 < grid.length && grid[qi.x + 1][qi.y] != 'X';
+        else return false;
     }
 
-    private static boolean isInbounds(List<String> grid, char direction, int currX, int currY)
+    private enum Dir
     {
-        if (direction == 'L') return currY - 1 >= 0;
-        else if (direction == 'R') return currY + 1 < grid.get(currX).length();
-        else if (direction == 'U') return currX - 1 >= 0;
-        else if (direction == 'D') return currX + 1 < grid.size();
-        return false;
+        L, R, U, D
     }
 
-    private static String getAdj(char direction, int currX, int currY)
+    private static class GridXY
     {
-        if (direction == 'L') return currX + "-" + (currY - 1);
-        else if (direction == 'R') return currX + "-" + (currY + 1);
-        else if (direction == 'U') return (currX - 1) + "-" + currY;
-        else if (direction == 'D') return (currX + 1) + "-" + currY;
-        return null;
-    }
+        int numMoves;
+        Dir lastMove;
+        int x, y;
 
-    private static Integer[] simulateMove(char direction, Integer[] queueEntry)
-    {
-        int newPastMoves = queueEntry[0];
-        if (queueEntry[1] != (int) direction) newPastMoves++;
-        return new Integer[]{newPastMoves, (int) direction, queueEntry[2], queueEntry[3]};
+        public GridXY(int x, int y)
+        {
+            this.numMoves = 0;
+            this.lastMove = null;
+            this.x = x;
+            this.y = y;
+        }
+
+        public GridXY(int hops, Dir dir, int x, int y)
+        {
+            this.numMoves = hops;
+            this.lastMove = dir;
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            GridXY gridXy = (GridXY) o;
+            return x == gridXy.x && y == gridXy.y;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return 31 * x + y;
+        }
     }
 }
