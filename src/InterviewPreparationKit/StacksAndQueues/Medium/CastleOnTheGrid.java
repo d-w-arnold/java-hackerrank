@@ -21,23 +21,37 @@ public class CastleOnTheGrid
     public static int minimumMoves(List<String> grid, int startX, int startY, int goalX, int goalY)
     {
         int minimumMoves = -1;
-        if (grid.get(startX).charAt(startY) == 'X' || grid.get(goalX).charAt(goalY) == 'X') return minimumMoves;
+        char bc = 'X';
+        if (grid.get(startX).charAt(startY) == bc || grid.get(goalX).charAt(goalY) == bc) return minimumMoves;
         char[][] gridArray = getGridArray(grid);
+        Set<GridXY> blockedCells = getBlockedCells(gridArray, bc);
+        if (blockedCells.isEmpty()) return (startX != goalX ? 1 : 0) + (startY != goalY ? 1 : 0);
         final Map<Dir, Dir> oppMoves = new HashMap<>();
         oppMoves.put(Dir.L, Dir.R);
         oppMoves.put(Dir.R, Dir.L);
         oppMoves.put(Dir.U, Dir.D);
         oppMoves.put(Dir.D, Dir.U);
-        // TODO: Add check for number of blocked cells, if size == 0, return 2.
         Map<GridXY, GridXY> visited = new HashMap<>();
-        List<GridXY> queue = simulateMoves(gridArray, oppMoves, visited, new GridXY(startX, startY), goalX, goalY);
+        List<GridXY> queue = simulateMoves(gridArray, blockedCells, oppMoves, visited, new GridXY(startX, startY), goalX, goalY);
         while (!queue.isEmpty()) {
             GridXY qi = queue.remove(0);
             if (minimumMoves == -1 || qi.numMoves < minimumMoves)
                 if (goalX == qi.x && goalY == qi.y) minimumMoves = qi.numMoves;
-                else queue.addAll(simulateMoves(gridArray, oppMoves, visited, qi, goalX, goalY));
+                else queue.addAll(simulateMoves(gridArray, blockedCells, oppMoves, visited, qi, goalX, goalY));
         }
         return minimumMoves;
+    }
+
+    private static Set<GridXY> getBlockedCells(char[][] grid, char bc)
+    {
+        Set<GridXY> set = new HashSet<>();
+        for (int i = 0; i < grid.length; i++) {
+            char[] row = grid[i];
+            for (int j = 0; j < row.length; j++) {
+                if (row[j] == bc) set.add(new GridXY(i, j));
+            }
+        }
+        return set;
     }
 
     private static char[][] getGridArray(List<String> grid)
@@ -52,12 +66,12 @@ public class CastleOnTheGrid
         return array;
     }
 
-    private static List<GridXY> simulateMoves(char[][] grid, Map<Dir, Dir> oppMoves, Map<GridXY, GridXY> visited, GridXY qi, int goalX, int goalY)
+    private static List<GridXY> simulateMoves(char[][] grid, Set<GridXY> blockedCells, Map<Dir, Dir> oppMoves, Map<GridXY, GridXY> visited, GridXY qi, int goalX, int goalY)
     {
         List<GridXY> possibleMoves = new ArrayList<>();
         List<Dir> movesOrder = new ArrayList<>();
         for (Dir d : getMovesOrder(grid, oppMoves, qi, goalX - qi.x, goalY - qi.y)) {
-            if (validMove(grid, oppMoves, d, qi)) movesOrder.add(d);
+            if (validMove(grid, blockedCells, oppMoves, d, qi)) movesOrder.add(d);
         }
         for (Dir d : movesOrder) {
             if (d == Dir.L)
@@ -113,13 +127,17 @@ public class CastleOnTheGrid
         return moves;
     }
 
-    private static boolean validMove(char[][] grid, Map<Dir, Dir> oppMoves, Dir direction, GridXY qi)
+    private static boolean validMove(char[][] grid, Set<GridXY> blockedCells, Map<Dir, Dir> oppMoves, Dir direction, GridXY qi)
     {
         if (qi.lastMove == oppMoves.get(direction)) return false;
-        if (direction == Dir.L) return qi.y - 1 >= 0 && grid[qi.x][qi.y - 1] != 'X';
-        else if (direction == Dir.R) return qi.y + 1 < grid[qi.x].length && grid[qi.x][qi.y + 1] != 'X';
-        else if (direction == Dir.U) return qi.x - 1 >= 0 && grid[qi.x - 1][qi.y] != 'X';
-        else if (direction == Dir.D) return qi.x + 1 < grid.length && grid[qi.x + 1][qi.y] != 'X';
+        if (direction == Dir.L)
+            return qi.y - 1 >= 0 && !blockedCells.contains(new GridXY(qi.x, qi.y - 1));
+        else if (direction == Dir.R)
+            return qi.y + 1 < grid[qi.x].length && !blockedCells.contains(new GridXY(qi.x, qi.y + 1));
+        else if (direction == Dir.U)
+            return qi.x - 1 >= 0 && !blockedCells.contains(new GridXY(qi.x - 1, qi.y));
+        else if (direction == Dir.D)
+            return qi.x + 1 < grid.length && !blockedCells.contains(new GridXY(qi.x + 1, qi.y));
         else return false;
     }
 
