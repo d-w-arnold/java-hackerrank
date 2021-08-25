@@ -28,13 +28,14 @@ public class CastleOnTheGrid
         oppMoves.put(Dir.R, Dir.L);
         oppMoves.put(Dir.U, Dir.D);
         oppMoves.put(Dir.D, Dir.U);
-        // Set<GridXY> visited = new HashSet<>(); TODO: Add tracking of visited squares, and skip head of queue if numMoves is >= already visited numMoves.
-        List<GridXY> queue = simulateMoves(gridArray, oppMoves, new GridXY(startX, startY), goalX, goalY);
+        // TODO: Add check for number of blocked cells, if size == 0, return 2.
+        Map<GridXY, GridXY> visited = new HashMap<>();
+        List<GridXY> queue = simulateMoves(gridArray, oppMoves, visited, new GridXY(startX, startY), goalX, goalY);
         while (!queue.isEmpty()) {
             GridXY qi = queue.remove(0);
             if (minimumMoves == -1 || qi.numMoves < minimumMoves)
                 if (goalX == qi.x && goalY == qi.y) minimumMoves = qi.numMoves;
-                else queue.addAll(simulateMoves(gridArray, oppMoves, qi, goalX, goalY));
+                else queue.addAll(simulateMoves(gridArray, oppMoves, visited, qi, goalX, goalY));
         }
         return minimumMoves;
     }
@@ -51,7 +52,7 @@ public class CastleOnTheGrid
         return array;
     }
 
-    private static List<GridXY> simulateMoves(char[][] grid, Map<Dir, Dir> oppMoves, GridXY qi, int goalX, int goalY)
+    private static List<GridXY> simulateMoves(char[][] grid, Map<Dir, Dir> oppMoves, Map<GridXY, GridXY> visited, GridXY qi, int goalX, int goalY)
     {
         List<GridXY> possibleMoves = new ArrayList<>();
         List<Dir> movesOrder = new ArrayList<>();
@@ -67,6 +68,12 @@ public class CastleOnTheGrid
                 possibleMoves.add(new GridXY(qi.lastMove == Dir.U ? qi.numMoves : qi.numMoves + 1, Dir.U, qi.x - 1, qi.y));
             else if (d == Dir.D)
                 possibleMoves.add(new GridXY(qi.lastMove == Dir.D ? qi.numMoves : qi.numMoves + 1, Dir.D, qi.x + 1, qi.y));
+        }
+        Iterator<GridXY> it = possibleMoves.iterator();
+        while (it.hasNext()) {
+            GridXY i = it.next();
+            if (!visited.containsKey(i) || visited.get(i).numMoves >= i.numMoves) visited.put(i, i);
+            else it.remove();
         }
         return possibleMoves;
     }
@@ -108,7 +115,6 @@ public class CastleOnTheGrid
 
     private static boolean validMove(char[][] grid, Map<Dir, Dir> oppMoves, Dir direction, GridXY qi)
     {
-        // TODO: Add check to see if a cell is visited
         if (qi.lastMove == oppMoves.get(direction)) return false;
         if (direction == Dir.L) return qi.y - 1 >= 0 && grid[qi.x][qi.y - 1] != 'X';
         else if (direction == Dir.R) return qi.y + 1 < grid[qi.x].length && grid[qi.x][qi.y + 1] != 'X';
