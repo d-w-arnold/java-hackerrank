@@ -23,8 +23,16 @@ public class CastleOnTheGrid
         int minimumMoves = -1;
         char bc = 'X';
         if (grid.get(startX).charAt(startY) == bc || grid.get(goalX).charAt(goalY) == bc) return minimumMoves;
-        char[][] gridArray = getGridArray(grid);
-        Set<GridXY> blockedCells = getBlockedCells(gridArray, bc);
+        char[][] gridArray = new char[grid.size()][grid.get(0).length()];
+        Set<GridXY> blockedCells = new HashSet<>();
+        for (int i = 0; i < grid.size(); i++) {
+            String row = grid.get(i);
+            for (int j = 0; j < row.length(); j++) {
+                char c = row.charAt(j);
+                gridArray[i][j] = c;
+                if (c == bc) blockedCells.add(new GridXY(i, j));
+            }
+        }
         if (blockedCells.isEmpty()) return (startX != goalX ? 1 : 0) + (startY != goalY ? 1 : 0);
         final Map<Dir, Dir> oppMoves = new HashMap<>();
         oppMoves.put(Dir.L, Dir.R);
@@ -40,30 +48,6 @@ public class CastleOnTheGrid
                 else queue.addAll(simulateMoves(gridArray, blockedCells, oppMoves, visited, qi, goalX, goalY));
         }
         return minimumMoves;
-    }
-
-    private static Set<GridXY> getBlockedCells(char[][] grid, char bc)
-    {
-        Set<GridXY> set = new HashSet<>();
-        for (int i = 0; i < grid.length; i++) {
-            char[] row = grid[i];
-            for (int j = 0; j < row.length; j++) {
-                if (row[j] == bc) set.add(new GridXY(i, j));
-            }
-        }
-        return set;
-    }
-
-    private static char[][] getGridArray(List<String> grid)
-    {
-        char[][] array = new char[grid.size()][grid.get(0).length()];
-        for (int i = 0; i < grid.size(); i++) {
-            String row = grid.get(i);
-            for (int j = 0; j < row.length(); j++) {
-                array[i][j] = row.charAt(j);
-            }
-        }
-        return array;
     }
 
     private static List<GridXY> simulateMoves(char[][] grid, Set<GridXY> blockedCells, Map<Dir, Dir> oppMoves, Map<GridXY, GridXY> visited, GridXY qi, int goalX, int goalY)
