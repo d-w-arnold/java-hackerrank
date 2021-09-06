@@ -60,4 +60,25 @@ class RoadsAndLibrariesTest
                 Arrays.asList(5, 6)
         )));
     }
+
+    @Test
+    void roadsAndLibraries_4()
+    {
+        assertEquals(12, RoadsAndLibraries.roadsAndLibraries(6, 2, 3, Arrays.asList(
+                Arrays.asList(1, 2),
+                Arrays.asList(1, 3),
+                Arrays.asList(4, 5),
+                Arrays.asList(4, 6)
+        )));
+    }
+
+    @Test
+    void roadsAndLibraries_5()
+    {
+        assertEquals(15, RoadsAndLibraries.roadsAndLibraries(5, 6, 1, Arrays.asList(
+                Arrays.asList(1, 2),
+                Arrays.asList(1, 3),
+                Arrays.asList(1, 4)
+        )));
+    }
 }
