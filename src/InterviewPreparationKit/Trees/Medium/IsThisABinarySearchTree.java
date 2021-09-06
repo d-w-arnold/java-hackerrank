@@ -14,7 +14,14 @@ public class IsThisABinarySearchTree
      */
     public static boolean checkBST(Node root)
     {
-        return true;
+        return checkBSTHelper(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private static boolean checkBSTHelper(Node node, int min, int max)
+    {
+        return node == null || ((min < node.data && node.data < max) &&
+                checkBSTHelper(node.left, min, node.data) &&
+                checkBSTHelper(node.right, node.data, max));
     }
 
     static class Node
