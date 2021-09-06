@@ -14,7 +14,8 @@ public class HeightOfABinaryTree
      */
     public static int height(Node root)
     {
-        return -2;
+        if (root == null) return -1;
+        return Math.max(height(root.left), height(root.right)) + 1;
     }
 
     static class Node
