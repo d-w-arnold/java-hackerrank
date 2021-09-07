@@ -14,7 +14,20 @@ public class HuffmanDecoding
      */
     public static void decode(String s, Node root)
     {
-        System.out.println("NULL");
+        StringBuilder ans = new StringBuilder();
+        Node tmpTree = root;
+        for (int i = 0; i <= s.length(); ) {
+            if (tmpTree.data != 0) {
+                ans.append(tmpTree.data);
+                tmpTree = root;
+                continue;
+            }
+            if (i == s.length()) break;
+            if (s.charAt(i) == '0') tmpTree = tmpTree.left;
+            else if (s.charAt(i) == '1') tmpTree = tmpTree.right;
+            i++;
+        }
+        System.out.println(ans);
     }
 
     abstract static class Node implements Comparable<Node>
