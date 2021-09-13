@@ -6,9 +6,30 @@ package InterviewPreparationKit.LinkedLists;
  */
 public class InsertANodeAtASpecificPosition
 {
+    /**
+     * Insert a node at a specific position in a linked list problem: https://www.hackerrank.com/challenges/insert-a-node-at-a-specific-position-in-a-linked-list/problem
+     *
+     * @param llist    A SinglyLinkedListNode pointer to the head of the list.
+     * @param data     An integer value to insert as data in your new node.
+     * @param position An integer position to insert the new node, zero based indexing.
+     * @return A reference to the head of the revised list.
+     */
     public static SinglyLinkedListNode insertNodeAtPosition(SinglyLinkedListNode llist, int data, int position)
     {
-        return new SinglyLinkedListNode(-2);
+        if (llist == null) return null;
+        SinglyLinkedListNode tmp = new SinglyLinkedListNode(data);
+        if (position == 0) {
+            tmp.next = llist;
+            return tmp;
+        }
+        SinglyLinkedListNode p = llist;
+        for (int i = 0; i < position - 1; i++) {
+            p = p.next;
+        }
+        SinglyLinkedListNode next = p.next;
+        p.next = tmp;
+        tmp.next = next;
+        return llist;
     }
 
     static class SinglyLinkedListNode
@@ -20,26 +41,6 @@ public class InsertANodeAtASpecificPosition
         {
             this.data = nodeData;
             this.next = null;
-        }
-
-        @Override
-        public boolean equals(Object o)
-        {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            SinglyLinkedListNode singlyLinkedListNode = (SinglyLinkedListNode) o;
-            return data == singlyLinkedListNode.data && equals(next, singlyLinkedListNode.next);
-        }
-
-        private boolean equals(SinglyLinkedListNode s, SinglyLinkedListNode singlyLinkedList)
-        {
-            return s.data == singlyLinkedList.data && equals(s.next, singlyLinkedList.next);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return 31 * data;
         }
     }
 
@@ -54,12 +55,29 @@ public class InsertANodeAtASpecificPosition
             this.tail = null;
         }
 
+        public SinglyLinkedList(SinglyLinkedListNode s)
+        {
+            this.head = s;
+            this.tail = s.next;
+        }
+
         public void insertNode(int nodeData)
         {
             SinglyLinkedListNode node = new SinglyLinkedListNode(nodeData);
             if (this.head == null) this.head = node;
             else this.tail.next = node;
             this.tail = node;
+        }
+
+        public boolean isIdentical(SinglyLinkedList listB)
+        {
+            SinglyLinkedListNode a = this.head, b = listB.head;
+            while (a != null && b != null) {
+                if (a.data != b.data) return false;
+                a = a.next;
+                b = b.next;
+            }
+            return (a == null && b == null);
         }
     }
 }

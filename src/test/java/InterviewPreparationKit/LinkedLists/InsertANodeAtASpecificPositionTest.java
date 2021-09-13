@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author David W. Arnold
@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class InsertANodeAtASpecificPositionTest
 {
+    InsertANodeAtASpecificPosition.SinglyLinkedList expected;
+    InsertANodeAtASpecificPosition.SinglyLinkedList actual;
 
     @BeforeEach
     void setUp()
@@ -35,52 +37,51 @@ class InsertANodeAtASpecificPositionTest
     @Test
     void insertNodeAtPosition_1()
     {
-        assertEquals(
-                buildLinkedList(new int[]{1, 2, 4, 3}).head,
+        expected = buildLinkedList(new int[]{1, 2, 4, 3});
+        actual = new InsertANodeAtASpecificPosition.SinglyLinkedList(
                 InsertANodeAtASpecificPosition.insertNodeAtPosition(
-                        buildLinkedList(new int[]{1, 2, 3}).head,
-                        4,
-                        2
+                        buildLinkedList(new int[]{1, 2, 3}).head, 4, 2
                 )
         );
+        assertTrue(expected.isIdentical(actual));
     }
 
     @Test
     void insertNodeAtPosition_2()
     {
-        assertEquals(
-                buildLinkedList(new int[]{16, 13, 1, 7}).head,
+        expected = buildLinkedList(new int[]{16, 13, 1, 7});
+        actual = new InsertANodeAtASpecificPosition.SinglyLinkedList(
                 InsertANodeAtASpecificPosition.insertNodeAtPosition(
                         buildLinkedList(new int[]{16, 13, 7}).head,
-                        1,
-                        2
+                        1, 2
                 )
         );
+        assertTrue(expected.isIdentical(actual));
     }
 
     @Test
     void insertNodeAtPosition_3()
     {
-        assertEquals(
-                buildLinkedList(new int[]{11, 9, 19, 20, 10, 4}).head,
+        expected = buildLinkedList(new int[]{11, 9, 19, 20, 10, 4});
+        actual = new InsertANodeAtASpecificPosition.SinglyLinkedList(
                 InsertANodeAtASpecificPosition.insertNodeAtPosition(
                         buildLinkedList(new int[]{11, 9, 19, 10, 4}).head,
-                        20,
-                        3
+                        20, 3
                 )
         );
+        assertTrue(expected.isIdentical(actual));
     }
 
     @Test
     void insertNodeAtPosition_4()
     {
-        assertEquals(
-                buildLinkedList(new int[]{1, 2, 3, 4, 5, 7, 6}).head,
+        expected = buildLinkedList(new int[]{1, 2, 3, 4, 5, 7, 6});
+        actual = new InsertANodeAtASpecificPosition.SinglyLinkedList(
                 InsertANodeAtASpecificPosition.insertNodeAtPosition(
                         buildLinkedList(new int[]{1, 2, 3, 4, 5, 6}).head,
-                        7,
-                        5
+                        7, 5
                 )
         );
+        assertTrue(expected.isIdentical(actual));
     }
 }
