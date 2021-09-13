@@ -15,7 +15,18 @@ public class InsertingANodeIntoASortedDoublyLinkedList
      */
     public static DoublyLinkedListNode sortedInsert(DoublyLinkedListNode llist, int data)
     {
-        return new DoublyLinkedListNode(-2);
+        DoublyLinkedListNode node = new DoublyLinkedListNode(data);
+        if (llist == null) return node;
+        else if (data <= llist.data) {
+            llist.prev = node;
+            node.next = llist;
+            return node;
+        } else {
+            DoublyLinkedListNode ptr = sortedInsert(llist.next, data);
+            ptr.prev = llist;
+            llist.next = ptr;
+            return llist;
+        }
     }
 
     static class DoublyLinkedListNode
