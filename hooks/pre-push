@@ -1,0 +1,23 @@
+#!/bin/bash
+
+CMD="mvn clean test" # Command that runs your tests
+protected_branch='main'
+
+# Check if we actually have commits to push
+commits=$(git log @\{u\}..)
+if [ -z "$commits" ]; then
+  echo "No new commits to be pushed."
+  exit 0
+fi
+
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+if [[ "${current_branch}" == "${protected_branch}" ]]; then
+  if $CMD; then
+    echo "Success: '$CMD'. Unit tests passed!"
+  else
+    echo "Failed: '$CMD'. Unit tests failed!"
+    exit 1
+  fi
+fi
+exit 0
