@@ -15,7 +15,13 @@ public class FindMergePointOfTwoLists
      */
     public static int findMergeNode(SinglyLinkedListNode head1, SinglyLinkedListNode head2)
     {
-        return -2;
+        SinglyLinkedListNode currentA = head1.next;
+        SinglyLinkedListNode currentB = head2.next;
+        while (currentA.data != currentB.data) {
+            currentA = currentA.next == null ? head2 : currentA.next;
+            currentB = currentB.next == null ? head1 : currentB.next;
+        }
+        return currentA.data;
     }
 
     static class SinglyLinkedListNode
