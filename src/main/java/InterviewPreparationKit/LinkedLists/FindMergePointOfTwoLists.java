@@ -1,5 +1,8 @@
 package InterviewPreparationKit.LinkedLists;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author David W. Arnold
  * @version 15/09/2021
@@ -15,13 +18,46 @@ public class FindMergePointOfTwoLists
      */
     public static int findMergeNode(SinglyLinkedListNode head1, SinglyLinkedListNode head2)
     {
-        SinglyLinkedListNode currentA = head1.next;
-        SinglyLinkedListNode currentB = head2.next;
-        while (currentA.data != currentB.data) {
-            currentA = currentA.next == null ? head2 : currentA.next;
-            currentB = currentB.next == null ? head1 : currentB.next;
+        SinglyLinkedListNode curr1;
+        SinglyLinkedListNode curr2;
+        if (head1.next != null && head2.next != null) {
+            curr1 = head1;
+            curr2 = head2;
+            List<Integer> list1 = new ArrayList<>();
+            List<Integer> list2 = new ArrayList<>();
+            int ans = -1;
+            while (true) {
+                assert curr1 != null;
+                list1.add(curr1.data);
+                list2.add(curr2.data);
+                if (ans == -1) {
+                    if (list1.size() > 1 && list2.size() > 1 && list1.size() == list2.size()
+                            && curr1.data == curr2.data) ans = curr1.data;
+                    if (curr1.next == null && curr2.next == null) break;
+                    curr1 = curr1.next == null ? head2 : curr1.next;
+                    curr2 = curr2.next == null ? head1 : curr2.next;
+                } else {
+                    if (curr1.data != curr2.data) ans = -1;
+                    else if (curr1.next == null && curr2.next == null) break;
+                    curr1 = curr1.next;
+                    curr2 = curr2.next;
+                }
+            }
+            return ans;
+        } else if (head1.next == null) {
+            curr2 = head2;
+            while (curr2 != null) {
+                if (curr2.data == head1.data) return curr2.data;
+                curr2 = curr2.next;
+            }
+        } else {
+            curr1 = head1;
+            while (curr1 != null) {
+                if (curr1.data == head2.data) return curr1.data;
+                curr1 = curr1.next;
+            }
         }
-        return currentA.data;
+        return -1;
     }
 
     static class SinglyLinkedListNode
