@@ -1,8 +1,5 @@
 package InterviewPreparationKit.LinkedLists;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author David W. Arnold
  * @version 15/09/2021
@@ -21,24 +18,37 @@ public class FindMergePointOfTwoLists
         SinglyLinkedListNode curr1;
         SinglyLinkedListNode curr2;
         if (head1.next != null && head2.next != null) {
-            curr1 = head1;
-            curr2 = head2;
-            List<Integer> list1 = new ArrayList<>();
-            List<Integer> list2 = new ArrayList<>();
             int ans = -1;
+            curr1 = head1.next;
+            curr2 = head2.next;
+            boolean c1Conn = false;
+            boolean c2Conn = false;
             while (true) {
-                assert curr1 != null;
-                list1.add(curr1.data);
-                list2.add(curr2.data);
                 if (ans == -1) {
-                    if (list1.size() > 1 && list2.size() > 1 && list1.size() == list2.size()
-                            && curr1.data == curr2.data) ans = curr1.data;
+                    assert curr1 != null;
+                    assert curr2 != null;
+                    if (c1Conn == c2Conn && curr1.data == curr2.data) {
+                        ans = curr1.data;
+                        continue;
+                    }
                     if (curr1.next == null && curr2.next == null) break;
-                    curr1 = curr1.next == null ? head2 : curr1.next;
-                    curr2 = curr2.next == null ? head1 : curr2.next;
+                    if (curr1.next == null && !c1Conn) {
+                        curr1 = head2;
+                        c1Conn = true;
+                    } else curr1 = curr1.next;
+                    if (curr2.next == null && !c2Conn) {
+                        curr2 = head1;
+                        c2Conn = true;
+                    } else curr2 = curr2.next;
                 } else {
-                    if (curr1.data != curr2.data) ans = -1;
-                    else if (curr1.next == null && curr2.next == null) break;
+                    if (curr1.data != curr2.data) {
+                        ans = -1;
+                        continue;
+                    } else if (curr1.next == null && curr2.next == null) break;
+                    else if (curr1.next == null || curr2.next == null) {
+                        ans = -1;
+                        break;
+                    }
                     curr1 = curr1.next;
                     curr2 = curr2.next;
                 }
