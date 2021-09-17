@@ -34,33 +34,33 @@ class ReverseADoublyLinkedListTest
         return linkedList;
     }
 
-//    @Test
-//    void reverse_1()
-//    {
-//        expected = buildLinkedList(new int[]{4, 3, 2, 1});
-//        actual = new ReverseADoublyLinkedList.DoublyLinkedList(ReverseADoublyLinkedList.reverse(
-//                buildLinkedList(new int[]{1, 2, 3, 4}).head)
-//        );
-//        assertTrue(expected.isIdentical(actual));
-//    }
-//
-//    @Test
-//    void reverse_2()
-//    {
-//        expected = buildLinkedList(new int[]{4, 3, 2});
-//        actual = new ReverseADoublyLinkedList.DoublyLinkedList(ReverseADoublyLinkedList.reverse(
-//                buildLinkedList(new int[]{2, 3, 4}).head)
-//        );
-//        assertTrue(expected.isIdentical(actual));
-//    }
-//
-//    @Test
-//    void reverse_3()
-//    {
-//        expected = buildLinkedList(new int[]{47, 35, 23, 20, 17});
-//        actual = new ReverseADoublyLinkedList.DoublyLinkedList(ReverseADoublyLinkedList.reverse(
-//                buildLinkedList(new int[]{17, 20, 23, 35, 47}).head)
-//        );
-//        assertTrue(expected.isIdentical(actual));
-//    }
+    @Test
+    void reverse_1()
+    {
+        expected = buildLinkedList(new int[]{4, 3, 2, 1});
+        actual = new ReverseADoublyLinkedList.DoublyLinkedList(ReverseADoublyLinkedList.reverse(
+                buildLinkedList(new int[]{1, 2, 3, 4}).head)
+        );
+        assertTrue(expected.isIdentical(actual));
+    }
+
+    @Test
+    void reverse_2()
+    {
+        expected = buildLinkedList(new int[]{4, 3, 2});
+        actual = new ReverseADoublyLinkedList.DoublyLinkedList(ReverseADoublyLinkedList.reverse(
+                buildLinkedList(new int[]{2, 3, 4}).head)
+        );
+        assertTrue(expected.isIdentical(actual));
+    }
+
+    @Test
+    void reverse_3()
+    {
+        expected = buildLinkedList(new int[]{47, 35, 23, 20, 17});
+        actual = new ReverseADoublyLinkedList.DoublyLinkedList(ReverseADoublyLinkedList.reverse(
+                buildLinkedList(new int[]{17, 20, 23, 35, 47}).head)
+        );
+        assertTrue(expected.isIdentical(actual));
+    }
 }

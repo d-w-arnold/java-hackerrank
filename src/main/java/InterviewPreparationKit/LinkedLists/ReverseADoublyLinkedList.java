@@ -14,7 +14,17 @@ public class ReverseADoublyLinkedList
      */
     public static DoublyLinkedListNode reverse(DoublyLinkedListNode llist)
     {
-        return new DoublyLinkedListNode(-2);
+        DoublyLinkedListNode tmp = llist;
+        DoublyLinkedListNode newHead = llist;
+        DoublyLinkedListNode prev;
+        while (tmp != null) {
+            prev = tmp.prev;
+            tmp.prev = tmp.next;
+            tmp.next = prev;
+            newHead = tmp;
+            tmp = tmp.prev;
+        }
+        return newHead;
     }
 
     static class DoublyLinkedListNode
