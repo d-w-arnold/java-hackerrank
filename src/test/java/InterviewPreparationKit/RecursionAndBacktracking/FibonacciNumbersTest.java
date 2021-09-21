@@ -23,21 +23,21 @@ class FibonacciNumbersTest
     {
     }
 
-//    @Test
-//    void fibonacci_1()
-//    {
-//        assertEquals(5, FibonacciNumbers.fibonacci(5));
-//    }
-//
-//    @Test
-//    void fibonacci_2()
-//    {
-//        assertEquals(144, FibonacciNumbers.fibonacci(12));
-//    }
-//
-//    @Test
-//    void fibonacci_3()
-//    {
-//        assertEquals(1597, FibonacciNumbers.fibonacci(17));
-//    }
+    @Test
+    void fibonacci_1()
+    {
+        assertEquals(5, FibonacciNumbers.fibonacci(5));
+    }
+
+    @Test
+    void fibonacci_2()
+    {
+        assertEquals(144, FibonacciNumbers.fibonacci(12));
+    }
+
+    @Test
+    void fibonacci_3()
+    {
+        assertEquals(1597, FibonacciNumbers.fibonacci(17));
+    }
 }

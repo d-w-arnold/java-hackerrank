@@ -7,13 +7,14 @@ package InterviewPreparationKit.RecursionAndBacktracking;
 public class FibonacciNumbers
 {
     /**
-     * https://www.hackerrank.com/challenges/ctci-fibonacci-numbers/problem
+     * Recursion: Fibonacci Numbers problem: https://www.hackerrank.com/challenges/ctci-fibonacci-numbers/problem
      *
      * @param n The index of the sequence to return.
      * @return The nth element in the Fibonacci sequence.
      */
     public static int fibonacci(int n)
     {
-        return -2;
+        if (n <= 1) return n;
+        return fibonacci(n - 1) + fibonacci(n - 2);
     }
 }
