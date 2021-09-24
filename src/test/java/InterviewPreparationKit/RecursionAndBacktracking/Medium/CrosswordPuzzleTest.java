@@ -149,4 +149,128 @@ class CrosswordPuzzleTest
         );
         assertEquals(expected, CrosswordPuzzle.crosswordPuzzle(start, words));
     }
+
+    @Test
+    void crosswordPuzzle_5()
+    {
+        List<String> start = Arrays.asList(
+                "+-++++++++",
+                "+-++-+++++",
+                "+-------++",
+                "+-++-+++++",
+                "+-++-+++++",
+                "+-++-+++++",
+                "++++-+++++",
+                "++++-+++++",
+                "++++++++++",
+                "----------"
+        );
+        String words = "CALIFORNIA;NIGERIA;CANADA;TELAVIV";
+        List<String> expected = Arrays.asList(
+                "+C++++++++",
+                "+A++T+++++",
+                "+NIGERIA++",
+                "+A++L+++++",
+                "+D++A+++++",
+                "+A++V+++++",
+                "++++I+++++",
+                "++++V+++++",
+                "++++++++++",
+                "CALIFORNIA"
+        );
+        assertEquals(expected, CrosswordPuzzle.crosswordPuzzle(start, words));
+    }
+
+    @Test
+    void crosswordPuzzle_6()
+    {
+        List<String> start = Arrays.asList(
+                "+-++++++++",
+                "+-++-+++++",
+                "+-------++",
+                "+-++-++-++",
+                "+-++-++-++",
+                "+-++-++-++",
+                "++++-++-++",
+                "+--------+",
+                "++++++++++",
+                "----------"
+        );
+        String words = "CALIFORNIA;LASVEGAS;NIGERIA;CANADA;TELAVIV;ALASKA";
+        List<String> expected = Arrays.asList(
+                "+C++++++++",
+                "+A++T+++++",
+                "+NIGERIA++",
+                "+A++L++L++",
+                "+D++A++A++",
+                "+A++V++S++",
+                "++++I++K++",
+                "+LASVEGAS+",
+                "++++++++++",
+                "CALIFORNIA"
+        );
+        assertEquals(expected, CrosswordPuzzle.crosswordPuzzle(start, words));
+    }
+
+    @Test
+    void crosswordPuzzle_7()
+    {
+        List<String> start = Arrays.asList(
+                "+----+++++",
+                "++++-+++++",
+                "++++-+++++",
+                "++++------",
+                "++++-+++-+",
+                "++++-+++-+",
+                "++++-+++-+",
+                "++++-+++-+",
+                "++++-+++++",
+                "++++++++++"
+        );
+        String words = "TREE;ELEPHANTS;PICKLE;LEMON";
+        List<String> expected = Arrays.asList(
+                "+TREE+++++",
+                "++++L+++++",
+                "++++E+++++",
+                "++++PICKLE",
+                "++++H+++E+",
+                "++++A+++M+",
+                "++++N+++O+",
+                "++++T+++N+",
+                "++++S+++++",
+                "++++++++++"
+        );
+        assertEquals(expected, CrosswordPuzzle.crosswordPuzzle(start, words));
+    }
+
+    @Test
+    void crosswordPuzzle_8()
+    {
+        List<String> start = Arrays.asList(
+                "+-++++++++",
+                "+-------++",
+                "+-++-+++++",
+                "+-------++",
+                "+-++-++++-",
+                "+-++-++++-",
+                "+-++------",
+                "+++++++++-",
+                "++++++++++",
+                "++++++++++"
+        );
+        String words = "ANDAMAN;MANIPUR;ICELAND;ALLEPY;YANGON;PUNE";
+        List<String> expected = Arrays.asList(
+                "+M++++++++",
+                "+ANDAMAN++",
+                "+N++L+++++",
+                "+ICELAND++",
+                "+P++E++++P",
+                "+U++P++++U",
+                "+R++YANGON",
+                "+++++++++E",
+                "++++++++++",
+                "++++++++++"
+        );
+        assertEquals(expected, CrosswordPuzzle.crosswordPuzzle(start, words));
+    }
 }

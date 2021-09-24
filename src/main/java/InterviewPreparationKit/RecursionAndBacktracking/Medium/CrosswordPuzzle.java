@@ -55,75 +55,6 @@ public class CrosswordPuzzle
             getBlankWordsAndCells(crossword);
         }
 
-        private void getWordsAndWordsMap()
-        {
-            for (String word : this.words) {
-                int wordLength = word.length();
-                if (wordsMap.containsKey(wordLength)) wordsMap.get(wordLength).add(word);
-                else wordsMap.put(wordLength, new HashSet<>(Collections.singletonList(word)));
-            }
-        }
-
-        private void getBlankWordsAndCells(List<String> crossword)
-        {
-            Map<String, Integer[]> cache = new HashMap<>(); // x:y:{0=horiz/1=vert} -> [xStart, yStart, {0=horiz/1=vert}, charsLength]
-            char c, cRight, cDown;
-            String xSepY, xSepYSepRight, xSepYSepDown;
-            boolean containsRight, containsDown;
-            int index = 0;
-            for (int i = 0; i < crossword.size(); i++) {
-                for (int j = 0; j < crossword.get(i).length(); j++) {
-                    c = crossword.get(i).charAt(j);
-                    this.CROSSWORD[i][j] = c;
-                    if (c == BLANK) {
-                        xSepY = i + SEP + j;
-                        blankCells.put(xSepY, BLANK);
-                        xSepYSepRight = xSepY + SEP + 0;
-                        xSepYSepDown = xSepY + SEP + 1;
-                        containsRight = false;
-                        containsDown = false;
-                        cRight = crossword.get(i).charAt(j + 1);
-                        cDown = i + 1 < crossword.size() ? crossword.get(i + 1).charAt(j) : '+';
-                        if (cache.containsKey(xSepYSepRight) || cache.containsKey(xSepYSepDown)) {
-                            if (cache.containsKey(xSepYSepRight)) {
-                                containsRight = true;
-                                if (cRight == BLANK) {
-                                    Integer[] value = cache.get(xSepYSepRight);
-                                    value[3]++;
-                                    cache.put(i + SEP + (j + 1) + SEP + 0, value);
-                                } else {
-                                    BLANK_WORDS.put(index, cache.get(xSepYSepRight));
-                                    index++;
-                                }
-                                cache.remove(xSepYSepRight);
-                            }
-                            if (cache.containsKey(xSepYSepDown)) {
-                                containsDown = true;
-                                if (cDown == BLANK) {
-                                    Integer[] value = cache.get(xSepYSepDown);
-                                    value[3]++;
-                                    cache.put((i + 1) + SEP + j + SEP + 1, value);
-                                } else {
-                                    BLANK_WORDS.put(index, cache.get(xSepYSepDown));
-                                    index++;
-                                }
-                                cache.remove(xSepYSepDown);
-                            }
-                        }
-                        if (cRight == BLANK || cDown == BLANK) {
-                            if (cRight == BLANK && !containsRight)
-                                cache.put(i + SEP + (j + 1) + SEP + 0, new Integer[]{i, j, 0, 2});
-                            if (cDown == BLANK && !containsDown)
-                                cache.put((i + 1) + SEP + j + SEP + 1, new Integer[]{i, j, 1, 2});
-                        } else if (!containsRight && !containsDown) {
-                            BLANK_WORDS.put(index, new Integer[]{i, j, 0, 1});
-                            index++;
-                        }
-                    }
-                }
-            }
-        }
-
         public void insertWords()
         {
             insertWordsOfUniqueLength();
@@ -143,10 +74,10 @@ public class CrosswordPuzzle
                     word = matches.get(0);
                     i = BLANK_WORDS.get(entry);
                     updateBlankCells(word, i, entry);
+                    insertWordsOfUniqueLength();
                     getBlankWordTemplatesAndPossibilities();
                 } else if (matches.size() > 1) blankWordPossibilities.get(entry).addAll(matches);
             }
-            // TODO: Brute force any multiple matches for a given blankWord slot.
             permute(new ArrayList<>(words));
             Map<String, Character> tmpBlankCells = new HashMap<>(blankCells);
             Set<String> tmpWords = new HashSet<>(words);
@@ -189,6 +120,15 @@ public class CrosswordPuzzle
             }
         }
 
+        public List<String> printCrosswordPuzzle()
+        {
+            List<String> list = new ArrayList<>();
+            for (char[] row : CROSSWORD) {
+                list.add(String.valueOf(row));
+            }
+            return list;
+        }
+
         private void permute(List<String> words)
         {
             permutation(0, words.size() - 1, words);
@@ -213,6 +153,76 @@ public class CrosswordPuzzle
             return new ArrayList<>(arr);
         }
 
+        private void getWordsAndWordsMap()
+        {
+            for (String word : this.words) {
+                int wordLength = word.length();
+                if (wordsMap.containsKey(wordLength)) wordsMap.get(wordLength).add(word);
+                else wordsMap.put(wordLength, new HashSet<>(Collections.singletonList(word)));
+            }
+        }
+
+        private void getBlankWordsAndCells(List<String> crossword)
+        {
+            Map<String, Integer[]> cache = new HashMap<>(); // x:y:{0=horiz/1=vert} -> [xStart, yStart, {0=horiz/1=vert}, charsLength]
+            char c, cRight, cDown, nonBlank;
+            String xSepY, xSepYSepRight, xSepYSepDown;
+            boolean containsRight, containsDown;
+            int index = 0;
+            for (int i = 0; i < crossword.size(); i++) {
+                for (int j = 0; j < crossword.get(i).length(); j++) {
+                    c = crossword.get(i).charAt(j);
+                    this.CROSSWORD[i][j] = c;
+                    if (c == BLANK) {
+                        xSepY = i + SEP + j;
+                        blankCells.put(xSepY, BLANK);
+                        xSepYSepRight = xSepY + SEP + 0;
+                        xSepYSepDown = xSepY + SEP + 1;
+                        containsRight = false;
+                        containsDown = false;
+                        nonBlank = '+';
+                        cRight = j + 1 < crossword.get(i).length() ? crossword.get(i).charAt(j + 1) : nonBlank;
+                        cDown = i + 1 < crossword.size() ? crossword.get(i + 1).charAt(j) : nonBlank;
+                        if (cache.containsKey(xSepYSepRight) || cache.containsKey(xSepYSepDown)) {
+                            if (cache.containsKey(xSepYSepRight)) {
+                                containsRight = true;
+                                if (cRight == BLANK) {
+                                    Integer[] value = cache.get(xSepYSepRight);
+                                    value[3]++;
+                                    cache.put(i + SEP + (j + 1) + SEP + 0, value);
+                                } else {
+                                    BLANK_WORDS.put(index, cache.get(xSepYSepRight));
+                                    index++;
+                                }
+                                cache.remove(xSepYSepRight);
+                            }
+                            if (cache.containsKey(xSepYSepDown)) {
+                                containsDown = true;
+                                if (cDown == BLANK) {
+                                    Integer[] value = cache.get(xSepYSepDown);
+                                    value[3]++;
+                                    cache.put((i + 1) + SEP + j + SEP + 1, value);
+                                } else {
+                                    BLANK_WORDS.put(index, cache.get(xSepYSepDown));
+                                    index++;
+                                }
+                                cache.remove(xSepYSepDown);
+                            }
+                        }
+                        if (cRight == BLANK || cDown == BLANK) {
+                            if (cRight == BLANK && !containsRight)
+                                cache.put(i + SEP + (j + 1) + SEP + 0, new Integer[]{i, j, 0, 2});
+                            if (cDown == BLANK && !containsDown)
+                                cache.put((i + 1) + SEP + j + SEP + 1, new Integer[]{i, j, 1, 2});
+                        } else if (!containsRight && !containsDown) {
+                            BLANK_WORDS.put(index, new Integer[]{i, j, 0, 1});
+                            index++;
+                        }
+                    }
+                }
+            }
+        }
+
         private void insertWordsOfUniqueLength()
         {
             int wordLen;
@@ -224,23 +234,6 @@ public class CrosswordPuzzle
                         updateBlankCells(wordsMap.get(wordLen).iterator().next(), i, k);
                 }
             }
-        }
-
-        private void updateBlankCells(String word, Integer[] i, int bwIndex)
-        {
-            int tmpX, tmpY;
-            for (int j = 0; j < i[3]; j++) {
-                tmpX = i[0];
-                tmpY = i[1];
-                if (i[2] == 0) tmpY += j;
-                else if (i[2] == 1) tmpX += j;
-                String xSepY = tmpX + SEP + tmpY;
-                blankCells.put(xSepY, word.charAt(j));
-            }
-            words.remove(word);
-            usedWords.add(word);
-            wordsMap.get(i[3]).remove(word);
-            nonBlankWords.put(bwIndex, word);
         }
 
         private void getBlankWordTemplatesAndPossibilities()
@@ -287,13 +280,20 @@ public class CrosswordPuzzle
             return true;
         }
 
-        public List<String> printCrosswordPuzzle()
+        private void updateBlankCells(String word, Integer[] i, int bwIndex)
         {
-            List<String> list = new ArrayList<>();
-            for (char[] row : CROSSWORD) {
-                list.add(String.valueOf(row));
+            int tmpX, tmpY;
+            for (int j = 0; j < i[3]; j++) {
+                tmpX = i[0];
+                tmpY = i[1];
+                if (i[2] == 0) tmpY += j;
+                else if (i[2] == 1) tmpX += j;
+                blankCells.put(tmpX + SEP + tmpY, word.charAt(j));
             }
-            return list;
+            words.remove(word);
+            usedWords.add(word);
+            wordsMap.get(i[3]).remove(word);
+            nonBlankWords.put(bwIndex, word);
         }
     }
 }
