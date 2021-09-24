@@ -14,6 +14,14 @@ public class TimeComplexityPrimality
      */
     public static String primality(int n)
     {
-        return "NULL";
+        if (n == 1) return "Not prime";
+        else if (n == 2) return "Prime";
+        else if (n % 2 == 0) return "Not prime";
+        else {
+            for (int i = 3; i * i <= n; i += 2) {
+                if (n % i == 0) return "Not prime";
+            }
+        }
+        return "Prime";
     }
 }
