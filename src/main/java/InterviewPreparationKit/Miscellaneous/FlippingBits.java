@@ -14,6 +14,6 @@ public class FlippingBits
      */
     public static long flippingBits(long n)
     {
-        return -2;
+        return n ^ (Integer.MAX_VALUE * 2L + 1);
     }
 }
