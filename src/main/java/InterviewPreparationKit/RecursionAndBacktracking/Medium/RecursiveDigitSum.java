@@ -15,21 +15,31 @@ public class RecursiveDigitSum
      */
     public static int superDigit(String n, int k)
     {
-        if (n.isEmpty()) return -1;
-        int total;
-        String tmp, p = "";
-        for (int i = 0; i < k; i++) {
-            p += n;
-        }
-        while (n.length() > 1) {
-            total = 0;
-            tmp = p.isEmpty() ? n : p;
-            for (int i = 0; i < tmp.length(); i++) {
-                total += Integer.parseInt(tmp.substring(i, i + 1));
+        return superDigitHelper(Integer.parseInt(superDigitHelper(n)) * k);
+    }
+
+    private static String superDigitHelper(String n)
+    {
+        if (n.length() == 1) return n;
+        else {
+            int np = 0;
+            for (int i = 0; i < n.length(); i++) {
+                np += Character.getNumericValue(n.charAt(i));
             }
-            n = Integer.toString(total);
-            p = "";
+            return superDigitHelper(Integer.toString(np));
         }
-        return Integer.parseInt(n);
+    }
+
+    private static int superDigitHelper(int n)
+    {
+        if (n / 10 == 0) return n;
+        else {
+            int r = 0;
+            while (n > 0) {
+                r += n % 10;
+                n /= 10;
+            }
+            return superDigitHelper(r);
+        }
     }
 }
