@@ -1,7 +1,9 @@
 package InterviewPreparationKit.Miscellaneous.Medium;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author David W. Arnold
@@ -19,14 +21,15 @@ public class FriendCircleQueries
     {
         int[] ans = new int[queries.length];
         List<Set<Integer>> friendGroups = new ArrayList<>();
-        int index = 0, handShakeLeft, handShakeRight, leftFound, rightFound, max;
+        Set<Integer> tmpFriendGroup;
+        int maxFriendGroupSize = 0, index = 0, handShakeLeft, handShakeRight, leftFound, rightFound;
         for (int[] handShake : queries) {
             handShakeLeft = handShake[0];
             handShakeRight = handShake[1];
             leftFound = -1;
             rightFound = -1;
             for (int i = 0; i < friendGroups.size(); i++) {
-                Set<Integer> tmpFriendGroup = friendGroups.get(i);
+                tmpFriendGroup = new HashSet<>(friendGroups.get(i));
                 if (tmpFriendGroup.contains(handShakeLeft) && tmpFriendGroup.contains(handShakeRight)) {
                     leftFound = i;
                     rightFound = i;
@@ -35,19 +38,24 @@ public class FriendCircleQueries
                 else if (tmpFriendGroup.contains(handShakeRight)) rightFound = i;
                 if (leftFound != -1 && rightFound != -1) break;
             }
-            if (leftFound == -1 && rightFound == -1)
-                friendGroups.add(new HashSet<>(Arrays.stream(handShake).boxed().collect(Collectors.toList())));
-            else if (leftFound == -1) friendGroups.get(rightFound).add(handShakeLeft);
-            else if (rightFound == -1) friendGroups.get(leftFound).add(handShakeRight);
-            else {
+            if (leftFound == -1 && rightFound == -1) {
+                tmpFriendGroup = new HashSet<>();
+                tmpFriendGroup.add(handShakeLeft);
+                tmpFriendGroup.add(handShakeRight);
+                friendGroups.add(tmpFriendGroup);
+                maxFriendGroupSize = Math.max(maxFriendGroupSize, handShake.length);
+            } else if (leftFound == -1) {
+                friendGroups.get(rightFound).add(handShakeLeft);
+                maxFriendGroupSize = Math.max(maxFriendGroupSize, friendGroups.get(rightFound).size());
+            } else if (rightFound == -1) {
+                friendGroups.get(leftFound).add(handShakeRight);
+                maxFriendGroupSize = Math.max(maxFriendGroupSize, friendGroups.get(leftFound).size());
+            } else {
                 friendGroups.get(leftFound).addAll(friendGroups.get(rightFound));
+                maxFriendGroupSize = Math.max(maxFriendGroupSize, friendGroups.get(leftFound).size());
                 friendGroups.remove(rightFound);
             }
-            max = -1;
-            for (var friendGroup : friendGroups) {
-                max = Math.max(max, friendGroup.size());
-            }
-            ans[index] = max;
+            ans[index] = maxFriendGroupSize;
             index++;
         }
         return ans;
