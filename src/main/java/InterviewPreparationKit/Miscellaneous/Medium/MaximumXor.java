@@ -15,6 +15,15 @@ public class MaximumXor
      */
     public static int[] maxXor(int[] arr, int[] queries)
     {
-        return new int[]{-2};
+        int[] ans = new int[queries.length];
+        int max;
+        for (int i = 0; i < queries.length; i++) {
+            max = 0;
+            for (int k : arr) {
+                max = Math.max(max, queries[i] ^ k);
+            }
+            ans[i] = max;
+        }
+        return ans;
     }
 }
