@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * @author David W. Arnold
@@ -26,7 +26,7 @@ class FriendCircleQueriesTest
     @Test
     void maxCircle_1()
     {
-        assertEquals(new int[]{2, 2, 4}, FriendCircleQueries.maxCircle(new int[][]{
+        assertArrayEquals(new int[]{2, 2, 4}, FriendCircleQueries.maxCircle(new int[][]{
                 new int[]{1, 2},
                 new int[]{3, 4},
                 new int[]{2, 3}
@@ -36,7 +36,7 @@ class FriendCircleQueriesTest
     @Test
     void maxCircle_2()
     {
-        assertEquals(new int[]{2, 3}, FriendCircleQueries.maxCircle(new int[][]{
+        assertArrayEquals(new int[]{2, 3}, FriendCircleQueries.maxCircle(new int[][]{
                 new int[]{1, 2},
                 new int[]{1, 3}
         }));
@@ -45,7 +45,7 @@ class FriendCircleQueriesTest
     @Test
     void maxCircle_3()
     {
-        assertEquals(new int[]{2, 2, 2, 4}, FriendCircleQueries.maxCircle(new int[][]{
+        assertArrayEquals(new int[]{2, 2, 2, 4}, FriendCircleQueries.maxCircle(new int[][]{
                 new int[]{1000000000, 23},
                 new int[]{11, 3778},
                 new int[]{7, 47},
@@ -56,7 +56,7 @@ class FriendCircleQueriesTest
     @Test
     void maxCircle_4()
     {
-        assertEquals(new int[]{2, 2, 4, 4, 4, 7}, FriendCircleQueries.maxCircle(new int[][]{
+        assertArrayEquals(new int[]{2, 2, 4, 4, 4, 7}, FriendCircleQueries.maxCircle(new int[][]{
                 new int[]{1, 2},
                 new int[]{3, 4},
                 new int[]{1, 3},
