@@ -1,9 +1,7 @@
 package InterviewPreparationKit.Miscellaneous.Medium;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author David W. Arnold
@@ -19,45 +17,58 @@ public class FriendCircleQueries
      */
     public static int[] maxCircle(int[][] queries)
     {
-        int[] ans = new int[queries.length];
-        List<Set<Integer>> friendGroups = new ArrayList<>();
-        Set<Integer> tmpFriendGroup;
-        int maxFriendGroupSize = 0, index = 0, handShakeLeft, handShakeRight, leftFound, rightFound;
-        for (int[] handShake : queries) {
-            handShakeLeft = handShake[0];
-            handShakeRight = handShake[1];
-            leftFound = -1;
-            rightFound = -1;
-            for (int i = 0; i < friendGroups.size(); i++) {
-                tmpFriendGroup = new HashSet<>(friendGroups.get(i));
-                if (tmpFriendGroup.contains(handShakeLeft) && tmpFriendGroup.contains(handShakeRight)) {
-                    leftFound = i;
-                    rightFound = i;
-                    break;
-                } else if (tmpFriendGroup.contains(handShakeLeft)) leftFound = i;
-                else if (tmpFriendGroup.contains(handShakeRight)) rightFound = i;
-                if (leftFound != -1 && rightFound != -1) break;
-            }
-            if (leftFound == -1 && rightFound == -1) {
-                tmpFriendGroup = new HashSet<>();
-                tmpFriendGroup.add(handShakeLeft);
-                tmpFriendGroup.add(handShakeRight);
-                friendGroups.add(tmpFriendGroup);
-                maxFriendGroupSize = Math.max(maxFriendGroupSize, handShake.length);
-            } else if (leftFound == -1) {
-                friendGroups.get(rightFound).add(handShakeLeft);
-                maxFriendGroupSize = Math.max(maxFriendGroupSize, friendGroups.get(rightFound).size());
-            } else if (rightFound == -1) {
-                friendGroups.get(leftFound).add(handShakeRight);
-                maxFriendGroupSize = Math.max(maxFriendGroupSize, friendGroups.get(leftFound).size());
-            } else {
-                friendGroups.get(leftFound).addAll(friendGroups.get(rightFound));
-                maxFriendGroupSize = Math.max(maxFriendGroupSize, friendGroups.get(leftFound).size());
-                friendGroups.remove(rightFound);
-            }
-            ans[index] = maxFriendGroupSize;
-            index++;
+        UnionFind uf = new UnionFind();
+        int[] res = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            uf.union(queries[i][0], queries[i][1]);
+            res[i] = uf.max;
         }
-        return ans;
+        return res;
+    }
+
+    private static class UnionFind
+    {
+        private final Map<Integer, Integer> PARENTS;
+        private final Map<Integer, Integer> SIZES;
+        private int max;
+
+        public UnionFind()
+        {
+            PARENTS = new HashMap<>();
+            SIZES = new HashMap<>();
+            max = 0;
+        }
+
+        public void union(int v1, int v2)
+        {
+            if (!PARENTS.containsKey(v1)) {
+                PARENTS.put(v1, v1);
+                SIZES.put(v1, 1);
+            }
+            if (!PARENTS.containsKey(v2)) {
+                PARENTS.put(v2, v2);
+                SIZES.put(v2, 1);
+            }
+            int p1 = find(v1), p2 = find(v2);
+            if (p1 == p2) return;
+            int s1 = SIZES.get(p1), s2 = SIZES.get(p2);
+            if (s1 < s2) {
+                PARENTS.put(p1, p2);
+                SIZES.put(p2, s1 + s2);
+            } else {
+                PARENTS.put(p2, p1);
+                SIZES.put(p1, s1 + s2);
+            }
+            if (s1 + s2 > max) max = s1 + s2;
+        }
+
+        public int find(int v)
+        {
+            while (PARENTS.get(v) != v) {
+                PARENTS.put(v, PARENTS.get(PARENTS.get(v)));
+                v = PARENTS.get(v);
+            }
+            return v;
+        }
     }
 }
