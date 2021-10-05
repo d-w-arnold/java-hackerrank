@@ -19,19 +19,18 @@ public class DynamicArray
     public static List<Integer> dynamicArray(int n, List<List<Integer>> queries)
     {
         List<Integer> results = new ArrayList<>();
-        List<List<Integer>> seqList = new ArrayList<>();
+        List<List<Integer>> lists = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            seqList.add(new ArrayList<>());
+            lists.add(new ArrayList<>());
         }
-        int lastAnswer = 0;
-        int seqNum;
+        int lastAns = 0;
         for (List<Integer> q : queries) {
-            seqNum = (q.get(1) ^ lastAnswer) % n;
-            if (q.get(0) == 1) seqList.get(seqNum).add(q.get(2));
-            else if (q.get(0) == 2) {
-                lastAnswer = seqList.get(seqNum).get(q.get(2));
-                results.add(lastAnswer);
-            } else return results;
+            if (q.get(0) == 1) lists.get((q.get(1) ^ lastAns) % n).add(q.get(2));
+            else {
+                List<Integer> l = lists.get((q.get(1) ^ lastAns) % n);
+                lastAns = l.get(q.get(2) % l.size());
+                results.add(lastAns);
+            }
         }
         return results;
     }
