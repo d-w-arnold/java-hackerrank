@@ -12,7 +12,7 @@ public class DetectACycle
      * @param head A pointer to a Node object that points to the head of a linked list.
      * @return True if there is a cycle, False if there is not.
      */
-    public boolean hasCycle(Node head)
+    public static boolean hasCycle(Node head)
     {
         if (head == null) return false;
         Node slow = head;
