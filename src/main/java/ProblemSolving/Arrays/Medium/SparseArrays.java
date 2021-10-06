@@ -1,7 +1,9 @@
 package ProblemSolving.Arrays.Medium;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author David W. Arnold
@@ -18,6 +20,18 @@ public class SparseArrays
      */
     public static List<Integer> matchingStrings(List<String> strings, List<String> queries)
     {
-        return Arrays.asList(-2);
+        Map<String, Integer> map = new LinkedHashMap<>();
+        for (String q : queries) {
+            map.put(q, 0);
+        }
+        for (String s : strings) {
+            if (map.containsKey(s)) map.put(s, map.get(s) + 1);
+        }
+        if (queries.size() == map.size()) return new ArrayList<>(map.values());
+        List<Integer> ans = new ArrayList<>();
+        for (String q : queries) {
+            ans.add(map.get(q));
+        }
+        return ans;
     }
 }
