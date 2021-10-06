@@ -44,4 +44,14 @@ class EqualStacksTest
                 Arrays.asList(1, 1, 4, 1)
         ));
     }
+
+    @Test
+    void equalStacks_3()
+    {
+        assertEquals(0, EqualStacks.equalStacks(
+                Arrays.asList(1, 1, 1, 1, 2),
+                Arrays.asList(3, 7),
+                Arrays.asList(1, 3, 1)
+        ));
+    }
 }
