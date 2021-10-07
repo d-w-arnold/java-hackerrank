@@ -1,7 +1,6 @@
 package ProblemSolving.DisjointSet.Medium;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author David W. Arnold
@@ -17,6 +16,32 @@ public class ComponentsInAGraph
      */
     public static List<Integer> componentsInGraph(List<List<Integer>> gb)
     {
-        return Arrays.asList(-2);
+        List<Set<Integer>> components = new ArrayList<>();
+        int index, indexA, indexB;
+        for (List<Integer> pair : gb) {
+            if (!components.isEmpty()) {
+                index = 0;
+                indexA = -1;
+                indexB = -1;
+                for (Set<Integer> component : components) {
+                    if (indexA != -1 && indexB != -1) break;
+                    if (indexA == -1 && component.contains(pair.get(0))) indexA = index;
+                    if (indexB == -1 && component.contains(pair.get(1))) indexB = index;
+                    index++;
+                }
+                if (indexA != indexB && indexA != -1 && indexB != -1) {
+                    components.get(indexA).addAll(components.get(indexB));
+                    components.remove(indexB);
+                } else if (indexA != -1) components.get(indexA).addAll(pair);
+                else if (indexB != -1) components.get(indexB).addAll(pair);
+                else components.add(new HashSet<>(pair));
+            } else components.add(new HashSet<>(pair));
+        }
+        int minSize = Integer.MAX_VALUE, maxSize = 0;
+        for (Set<Integer> component : components) {
+            minSize = Math.min(minSize, component.size());
+            maxSize = Math.max(maxSize, component.size());
+        }
+        return Arrays.asList(minSize, maxSize);
     }
 }
