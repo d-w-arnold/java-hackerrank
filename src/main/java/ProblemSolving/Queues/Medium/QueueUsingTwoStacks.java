@@ -1,5 +1,8 @@
 package ProblemSolving.Queues.Medium;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Stack;
 
 /**
@@ -13,7 +16,20 @@ public class QueueUsingTwoStacks
      */
     public static void queueUsingTwoStacks()
     {
-        System.out.println("NULL");
+        Queue<Integer> queue = new Queue<>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            int n = Integer.parseInt(reader.readLine());
+            for (int i = 0; i < n; i++) {
+                String[] strArray = reader.readLine().split(" ");
+                int parseInt = Integer.parseInt(strArray[0]);
+                if (parseInt == 1 && strArray.length == 2) queue.enqueue(Integer.parseInt(strArray[1]));
+                else if (parseInt == 2) queue.dequeue();
+                else if (parseInt == 3) System.out.println(queue.peek());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     static class Queue<T>
