@@ -1,6 +1,8 @@
 package ProblemSolving.Advanced.Medium;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Stack;
 
 /**
  * @author David W. Arnold
@@ -14,18 +16,22 @@ public class JimAndTheSkyscrapers
      * @param arr The array of skyscraper heights.
      * @return An integer that denotes the number of valid routes.
      */
-    public static int solve(List<Integer> arr)
+    public static long solve(List<Integer> arr)
     {
-        int ans = 0, numI, numJ;
-        outerLoop:
-        for (int i = 0; i < arr.size(); i++) {
-            numI = arr.get(i);
-            for (int j = i + 1; j < arr.size(); j++) {
-                numJ = arr.get(j);
-                if (numI < numJ) continue outerLoop;
-                if (numI == numJ) ans++;
+        Stack<Integer> stack = new Stack<>();
+        stack.add(0);
+        long[] store = new long[arr.size()];
+        long count = 0;
+        for (int i = 1; i < arr.size(); i++) {
+            while (!stack.isEmpty() && arr.get(stack.peek()) < arr.get(i)) {
+                stack.pop();
             }
+            if (!stack.isEmpty() && Objects.equals(arr.get(stack.peek()), arr.get(i))) {
+                store[i] = store[stack.pop()] + 1;
+                count += store[i];
+            }
+            stack.push(i);
         }
-        return ans * 2;
+        return count * 2;
     }
 }
