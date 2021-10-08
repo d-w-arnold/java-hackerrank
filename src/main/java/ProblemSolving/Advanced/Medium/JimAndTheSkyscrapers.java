@@ -16,6 +16,16 @@ public class JimAndTheSkyscrapers
      */
     public static int solve(List<Integer> arr)
     {
-        return -2;
+        int ans = 0, numI, numJ;
+        outerLoop:
+        for (int i = 0; i < arr.size(); i++) {
+            numI = arr.get(i);
+            for (int j = i + 1; j < arr.size(); j++) {
+                numJ = arr.get(j);
+                if (numI < numJ) continue outerLoop;
+                if (numI == numJ) ans++;
+            }
+        }
+        return ans * 2;
     }
 }
