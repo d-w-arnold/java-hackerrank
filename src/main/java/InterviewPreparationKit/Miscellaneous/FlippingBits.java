@@ -9,7 +9,7 @@ public class FlippingBits
     /**
      * Flipping bits problem:
      *
-     * @param n an integer.
+     * @param n An integer.
      * @return The unsigned decimal integer result.
      */
     public static long flippingBits(long n)

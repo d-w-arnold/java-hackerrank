@@ -13,7 +13,7 @@ public class OrganizingContainersOfBalls
     /**
      * Organizing Containers of Balls problem:
      *
-     * @param container A two dimensional array of integers that represent the number of balls of each color in each container.
+     * @param container A two-dimensional array of integers that represent the number of balls of each color in each container.
      * @return Either Possible or Impossible.
      */
     public static String organizingContainers(List<List<Integer>> container)

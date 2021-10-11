@@ -14,7 +14,7 @@ public class TaumAndBday
      * @param bc The cost of a black gift.
      * @param wc The cost of a white gift.
      * @param z  The cost to convert one color gift to the other color.
-     * @return the minimum cost to purchase the gifts.
+     * @return The minimum cost to purchase the gifts.
      */
     public static long taumBday(int b, int w, int bc, int wc, int z)
     {
