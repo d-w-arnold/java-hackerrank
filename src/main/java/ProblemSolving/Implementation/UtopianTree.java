@@ -14,20 +14,12 @@ public class UtopianTree
      */
     public static int utopianTree(int n)
     {
-        if (n > 0) {
-            int height = 1;
-            for (int i = 0; i < n; i++) {
-                if (i % 2 == 0) {
-                    // Double height
-                    height *= 2;
-                } else {
-                    // Increment height
-                    height++;
-                }
-            }
-            return height;
-        } else {
-            return 1;
+        if (n <= 0) return 1;
+        int height = 1;
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0) height *= 2;
+            else height++;
         }
+        return height;
     }
 }
