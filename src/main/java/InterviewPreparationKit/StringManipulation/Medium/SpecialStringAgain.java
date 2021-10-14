@@ -2,6 +2,7 @@ package InterviewPreparationKit.StringManipulation.Medium;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author David W. Arnold
@@ -19,12 +20,11 @@ public class SpecialStringAgain
     public static long substrCount(int n, String s)
     {
         s += " ";
-        ArrayList<Point> l = new ArrayList<>();
+        List<Point> l = new ArrayList<>();
         long count = 1;
         char c = s.charAt(0);
         for (int i = 1; i <= n; i++) {
-            if (c == s.charAt(i))
-                count++;
+            if (c == s.charAt(i)) count++;
             else {
                 l.add(new Point(c, count));
                 count = 1;
@@ -43,8 +43,7 @@ public class SpecialStringAgain
                 curr = next;
                 next = itr.next();
                 count += (curr.COUNT * (curr.COUNT + 1)) / 2;
-                if (prev.KEY == next.KEY && curr.COUNT == 1)
-                    count += Math.min(prev.COUNT, next.COUNT);
+                if (prev.KEY == next.KEY && curr.COUNT == 1) count += Math.min(prev.COUNT, next.COUNT);
             }
             count += (next.COUNT * (next.COUNT + 1)) / 2;
         } else {
