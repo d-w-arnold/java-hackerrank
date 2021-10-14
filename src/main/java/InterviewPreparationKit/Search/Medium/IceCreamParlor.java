@@ -17,17 +17,15 @@ public class IceCreamParlor
     public static void whatFlavors(List<Integer> cost, int money)
     {
         Map<Integer, List<Integer>> freqMap = new HashMap<>();
+        int c, n;
         for (int i = 0; i < cost.size(); i++) {
-            int c = cost.get(i);
-            int n = money - c;
+            c = cost.get(i);
+            n = money - c;
             if (freqMap.containsKey(n)) {
                 System.out.println(freqMap.get(n).get(0) + " " + (i + 1));
                 break;
-            } else if (freqMap.containsKey(c)) {
-                freqMap.get(c).add(i + 1);
-            } else {
-                freqMap.put(c, new ArrayList<>(Collections.singletonList(i + 1)));
-            }
+            } else if (freqMap.containsKey(c)) freqMap.get(c).add(i + 1);
+            else freqMap.put(c, new ArrayList<>(Collections.singletonList(i + 1)));
         }
     }
 }
