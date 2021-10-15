@@ -17,10 +17,9 @@ public class MinMaxRiddle
      */
     public static long[] riddle(long[] arr)
     {
-        int n = arr.length;
+        int n = arr.length, len;
         Stack<Integer> s = new Stack<>();
-        int[] left = new int[n + 1];
-        int[] right = new int[n + 1];
+        int[] left = new int[n + 1], right = new int[n + 1];
         for (int i = 0; i < n; i++) {
             left[i] = -1;
             right[i] = n;
@@ -47,7 +46,7 @@ public class MinMaxRiddle
             maxMin[i] = 0;
         }
         for (int i = 0; i < n; i++) {
-            int len = right[i] - left[i] - 1;
+            len = right[i] - left[i] - 1;
             maxMin[len] = Math.max(maxMin[len], arr[i]);
         }
         for (int i = n - 1; i >= 1; i--) {
