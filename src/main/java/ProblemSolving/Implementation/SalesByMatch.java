@@ -19,12 +19,12 @@ public class SalesByMatch
      */
     public static int sockMerchant(int n, List<Integer> ar)
     {
-        int pairs = 0;
+        int pairs = 0, a, value;
         Map<Integer, Integer> socks = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            int a = ar.get(i);
+            a = ar.get(i);
             if (socks.containsKey(a)) {
-                int value = socks.get(a);
+                value = socks.get(a);
                 if (value % 2 == 1) {
                     pairs++;
                 }
