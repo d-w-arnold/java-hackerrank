@@ -24,13 +24,11 @@ public class GreedyFlorist
             newC.add(i);
         }
         Collections.sort(newC);
-        int total = 0;
-        int numberOfPurchases = 0;
-        int numberOfGroupPurchases = -1;
+        int total = 0, numOfPurchases = 0, numOfGroupPurchases = -1;
         for (int i = newC.size() - 1; i >= 0; i--) {
-            if (numberOfPurchases % k == 0) numberOfGroupPurchases++;
-            numberOfPurchases++;
-            total += (numberOfGroupPurchases + 1) * newC.get(i);
+            if (numOfPurchases % k == 0) numOfGroupPurchases++;
+            numOfPurchases++;
+            total += (numOfGroupPurchases + 1) * newC.get(i);
         }
         return total;
     }
