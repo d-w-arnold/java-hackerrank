@@ -17,30 +17,22 @@ public class SherlockAndAnagrams
      */
     public static int sherlockAndAnagrams(String s)
     {
+        int total = 0;
         Map<Map<Character, Integer>, Integer> buckets = new HashMap<>();
-        Map<Character, Integer> freqMap;
-        int count = 0;
+        Map<Character, Integer> freqMap, key;
         for (int i = 0; i < s.length(); i++) {
             for (int j = 1; j < s.length() - i + 1; j++) {
                 freqMap = new HashMap<>();
                 for (char c : s.substring(i, i + j).toCharArray()) {
-                    if (freqMap.containsKey(c)) {
-                        freqMap.put(c, freqMap.get(c) + 1);
-                    } else {
-                        freqMap.put(c, 1);
-                    }
+                    freqMap.put(c, freqMap.containsKey(c) ? freqMap.get(c) + 1 : 1);
                 }
-                final Map<Character, Integer> key = new HashMap<>(freqMap);
-                if (buckets.containsKey(key)) {
-                    buckets.put(key, buckets.get(key) + 1);
-                } else {
-                    buckets.put(key, 1);
-                }
+                key = new HashMap<>(freqMap);
+                buckets.put(key, buckets.containsKey(key) ? buckets.get(key) + 1 : 1);
             }
         }
         for (int value : buckets.values()) {
-            count += value * (value - 1) / 2;
+            total += value * (value - 1) / 2;
         }
-        return count;
+        return total;
     }
 }
