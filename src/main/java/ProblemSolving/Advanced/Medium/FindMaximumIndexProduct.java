@@ -29,22 +29,22 @@ public class FindMaximumIndexProduct
 
     private static int[] nextGreaterInLeft(final List<Integer> arr)
     {
-        int[] left_index = new int[arr.size() + 1];
+        int[] index = new int[arr.size() + 1];
         Stack<Integer> s = new Stack<>();
         for (int i = arr.size() - 1; i >= 0; i--) {
-            buildIndex(arr, left_index, s, i);
+            buildIndex(arr, index, s, i);
         }
-        return left_index;
+        return index;
     }
 
     private static int[] nextGreaterInRight(final List<Integer> arr)
     {
-        int[] right_index = new int[arr.size() + 1];
+        int[] index = new int[arr.size() + 1];
         Stack<Integer> s = new Stack<>();
-        for (int i = 0; i < arr.size(); ++i) {
-            buildIndex(arr, right_index, s, i);
+        for (int i = 0; i < arr.size(); i++) {
+            buildIndex(arr, index, s, i);
         }
-        return right_index;
+        return index;
     }
 
     private static void buildIndex(final List<Integer> a, int[] index, Stack<Integer> s, int i)
