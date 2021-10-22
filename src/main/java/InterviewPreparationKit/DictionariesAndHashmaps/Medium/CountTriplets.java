@@ -20,27 +20,20 @@ public class CountTriplets
      */
     public static long countTriplets(List<Long> arr, long r)
     {
-        long total = 0;
-        Map<Long, Long> freqMap = getFreqMap(arr);
+        long total = 0, before, after;
+        Map<Long, Long> freqMap = new LinkedHashMap<>();
+        for (long l : arr) {
+            freqMap.merge(l, 1L, Long::sum);
+        }
         Map<Long, Long> pastFreqMap = new HashMap<>();
         for (long l : arr) {
-            long before = l / r;
-            long after = l * r;
+            before = l / r;
+            after = l * r;
             freqMap.put(l, freqMap.get(l) - 1);
-            if (pastFreqMap.containsKey(before) && freqMap.containsKey(after) && (l % r) == 0) {
+            if (pastFreqMap.containsKey(before) && freqMap.containsKey(after) && (l % r) == 0)
                 total += pastFreqMap.get(before) * freqMap.get(after);
-            }
             pastFreqMap.merge(l, 1L, Long::sum);
         }
         return total;
-    }
-
-    private static Map<Long, Long> getFreqMap(List<Long> arr)
-    {
-        Map<Long, Long> map = new LinkedHashMap<>();
-        for (long l : arr) {
-            map.merge(l, 1L, Long::sum);
-        }
-        return map;
     }
 }
