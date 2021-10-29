@@ -15,14 +15,10 @@ public class FindMergePointOfTwoLists
      */
     public static int findMergeNode(SinglyLinkedListNode head1, SinglyLinkedListNode head2)
     {
-        SinglyLinkedListNode curr1;
-        SinglyLinkedListNode curr2;
         if (head1.next != null && head2.next != null) {
             int ans = -1;
-            curr1 = head1.next;
-            curr2 = head2.next;
-            boolean c1Conn = false;
-            boolean c2Conn = false;
+            SinglyLinkedListNode curr1 = head1.next, curr2 = head2.next;
+            boolean c1Conn = false, c2Conn = false;
             while (true) {
                 if (ans == -1) {
                     assert curr1 != null;
@@ -54,17 +50,15 @@ public class FindMergePointOfTwoLists
                 }
             }
             return ans;
-        } else if (head1.next == null) {
-            curr2 = head2;
-            while (curr2 != null) {
-                if (curr2.data == head1.data) return curr2.data;
-                curr2 = curr2.next;
+        } else if (head1.next != null) {
+            while (head1 != null) {
+                if (head1.data == head2.data) return head1.data;
+                head1 = head1.next;
             }
         } else {
-            curr1 = head1;
-            while (curr1 != null) {
-                if (curr1.data == head2.data) return curr1.data;
-                curr1 = curr1.next;
+            while (head2 != null) {
+                if (head2.data == head1.data) return head2.data;
+                head2 = head2.next;
             }
         }
         return -1;
@@ -96,13 +90,8 @@ public class FindMergePointOfTwoLists
         public void insertNode(int nodeData)
         {
             SinglyLinkedListNode node = new SinglyLinkedListNode(nodeData);
-
-            if (this.head == null) {
-                this.head = node;
-            } else {
-                this.tail.next = node;
-            }
-
+            if (this.head != null) this.tail.next = node;
+            else this.head = node;
             this.tail = node;
         }
     }
