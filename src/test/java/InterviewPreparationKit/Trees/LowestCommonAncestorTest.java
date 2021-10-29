@@ -26,14 +26,8 @@ class LowestCommonAncestorTest
     private LowestCommonAncestor.Node insert(LowestCommonAncestor.Node root, int data)
     {
         if (root != null) {
-            LowestCommonAncestor.Node cur;
-            if (data <= root.data) {
-                cur = insert(root.left, data);
-                root.left = cur;
-            } else {
-                cur = insert(root.right, data);
-                root.right = cur;
-            }
+            if (data <= root.data) root.left = insert(root.left, data);
+            else root.right = insert(root.right, data);
             return root;
         }
         return new LowestCommonAncestor.Node(data);
