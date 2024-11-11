@@ -2,6 +2,8 @@
 
 [My HackerRank Profile](https://www.hackerrank.com/dwarnold)
 
+NB. My latest solutions are in [Python](https://github.com/d-w-arnold/python-hackerrank) ^_^
+
 The `src` directory contains a hierarchy of Java solutions for different HackerRank problems.
 
 The `tests` directory contains a hierarchy of unit test classes, with each unit test class corresponding to a specific
